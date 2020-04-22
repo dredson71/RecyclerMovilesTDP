@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.reciclemosdemo.Grafico.ProductByBolsa">
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/card_bag"
+        android:layout_margin="20dp"
+        android:id="@+id/relativeProductByBolsa"
+        android:paddingBottom="30dp"
+        >
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/relativeTitleProduct"
+        >
+        <TextView
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="20dp"
+            android:id="@+id/txtBolsa"
+            android:textSize="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:fontFamily="sans-serif-black"
+            android:text="Bolsa"
+            android:textColor="#414142"
+            />
+
+
+        <TextView
+            android:id="@+id/txtCreadoFecha"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:textSize="20dp"
+            android:layout_marginLeft="50dp"
+            android:text=""
+            android:layout_below="@+id/txtBolsa"
+            android:textColor="#414142" />
+        <TextView
+            android:id="@+id/txtRecoojoFecha"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@+id/txtCreadoFecha"
+            android:layout_marginTop="20dp"
+            android:layout_alignLeft="@+id/txtCreadoFecha" android:text=""
+            android:textSize="20dp"
+            android:layout_below="@+id/txtCreadoFecha"
+            android:textColor="#414142" />
+
+    </RelativeLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/relativeTitleProduct"
+        android:id="@+id/txtDetalle"
+        android:fontFamily="sans-serif-black"
+        android:layout_marginTop="30dp"
+        android:layout_marginLeft="20dp"
+        android:textSize="20dp"
+        android:textColor="#414142"
+        android:text="Detalle:"
+        />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerProductos"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:layout_marginTop="20dp"
+        android:layout_below="@+id/txtDetalle"
+/>
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/recyclerProductos"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="50dp"
+        >
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/txtPesoPlastic"
+        android:layout_marginLeft="30dp"
+        android:textSize="20dp"
+        android:fontFamily="sans-serif-black"
+        android:text="Peso total :"
+        android:layout_marginTop="10dp"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/txtPesoTotales"
+        android:textSize="20dp"
+        android:text="0"
+        android:layout_toEndOf="@+id/txtPesoPlastic"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/txtCantidadMetal"
+        android:layout_marginLeft="30dp"
+        android:textSize="20dp"
+        android:layout_marginTop="10dp"
+        android:fontFamily="sans-serif-black"
+
+        android:text="Puntos :"
+        android:layout_below="@+id/txtPesoPlastic"
+        android:layout_toEndOf="@+id/imagePlastic"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/txtPuntosTotales"
+        android:textSize="20dp"
+        android:text="0"
+        android:layout_below="@+id/txtPesoTotales"
+
+        android:layout_alignStart="@+id/txtPesoTotales"
+        android:layout_marginTop="10dp"
+        />
+    </RelativeLayout>
+    </RelativeLayout>
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/botton_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        app:backgroundTint="@color/colorBarBackground"
+        app:labelVisibilityMode="labeled"
+        app:itemIconTint="@drawable/selector"
+        app:itemTextColor="@drawable/selector"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:menu="@menu/menu_navigation" />
+
+</RelativeLayout>

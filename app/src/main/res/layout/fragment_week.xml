@@ -1,0 +1,334 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="com.example.reciclemosdemo.Grafico.MonthFragment">
+
+
+    <RelativeLayout
+        android:id="@+id/relativeChart"
+        android:layout_width="359dp"
+        android:layout_height="300dp"
+        android:layout_centerHorizontal="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <lecho.lib.hellocharts.view.LineChartView
+            android:id="@+id/chart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:alpha="0" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/relativeChart"
+        android:layout_below="@+id/relativeChart"
+        android:layout_centerHorizontal="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="20dp"
+        android:id="@+id/relativeTendenciasHoy"
+        >
+        <RelativeLayout
+            android:layout_width="69dp"
+            android:layout_height="69dp"
+            android:id="@+id/txtinsertDatos"
+            >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="0"
+                android:textColor="#252525"
+                android:layout_centerHorizontal="true"
+                android:id="@+id/txtCantBolsasHoy"
+                android:textSize="20dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="residuos "
+                android:textColor="#252525"
+                android:layout_centerHorizontal="true"
+                android:id="@+id/txtdatosHoyBolsas"
+                android:layout_below="@+id/txtCantBolsasHoy"
+                android:textSize="10dp"/>
+
+
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="69dp"
+            android:layout_height="69dp"
+            android:layout_toEndOf="@+id/txtinsertDatos"
+            android:layout_marginLeft="30dp"
+            android:id="@+id/txtPtosHoy">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:text="0"
+                android:textColor="#252525"
+                android:layout_marginTop="10dp"
+                android:id="@+id/txtPtosBolsasHoy"
+                android:layout_marginLeft="20dp"
+                android:textSize="20dp"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/txtPtosBolsasHoy"
+                android:text="ptos"
+                android:textColor="#252525"
+                android:layout_centerHorizontal="true"
+                android:id="@+id/txtptoshoys"
+                android:layout_marginLeft="20dp"
+                android:textSize="10dp"
+                />
+
+
+
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="69dp"
+            android:layout_height="69dp"
+            android:layout_marginLeft="30dp"
+            android:layout_toEndOf="@+id/txtPtosHoy"
+
+            >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:textSize="20dp"
+                android:layout_marginTop="10dp"
+                android:textColor="#252525"
+                android:layout_centerHorizontal="true"
+                android:id="@+id/txtPesoBolsasHoy"
+                android:layout_marginLeft="20dp"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:textColor="#252525"
+                android:layout_below="@+id/txtPesoBolsasHoy"
+                android:layout_marginLeft="20dp"
+                android:text="kg"
+                android:textSize="10dp"
+                />
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/relativeTendenciasHoy"
+        android:id="@+id/relativeReciclados">
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/relativePlastico">
+            <ImageView
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:background="@drawable/plastico"
+                android:id="@+id/imagePlastic"
+                android:layout_centerHorizontal="true"
+
+                />
+            <TextView
+                android:layout_below="@+id/imagePlastic"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="30dp"
+                android:id="@+id/txtPlastico"
+                android:layout_marginTop="10dp"
+                android:text="Plastico"/>
+
+            <TextView
+                android:id="@+id/txtPlasticoCantidad"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/txtPlastico"
+                android:layout_centerInParent="true"
+                android:layout_marginTop="-10dp"
+                android:text="0" />
+            <TextView
+                android:id="@+id/txtPlasticoPeso"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/txtPlasticoCantidad"
+                android:layout_centerInParent="true"
+                android:layout_marginTop="10dp"
+                android:text="0gr" />
+            <TextView
+                android:id="@+id/txtPlasticoPuntos"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_below="@+id/txtPlasticoPeso"
+                android:layout_centerInParent="true"
+                android:text="0  ptos" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/relativePapelCarton"
+            android:layout_toEndOf="@+id/relativePlastico"
+            android:layout_marginLeft="30dp">
+            <ImageView
+                android:layout_width="60dp"
+                android:background="@drawable/carton"
+                android:layout_height="60dp"
+                android:id="@+id/imagePaper"
+                android:layout_centerHorizontal="true"
+
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="30dp"
+                android:id="@+id/txtPapelCarton"
+                android:layout_below="@id/imagePaper"
+                android:layout_marginTop="10dp"
+                android:text="Papel/Carton"/>
+
+            <TextView
+                android:id="@+id/txtPapelCartonCantidad"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/txtPapelCarton"
+                android:layout_centerInParent="true"
+                android:layout_marginTop="-10dp"
+                android:text="0" />
+            <TextView
+                android:id="@+id/txtPapelCartonPeso"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_below="@+id/txtPapelCartonCantidad"
+                android:layout_centerInParent="true"
+                android:text="0gr" />
+            <TextView
+                android:id="@+id/txtPapelCartonPuntos"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/txtPapelCartonPeso"
+                android:layout_centerInParent="true"
+                android:layout_marginTop="10dp"
+                android:text="0  ptos" />
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/relativeVidrio"
+            android:layout_toEndOf="@+id/relativePapelCarton"
+            android:layout_marginLeft="30dp">
+            <ImageView
+                android:layout_width="60dp"
+                android:background="@drawable/vidrio"
+                android:layout_height="60dp"
+                android:id="@+id/imageVidrio"
+                android:layout_centerHorizontal="true"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="30dp"
+                android:layout_centerHorizontal="true"
+                android:id="@+id/txtVidrio"
+                android:layout_marginTop="10dp"
+                android:layout_below="@id/imageVidrio"
+                android:text="Vidrio"/>
+
+            <TextView
+                android:id="@+id/txtVidrioCantidad"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/txtVidrio"
+                android:layout_centerInParent="true"
+                android:layout_marginTop="-10dp"
+                android:text="0" />
+            <TextView
+                android:id="@+id/txtVidrioPeso"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/txtVidrioCantidad"
+                android:layout_centerInParent="true"
+                android:layout_marginTop="10dp"
+                android:text="0gr" />
+            <TextView
+                android:id="@+id/txtVidrioPuntos"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_below="@+id/txtVidrioPeso"
+                android:layout_centerInParent="true"
+                android:text="0  ptos" />
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/relativeMetales"
+            android:layout_toEndOf="@+id/relativeVidrio"
+            android:layout_marginLeft="30dp">
+            <ImageView
+                android:layout_width="60dp"
+                android:background="@drawable/metal"
+                android:layout_height="60dp"
+                android:id="@+id/imageMetal"
+                android:layout_centerHorizontal="true"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="30dp"
+                android:layout_below="@+id/imageMetal"
+                android:layout_marginTop="10dp"
+                android:layout_centerHorizontal="true"
+                android:id="@+id/txtMetales"
+                android:text="Metales"/>
+
+            <TextView
+                android:id="@+id/txtMetalesCantidad"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/txtMetales"
+                android:layout_centerInParent="true"
+                android:layout_marginTop="-10dp"
+                android:text="0" />
+
+            <TextView
+                android:id="@+id/txtMetalesPeso"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/txtMetalesCantidad"
+                android:layout_centerInParent="true"
+                android:layout_marginTop="10dp"
+                android:text="0gr" />
+            <TextView
+                android:id="@+id/txtMetalesPuntos"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/txtMetalesPeso"
+                android:layout_centerInParent="true"
+                android:layout_marginTop="10dp"
+                android:text="0  ptos" />
+        </RelativeLayout>
+    </RelativeLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

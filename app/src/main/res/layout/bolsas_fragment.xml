@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:id="@+id/relativeBolsas"
+        >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Hoy"
+            android:id="@+id/txtHoy"
+            android:layout_marginLeft="20dp"
+            android:textSize="20dp"
+            />
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/relativeBolsas"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp"
+        android:id="@+id/relativeTendenciasHoy"
+        >
+        <RelativeLayout
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:id="@+id/txtinsertDatos"
+            android:background="@drawable/elipse"
+            >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="0"
+                android:textColor="#FFFFFF"
+                android:layout_centerHorizontal="true"
+                android:id="@+id/txtCantBolsasHoy"
+                android:textSize="25dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="bolsas "
+                android:textColor="#FFFFFF"
+                android:layout_centerHorizontal="true"
+                android:id="@+id/txtdatosHoyBolsas"
+                android:layout_below="@+id/txtCantBolsasHoy"
+                android:textSize="15dp"/>
+
+
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:background="@drawable/elipse"
+            android:layout_toEndOf="@+id/txtinsertDatos"
+            android:layout_marginLeft="30dp"
+            android:id="@+id/txtPtosHoy">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:text="0"
+                android:textColor="#FFFFFF"
+                android:layout_marginTop="10dp"
+                android:id="@+id/txtPtosBolsasHoy"
+                android:layout_marginLeft="20dp"
+                android:textSize="25dp"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/txtPtosBolsasHoy"
+                android:text="ptos"
+                android:textColor="#FFFFFF"
+                android:layout_centerHorizontal="true"
+                android:id="@+id/txtptoshoys"
+                android:layout_marginLeft="20dp"
+                android:textSize="15dp"
+                />
+
+
+
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_marginLeft="30dp"
+            android:background="@drawable/elipse"
+            android:layout_toEndOf="@+id/txtPtosHoy"
+
+            >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:textSize="25dp"
+                android:layout_marginTop="10dp"
+                android:textColor="#FFFFFF"
+                android:layout_centerHorizontal="true"
+                android:id="@+id/txtPesoBolsasHoy"
+                android:layout_marginLeft="20dp"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:textColor="#FFFFFF"
+                android:layout_below="@+id/txtPesoBolsasHoy"
+                android:layout_marginLeft="20dp"
+                android:text="kg"
+                android:textSize="15dp"
+                />
+        </RelativeLayout>
+    </RelativeLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/relativeTendenciasHoy"
+            android:text="Ultimas bolsas:"
+            android:layout_marginTop="30dp"
+            android:layout_marginLeft="20dp"
+            android:id="@+id/txtMisBolsas"
+            android:textSize="20dp"
+
+            />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_below="@+id/txtMisBolsas"
+        android:id="@+id/recycler"
+        android:layout_width="match_parent"
+        android:layout_height="400dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="10dp"
+        />
+
+
+
+</RelativeLayout>
