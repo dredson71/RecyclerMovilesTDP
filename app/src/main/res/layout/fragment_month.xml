@@ -161,6 +161,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/imagePlastic"
                     android:layout_marginTop="10dp"
+                    android:layout_centerHorizontal="true"
                     android:layout_marginBottom="30dp"
                     android:text="Plastico" />
 

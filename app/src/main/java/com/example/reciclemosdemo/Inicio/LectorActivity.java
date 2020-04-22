@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.reciclemosdemo.Grafico.InitialValues;
@@ -22,6 +23,7 @@ import com.example.reciclemosdemo.Grafico.ListBolsas;
 import com.example.reciclemosdemo.R;
 import com.example.reciclemosdemo.Adicionales.dbHelper;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationView;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
@@ -41,11 +43,15 @@ public class LectorActivity extends AppCompatActivity {
         dbHelper helper = new dbHelper(this,"Usuario.sqlite", null, 1);
         SQLiteDatabase db = helper.getReadableDatabase();
 
-        Cursor fila2 = db.rawQuery("select codigo from Usuario", null);
+        Cursor fila2 = db.rawQuery("select codigo, nombre from Usuario", null);
 
         fila2.moveToFirst();
 
         ((InitialValues)this.getApplication()).setIdUsuario(Integer.toString(fila2.getInt(0)));
+        NavigationView navigationView = (NavigationView) findViewById(R.id.navigationView);
+        View headerView = navigationView.getHeaderView(0);
+        TextView navUsername = (TextView) headerView.findViewById(R.id.txtUser);
+        navUsername.setText(fila2.getString(1));
         //INICIALIZA APP BAR
         BottomNavigationView bottomNavigationView = findViewById(R.id.botton_navigation);
 

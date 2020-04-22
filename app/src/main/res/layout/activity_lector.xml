@@ -17,6 +17,7 @@
     app:itemIconTint="@color/colorNotSelectedBar"
     app:menu="@menu/drawer_menu"
     android:layout_gravity="start"
+    android:id="@+id/navigationView"
     />
 
 <androidx.constraintlayout.widget.ConstraintLayout
