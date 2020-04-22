@@ -9,22 +9,27 @@
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabLayoutTendencia"
         android:layout_width="match_parent"
-
-        android:layout_height="wrap_content"
+        android:layout_height="43dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toTopOf="@+id/viewPagerTendencia"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:tabGravity="fill"
         app:tabIndicatorColor="@color/colorAccent"
         app:tabMode="fixed" />
 
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/viewPagerTendencia"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/tabLayoutTendencia"
-        app:layout_constraintEnd_toStartOf="@+id/botton_navigation"
-        app:layout_constraintEnd_toEndOf="@+id/botton_navigation"/>
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/botton_navigation"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tabLayoutTendencia" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/botton_navigation"

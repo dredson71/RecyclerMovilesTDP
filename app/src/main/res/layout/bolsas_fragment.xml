@@ -1,149 +1,168 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-
-    <RelativeLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:id="@+id/relativeBolsas"
+        android:layout_height="match_parent"
         >
+    <RelativeLayout
+        android:id="@+id/relativeBolsas"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintBottom_toTopOf="@+id/relativeTendenciasHoy"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
         <TextView
+            android:id="@+id/txtHoy"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Hoy"
-            android:id="@+id/txtHoy"
             android:layout_marginLeft="20dp"
-            android:textSize="20dp"
-            />
+            android:text="Hoy"
+            android:textSize="20dp" />
     </RelativeLayout>
+
     <RelativeLayout
+        android:id="@+id/relativeTendenciasHoy"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/relativeBolsas"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="30dp"
-        android:id="@+id/relativeTendenciasHoy"
-        >
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toTopOf="@+id/txtMisBolsas"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/relativeBolsas">
+
         <RelativeLayout
+            android:id="@+id/txtinsertDatos"
             android:layout_width="80dp"
             android:layout_height="80dp"
-            android:id="@+id/txtinsertDatos"
-            android:background="@drawable/elipse"
-            >
+            android:background="@drawable/elipse">
+
             <TextView
+                android:id="@+id/txtCantBolsasHoy"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
                 android:layout_marginTop="10dp"
                 android:text="0"
                 android:textColor="#FFFFFF"
-                android:layout_centerHorizontal="true"
-                android:id="@+id/txtCantBolsasHoy"
-                android:textSize="25dp"/>
+                android:textSize="25dp" />
 
             <TextView
+                android:id="@+id/txtdatosHoyBolsas"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_below="@+id/txtCantBolsasHoy"
+                android:layout_centerHorizontal="true"
                 android:text="bolsas "
                 android:textColor="#FFFFFF"
-                android:layout_centerHorizontal="true"
-                android:id="@+id/txtdatosHoyBolsas"
-                android:layout_below="@+id/txtCantBolsasHoy"
-                android:textSize="15dp"/>
+                android:textSize="15dp" />
 
 
         </RelativeLayout>
+
         <RelativeLayout
+            android:id="@+id/txtPtosHoy"
             android:layout_width="80dp"
             android:layout_height="80dp"
-            android:background="@drawable/elipse"
-            android:layout_toEndOf="@+id/txtinsertDatos"
             android:layout_marginLeft="30dp"
-            android:id="@+id/txtPtosHoy">
+            android:layout_toEndOf="@+id/txtinsertDatos"
+            android:background="@drawable/elipse">
 
             <TextView
+                android:id="@+id/txtPtosBolsasHoy"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="10dp"
                 android:text="0"
                 android:textColor="#FFFFFF"
-                android:layout_marginTop="10dp"
-                android:id="@+id/txtPtosBolsasHoy"
-                android:layout_marginLeft="20dp"
-                android:textSize="25dp"
-                />
+                android:textSize="25dp" />
 
             <TextView
+                android:id="@+id/txtptoshoys"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/txtPtosBolsasHoy"
+                android:layout_centerHorizontal="true"
+                android:layout_marginLeft="20dp"
                 android:text="ptos"
                 android:textColor="#FFFFFF"
-                android:layout_centerHorizontal="true"
-                android:id="@+id/txtptoshoys"
-                android:layout_marginLeft="20dp"
-                android:textSize="15dp"
-                />
-
+                android:textSize="15dp" />
 
 
         </RelativeLayout>
+
         <RelativeLayout
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:layout_marginLeft="30dp"
-            android:background="@drawable/elipse"
             android:layout_toEndOf="@+id/txtPtosHoy"
+            android:background="@drawable/elipse"
 
             >
+
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="0"
-                android:textSize="25dp"
-                android:layout_marginTop="10dp"
-                android:textColor="#FFFFFF"
-                android:layout_centerHorizontal="true"
                 android:id="@+id/txtPesoBolsasHoy"
-                android:layout_marginLeft="20dp"
-                />
-            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="10dp"
+                android:text="0"
                 android:textColor="#FFFFFF"
+                android:textSize="25dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_below="@+id/txtPesoBolsasHoy"
+                android:layout_centerHorizontal="true"
                 android:layout_marginLeft="20dp"
                 android:text="kg"
-                android:textSize="15dp"
-                />
+                android:textColor="#FFFFFF"
+                android:textSize="15dp" />
         </RelativeLayout>
     </RelativeLayout>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/relativeTendenciasHoy"
-            android:text="Ultimas bolsas:"
-            android:layout_marginTop="30dp"
-            android:layout_marginLeft="20dp"
-            android:id="@+id/txtMisBolsas"
-            android:textSize="20dp"
 
-            />
+    <TextView
+        android:id="@+id/txtMisBolsas"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+
+
+        android:layout_marginBottom="20dp"
+
+        android:text="Ultimas bolsas:"
+        android:textSize="20dp"
+        app:layout_constraintBottom_toTopOf="@+id/recycler"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/relativeTendenciasHoy" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:layout_below="@+id/txtMisBolsas"
         android:id="@+id/recycler"
         android:layout_width="match_parent"
         android:layout_height="400dp"
+        android:layout_below="@+id/txtMisBolsas"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="20dp"
-        android:layout_marginLeft="10dp"
-        />
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="108dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtMisBolsas" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-
-</RelativeLayout>
+</ScrollView>

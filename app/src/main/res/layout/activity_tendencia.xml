@@ -6,34 +6,30 @@
     android:layout_height="match_parent"
     tools:context="com.example.reciclemosdemo.Grafico.TendenciaActivity">
 
-    <RelativeLayout
-        android:layout_width="350dp"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:id="@+id/relativetabLayout"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        >
+
     <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tabLayoutTendencia2"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:tabMode="fixed"
+        android:layout_height="43dp"
         android:layout_centerHorizontal="true"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toTopOf="@+id/viewPagerTendencia2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:tabGravity="fill"
         app:tabIndicatorColor="@color/colorAccent"
-        android:id="@+id/tabLayoutTendencia2"
-        ></com.google.android.material.tabs.TabLayout>
-    </RelativeLayout>
+        app:tabMode="fixed" />
+
 
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/viewPagerTendencia2"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/relativetabLayout"></androidx.viewpager.widget.ViewPager>
+        app:layout_constraintTop_toBottomOf="@+id/tabLayoutTendencia2" />
 </androidx.constraintlayout.widget.ConstraintLayout>
