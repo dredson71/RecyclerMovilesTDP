@@ -5,23 +5,25 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/drawer"
+    tools:openDrawer="start"
     tools:context="com.example.reciclemosdemo.Grafico.ListBolsas">
-    <com.google.android.material.navigation.NavigationView
-        app:headerLayout="@layout/nav_header"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:background="@color/colorBarBackground"
-        app:itemTextColor="@color/colorPrimary"
-        app:itemIconTint="@color/colorNotSelectedBar"
-        app:menu="@menu/drawer_menu"
-        android:layout_gravity="start"
-        android:id="@+id/navigationView"
-        />
+
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         >
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/colorPrimary"
+            android:elevation="4dp"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabLayoutTendencia"
         android:layout_width="match_parent"
@@ -34,9 +36,10 @@
         app:layout_constraintBottom_toTopOf="@+id/viewPagerTendencia"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
         app:tabIndicatorColor="@color/colorAccent"
         app:tabMode="fixed" />
+
 
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/viewPagerTendencia"
@@ -62,4 +65,15 @@
         app:menu="@menu/menu_navigation" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+    <com.google.android.material.navigation.NavigationView
+        app:headerLayout="@layout/nav_header"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:background="@color/colorBarBackground"
+        app:itemTextColor="@color/colorPrimary"
+        app:itemIconTint="@color/colorNotSelectedBar"
+        app:menu="@menu/drawer_menu"
+        android:layout_gravity="start"
+        android:id="@+id/navigationView"
+        />
 </androidx.drawerlayout.widget.DrawerLayout>

@@ -3,6 +3,8 @@ package com.example.reciclemosdemo.Inicio;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -16,17 +18,19 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.reciclemosdemo.Adicionales.dbHelper;
 import com.example.reciclemosdemo.Entities.Probolsa;
 import com.example.reciclemosdemo.Grafico.ListBolsas;
+import com.example.reciclemosdemo.Grafico.ProfileActivity;
 import com.example.reciclemosdemo.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 
 import java.util.ArrayList;
 
-public class BolsaActivity extends AppCompatActivity {
+public class BolsaActivity extends AppCompatActivity  implements NavigationView.OnNavigationItemSelectedListener{
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mToggle;
     FragmentManager fragmentManager;
@@ -38,22 +42,29 @@ public class BolsaActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bolsa);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
         mDrawerLayout = findViewById(R.id.drawer);
-        mToggle = new ActionBarDrawerToggle(this,mDrawerLayout,R.string.open,R.string.close);
+        NavigationView navigationView = (NavigationView) findViewById(R.id.navigationView);
+        navigationView.setNavigationItemSelectedListener(this);
+        ActionBarDrawerToggle mToggle = new ActionBarDrawerToggle(this,mDrawerLayout,toolbar,R.string.open,R.string.close);
         mDrawerLayout.addDrawerListener(mToggle);
         mToggle.syncState();
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        fragmentManager = getSupportFragmentManager();
-        transaction = fragmentManager.beginTransaction();
 
         dbHelper helper = new dbHelper(this, "Usuario.sqlite", null, 1);
         SQLiteDatabase db = helper.getReadableDatabase();
         Cursor f = db.rawQuery("select codigo, nombre from Usuario", null);
         f.moveToFirst();
-        NavigationView navigationView = (NavigationView) findViewById(R.id.navigationView);
         View headerView = navigationView.getHeaderView(0);
         TextView navUsername = (TextView) headerView.findViewById(R.id.txtUser);
         navUsername.setText(f.getString(1));
+        TextView navViewProfile = headerView.findViewById(R.id.txtMiPerfil);
+        navViewProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(), ProfileActivity.class));
+            }
+        });
         Cursor fila2 = db.rawQuery("select codigo from Bolsa where activa = 'true'", null);
 
         fila2.moveToFirst();
@@ -105,10 +116,25 @@ public class BolsaActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if(mToggle.onOptionsItemSelected(item)){
-            return true;
+    public void onBackPressed() {
+        if(mDrawerLayout.isDrawerOpen(GravityCompat.START)){
+            mDrawerLayout.closeDrawer(GravityCompat.START);
+        }else{
+            super.onBackPressed();
         }
-        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.nav_info:
+                Toast.makeText(this, "Proximamente", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.nav_message:
+                Toast.makeText(this, "Proximamente 2", Toast.LENGTH_SHORT).show();
+                break;
+        }
+        mDrawerLayout.closeDrawer(GravityCompat.START);
+        return true;
     }
 }

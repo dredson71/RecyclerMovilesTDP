@@ -7,6 +7,7 @@
     android:layout_height="120dp"
     android:background="@color/colorNotSelectedBar"
     android:padding="16dp"
+    android:id="@+id/nav"
     android:theme="@style/ThemeOverlay.AppCompat.Dark"
     android:orientation="vertical"
     android:foregroundGravity="bottom">
@@ -38,6 +39,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="32dp"
+        android:id="@+id/txtMiPerfil"
         android:text="Mi Perfil"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:textSize="10dp"

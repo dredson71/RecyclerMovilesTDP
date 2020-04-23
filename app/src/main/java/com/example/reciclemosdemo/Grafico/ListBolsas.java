@@ -3,6 +3,8 @@ package com.example.reciclemosdemo.Grafico;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.viewpager.widget.ViewPager;
 
@@ -13,6 +15,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.reciclemosdemo.Adicionales.dbHelper;
 import com.example.reciclemosdemo.Inicio.BolsaActivity;
@@ -23,7 +26,7 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabLayout;
 
 
-public class ListBolsas extends AppCompatActivity  {
+public class ListBolsas extends AppCompatActivity  implements NavigationView.OnNavigationItemSelectedListener {
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mToggle;
     private ViewPager viewPager;
@@ -34,11 +37,15 @@ public class ListBolsas extends AppCompatActivity  {
         com.example.reciclemosdemo.Grafico.RetrofitMain retrofitMain;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_bolsas);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
         mDrawerLayout = findViewById(R.id.drawer);
-        mToggle = new ActionBarDrawerToggle(this,mDrawerLayout,R.string.open,R.string.close);
+        NavigationView navigationView = (NavigationView) findViewById(R.id.navigationView);
+        navigationView.setNavigationItemSelectedListener(this);
+        ActionBarDrawerToggle mToggle = new ActionBarDrawerToggle(this,mDrawerLayout,toolbar,R.string.open,R.string.close);
         mDrawerLayout.addDrawerListener(mToggle);
         mToggle.syncState();
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         tabLayout = (TabLayout) findViewById(R.id.tabLayoutTendencia);
         viewPager = findViewById(R.id.viewPagerTendencia);
         adapter = new com.example.reciclemosdemo.Grafico.ViewTrendAdapter(getSupportFragmentManager());
@@ -53,16 +60,21 @@ public class ListBolsas extends AppCompatActivity  {
         SQLiteDatabase db = helper.getReadableDatabase();
         Cursor f = db.rawQuery("select codigo, nombre from Usuario", null);
         f.moveToFirst();
-        NavigationView navigationView = (NavigationView) findViewById(R.id.navigationView);
         View headerView = navigationView.getHeaderView(0);
         TextView navUsername = (TextView) headerView.findViewById(R.id.txtUser);
         navUsername.setText(f.getString(1));
-
+        TextView navViewProfile = headerView.findViewById(R.id.txtMiPerfil);
+        navViewProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(), ProfileActivity.class));
+            }
+        });
         //INICIALIZA APP BAR
         BottomNavigationView bottomNavigationView = findViewById(R.id.botton_navigation);
 
         //SELECCIÓN
-        bottomNavigationView.setSelectedItemId(R.id.escaner);
+        bottomNavigationView.setSelectedItemId(R.id.miaporte);
 
         //CAMBIO DE SELECCIÓN
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -94,12 +106,26 @@ public class ListBolsas extends AppCompatActivity  {
     }
 
     @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if(mToggle.onOptionsItemSelected(item)){
-            return true;
+    public void onBackPressed() {
+        if(mDrawerLayout.isDrawerOpen(GravityCompat.START)){
+            mDrawerLayout.closeDrawer(GravityCompat.START);
+        }else{
+            super.onBackPressed();
         }
-        return super.onOptionsItemSelected(item);
     }
 
 
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.nav_info:
+                Toast.makeText(this, "Proximamente", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.nav_message:
+                Toast.makeText(this, "Proximamente 2", Toast.LENGTH_SHORT).show();
+                break;
+        }
+        mDrawerLayout.closeDrawer(GravityCompat.START);
+        return true;
+    }
 }
