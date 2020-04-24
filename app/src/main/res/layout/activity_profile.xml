@@ -18,11 +18,404 @@
         android:layout_gravity="start"
         android:id="@+id/navigationView"
         />
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-    <com.google.android.material.bottomnavigation.BottomNavigationView
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/botton_navigation"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/txtTitleNombre"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginTop="32dp"
+                    android:fontFamily="sans-serif-black"
+                    android:text="Nombre"
+                    android:textColor="@color/colorNotSelectedBar"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/txtNombre"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="18dp"
+                    android:layout_marginEnd="20dp"
+                    android:fontFamily="sans-serif-black"
+                    android:text="Nombre : "
+                    app:layout_constraintEnd_toStartOf="@+id/txtInputNombre"
+                    app:layout_constraintHorizontal_bias="0.2"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/txtTitleNombre" />
+
+                <TextView
+                    android:id="@+id/txtInputNombre"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="18dp"
+                    android:layout_marginEnd="180dp"
+                    android:fontFamily="sans-serif-black"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/txtNombre"
+                    app:layout_constraintTop_toBottomOf="@+id/txtTitleNombre" />
+
+                <TextView
+                    android:id="@+id/txtApellido"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="18dp"
+                    android:layout_marginEnd="104dp"
+                    android:fontFamily="sans-serif-black"
+                    android:text="Apellido : "
+                    app:layout_constraintEnd_toStartOf="@+id/txtInputApellidos"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="@id/txtNombre"
+                    app:layout_constraintTop_toBottomOf="@+id/txtNombre" />
+
+                <TextView
+                    android:id="@+id/txtInputApellidos"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="18dp"
+                    android:fontFamily="sans-serif-black"
+                    android:text=""
+                    app:layout_constraintStart_toStartOf="@+id/txtInputNombre"
+                    app:layout_constraintTop_toBottomOf="@+id/txtInputNombre" />
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="32dp"
+                    android:id="@+id/imgLine1"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:background="@drawable/line"
+                    app:layout_constraintTop_toBottomOf="@+id/txtInputApellidos" />
+
+                <TextView
+                    android:id="@+id/txtCuenta"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginEnd="241dp"
+                    android:fontFamily="sans-serif-black"
+                    android:text="Cuenta"
+                    android:textColor="@color/colorNotSelectedBar"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/imgLine1" />
+
+
+                <TextView
+                    android:id="@+id/txtCorreo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="18dp"
+                    android:layout_marginEnd="20dp"
+                    android:fontFamily="sans-serif-black"
+                    android:text="Email : "
+                    app:layout_constraintEnd_toStartOf="@+id/txtInputCorreo"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="@id/txtNombre"
+                    app:layout_constraintTop_toBottomOf="@+id/txtCuenta" />
+
+                <TextView
+                    android:id="@+id/txtInputCorreo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="18dp"
+                    android:layout_marginEnd="180dp"
+                    android:fontFamily="sans-serif-black"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/txtInputNombre"
+                    app:layout_constraintTop_toBottomOf="@+id/txtCuenta" />
+
+                <TextView
+                    android:id="@+id/txtPassword"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="18dp"
+                    android:layout_marginEnd="22dp"
+                    android:fontFamily="sans-serif-black"
+                    android:text="Password : "
+                    app:layout_constraintEnd_toStartOf="@+id/txtInputPassword"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="@id/txtCorreo"
+                    app:layout_constraintTop_toBottomOf="@+id/txtCorreo" />
+
+                <TextView
+                    android:id="@+id/txtInputPassword"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="18dp"
+                    android:text="********"
+                    android:fontFamily="sans-serif-black"
+                    app:layout_constraintStart_toStartOf="@+id/txtInputCorreo"
+                    app:layout_constraintTop_toBottomOf="@+id/txtInputCorreo" />
+
+                <TextView
+                    android:id="@+id/txtFacebook"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="18dp"
+                    android:layout_marginEnd="23dp"
+                    android:fontFamily="sans-serif-black"
+                    android:text="Facebook : "
+                    app:layout_constraintEnd_toStartOf="@+id/txtInputFacebook"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="@id/txtPassword"
+                    app:layout_constraintTop_toBottomOf="@+id/txtPassword" />
+
+                <TextView
+                    android:id="@+id/txtInputFacebook"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="18dp"
+                    android:textColor="@color/colorSelectedBar"
+                    android:fontFamily="sans-serif-black"
+                    android:text="Pulsa para conectar"
+                    app:layout_constraintStart_toStartOf="@+id/txtInputCorreo"
+                    app:layout_constraintTop_toBottomOf="@+id/txtInputPassword" />
+
+                <TextView
+                    android:id="@+id/txtGmail"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="18dp"
+                    android:layout_marginEnd="49dp"
+                    android:fontFamily="sans-serif-black"
+                    android:text="Gmail : "
+                    app:layout_constraintEnd_toStartOf="@+id/txtInputGmail"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="@id/txtFacebook"
+                    app:layout_constraintTop_toBottomOf="@+id/txtFacebook" />
+
+                <TextView
+                    android:id="@+id/txtInputGmail"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="18dp"
+                    android:fontFamily="sans-serif-black"
+                    android:text="Conectado"
+                    app:layout_constraintStart_toStartOf="@+id/txtInputCorreo"
+                    app:layout_constraintTop_toBottomOf="@+id/txtInputFacebook" />
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="32dp"
+                    android:id="@+id/imgLine2"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:background="@drawable/line"
+                    app:layout_constraintTop_toBottomOf="@+id/txtInputGmail" />
+
+                <TextView
+                    android:id="@+id/txtSobremi"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginEnd="237dp"
+                    android:fontFamily="sans-serif-black"
+                    android:text="Sobre ti"
+                    android:textColor="@color/colorNotSelectedBar"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/imgLine2" />
+
+                <TextView
+                    android:id="@+id/txtDNI"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="18dp"
+                    android:fontFamily="sans-serif-black"
+                    android:text="DNI : "
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="@id/txtNombre"
+                    app:layout_constraintTop_toBottomOf="@+id/txtSobremi" />
+
+                <TextView
+                    android:id="@+id/txtInputDNI"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="18dp"
+                    android:fontFamily="sans-serif-black"
+                    app:layout_constraintStart_toStartOf="@+id/txtInputDepartamento"
+                    app:layout_constraintTop_toBottomOf="@+id/txtSobremi" />
+
+                <TextView
+                    android:id="@+id/txtDepartamento"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="18dp"
+                    android:fontFamily="sans-serif-black"
+                    android:text="Departamento : "
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="@id/txtNombre"
+                    app:layout_constraintTop_toBottomOf="@+id/txtDNI" />
+
+                <TextView
+                    android:id="@+id/txtInputDepartamento"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="1dp"
+                    android:layout_marginTop="18dp"
+                    android:layout_marginEnd="164dp"
+                    android:fontFamily="sans-serif-black"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/txtDepartamento"
+                    app:layout_constraintTop_toBottomOf="@+id/txtInputDNI" />
+
+                <TextView
+                    android:id="@+id/txtDistrito"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="18dp"
+                    android:layout_marginEnd="104dp"
+                    android:fontFamily="sans-serif-black"
+                    android:text="Distrito : "
+                    app:layout_constraintEnd_toStartOf="@+id/txtInputDistrito"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="@id/txtDepartamento"
+                    app:layout_constraintTop_toBottomOf="@+id/txtDepartamento" />
+
+                <TextView
+                    android:id="@+id/txtInputDistrito"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="18dp"
+                    android:fontFamily="sans-serif-black"
+                    android:text=""
+                    app:layout_constraintStart_toStartOf="@+id/txtInputDNI"
+                    app:layout_constraintTop_toBottomOf="@+id/txtInputDepartamento" />
+
+                <TextView
+                    android:id="@+id/txtCondominio"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="18dp"
+                    android:fontFamily="sans-serif-black"
+                    android:text="Condominio : "
+                    app:layout_constraintEnd_toStartOf="@+id/txtInputCondominio"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="@id/txtDistrito"
+                    app:layout_constraintTop_toBottomOf="@+id/txtDistrito" />
+
+                <TextView
+                    android:id="@+id/txtInputCondominio"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="18dp"
+                    android:fontFamily="sans-serif-black"
+                    android:text=""
+                    app:layout_constraintStart_toStartOf="@+id/txtInputDNI"
+                    app:layout_constraintTop_toBottomOf="@+id/txtInputDistrito" />
+
+                <TextView
+                    android:id="@+id/txtDireccion"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="18dp"
+                    android:layout_marginEnd="104dp"
+                    android:fontFamily="sans-serif-black"
+                    android:text="Direccion : "
+                    app:layout_constraintEnd_toStartOf="@+id/txtInputDireccion"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="@id/txtCondominio"
+                    app:layout_constraintTop_toBottomOf="@+id/txtCondominio" />
+
+                <TextView
+                    android:id="@+id/txtInputDireccion"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="18dp"
+                    android:fontFamily="sans-serif-black"
+                    android:text=""
+                    app:layout_constraintStart_toStartOf="@+id/txtInputDNI"
+                    app:layout_constraintTop_toBottomOf="@+id/txtInputCondominio" />
+
+                <TextView
+                    android:id="@+id/txtFechaNacimiento"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="18dp"
+                    android:fontFamily="sans-serif-black"
+                    android:text="Fecha de Nacimiento : "
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="@id/txtDireccion"
+                    app:layout_constraintTop_toBottomOf="@+id/txtDireccion" />
+
+                <TextView
+                    android:id="@+id/txtInputFechaNacimiento"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="18dp"
+                    android:fontFamily="sans-serif-black"
+                    android:text=""
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.16"
+                    app:layout_constraintStart_toEndOf="@+id/txtFechaNacimiento"
+                    app:layout_constraintTop_toBottomOf="@+id/txtInputDireccion" />
+
+                <TextView
+                    android:id="@+id/txtSexo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="18dp"
+                    android:layout_marginEnd="120dp"
+                    android:fontFamily="sans-serif-black"
+                    android:text="Sexo : "
+                    app:layout_constraintEnd_toStartOf="@+id/txtInputSexo"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="@id/txtFechaNacimiento"
+                    app:layout_constraintTop_toBottomOf="@+id/txtFechaNacimiento" />
+
+                <TextView
+                    android:id="@+id/txtInputSexo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="18dp"
+                    android:fontFamily="sans-serif-black"
+                    android:text=""
+                    app:layout_constraintStart_toStartOf="@+id/txtInputDepartamento"
+                    app:layout_constraintTop_toBottomOf="@+id/txtInputFechaNacimiento" />
+
+                <Button
+                    android:id="@+id/imgCerrarSesion"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginStart="64dp"
+                    android:layout_marginTop="24dp"
+                    android:layout_marginEnd="64dp"
+                    android:layout_marginBottom="16dp"
+                    android:text="Cerrar Sesion"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/txtInputSexo" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </ScrollView>
+
+        <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/botton_navigation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

@@ -67,7 +67,7 @@ public class APIToSQLite {
         JsonPlaceHolderApi jsonPlaceHolderApi=retrofit.create(JsonPlaceHolderApi.class);
         Call<Usuario> call=jsonPlaceHolderApi.getUsuarioByEmailPassword("/usuario/correo/" + email + "/" + password);
         Response<Usuario> response = call.execute();
-        String[] ayuda = new String[10];
+        String[] ayuda = new String[13];
         ayuda[0] = response.body().getNombre();
         ayuda[1] = response.body().getApellido();
         ayuda[2] = response.body().getCondominio().getNombre();
@@ -78,11 +78,16 @@ public class APIToSQLite {
         ayuda[7] = response.body().getSexo().getNombre();
         ayuda[8] = response.body().getTelefono();
         ayuda[9] = response.body().getCodigo().toString();
-        String query = "insert into Usuario (nombre, apellido, condominio, direccion, dni, email, fecha_Nacimiento, sexo, telefono, codigo) " +
+        ayuda[10] = response.body().getCondominio().getDistrito().getNombre();
+        ayuda[11] = response.body().getCondominio().getDireccion();
+        ayuda[12] = response.body().getCondominio().getDistrito().getDepartamento().getNombre();
+        String query = "insert into Usuario (nombre, apellido, condominio, direccion, dni, email, fecha_Nacimiento, sexo, telefono, codigo,distrito_name,condominio_direccion,departamento_name) " +
                 "values ('" + ayuda[0] + "', '" + ayuda[1] + "', '" + ayuda[2] + "', '" + ayuda[3] + "', '" + ayuda[4] + "', '" + ayuda[5] + "', '"
-                + ayuda[6] + "', '" + ayuda[7] + "', '" + ayuda[8] + "', " + ayuda[9] + ")";
+                + ayuda[6] + "', '" + ayuda[7] + "', '" + ayuda[8] + "', '" + ayuda[9] + "', '" + ayuda[10] + "', '" + ayuda[11] + "', '" + ayuda[12] + "')";
         db.execSQL(query);
         System.out.println(query);
+
+
         Log.e("TAG","onResponse:" + response.toString());
         /*call.enqueue(new Callback<Usuario>() {
             @Override
