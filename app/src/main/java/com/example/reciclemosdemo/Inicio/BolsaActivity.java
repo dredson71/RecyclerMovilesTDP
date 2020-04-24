@@ -30,9 +30,8 @@ import com.google.android.material.navigation.NavigationView;
 
 import java.util.ArrayList;
 
-public class BolsaActivity extends AppCompatActivity  implements NavigationView.OnNavigationItemSelectedListener{
+public class BolsaActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener  {
     private DrawerLayout mDrawerLayout;
-    private ActionBarDrawerToggle mToggle;
     FragmentManager fragmentManager;
     FragmentTransaction transaction, transaction2;
     Fragment detalleFragment = new DetalleFragment();
@@ -50,21 +49,12 @@ public class BolsaActivity extends AppCompatActivity  implements NavigationView.
         ActionBarDrawerToggle mToggle = new ActionBarDrawerToggle(this,mDrawerLayout,toolbar,R.string.open,R.string.close);
         mDrawerLayout.addDrawerListener(mToggle);
         mToggle.syncState();
+        fragmentManager = getSupportFragmentManager();
+        transaction = fragmentManager.beginTransaction();
 
         dbHelper helper = new dbHelper(this, "Usuario.sqlite", null, 1);
         SQLiteDatabase db = helper.getReadableDatabase();
-        Cursor f = db.rawQuery("select codigo, nombre from Usuario", null);
-        f.moveToFirst();
-        View headerView = navigationView.getHeaderView(0);
-        TextView navUsername = (TextView) headerView.findViewById(R.id.txtUser);
-        navUsername.setText(f.getString(1));
-        TextView navViewProfile = headerView.findViewById(R.id.txtMiPerfil);
-        navViewProfile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(), ProfileActivity.class));
-            }
-        });
+
         Cursor fila2 = db.rawQuery("select codigo from Bolsa where activa = 'true'", null);
 
         fila2.moveToFirst();
@@ -78,6 +68,22 @@ public class BolsaActivity extends AppCompatActivity  implements NavigationView.
         } else {
             setEscaneaAlgoFragment();
         }
+
+        Cursor filaUsuario = db.rawQuery("select codigo, nombre from Usuario", null);
+
+        filaUsuario.moveToFirst();
+        View headerView = navigationView.getHeaderView(0);
+        TextView navUsername = (TextView) headerView.findViewById(R.id.txtUser);
+        navUsername.setText(filaUsuario.getString(1));
+        TextView navViewProfile = headerView.findViewById(R.id.txtMiPerfil);
+        navViewProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(), ProfileActivity.class));
+            }
+        });
+
+
 
         //INICIALIZA APP BAR
         BottomNavigationView bottomNavigationView = findViewById(R.id.botton_navigation);
@@ -108,13 +114,6 @@ public class BolsaActivity extends AppCompatActivity  implements NavigationView.
         });
     }
 
-    public void setEscaneaAlgoFragment(){
-        fragmentManager = getSupportFragmentManager();
-        transaction2 = fragmentManager.beginTransaction();
-        transaction2.replace(R.id.fragment, escaneaAlgoFragment);
-        transaction2.commit();
-    }
-
     @Override
     public void onBackPressed() {
         if(mDrawerLayout.isDrawerOpen(GravityCompat.START)){
@@ -122,6 +121,12 @@ public class BolsaActivity extends AppCompatActivity  implements NavigationView.
         }else{
             super.onBackPressed();
         }
+    }
+    public void setEscaneaAlgoFragment(){
+        fragmentManager = getSupportFragmentManager();
+        transaction2 = fragmentManager.beginTransaction();
+        transaction2.replace(R.id.fragment, escaneaAlgoFragment);
+        transaction2.commit();
     }
 
     @Override
