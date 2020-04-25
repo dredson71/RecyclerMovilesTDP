@@ -13,14 +13,25 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Grafico.ProfileActivity" android:label="Mi perfil"></activity>
+        <activity android:name=".Grafico.RecicladorActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:label="Mi reciclador"
+            ></activity>
+        <activity
+            android:name=".Grafico.SolicitudActivity"
+            android:label="Actualizacion de datos"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Grafico.ProfileActivity"
+            android:label="Mi perfil"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".Inicio.RegistrarBolsaActivity" />
         <activity
             android:name=".Inicio.BolsaActivity"
             android:configChanges="orientation"
             android:label="Mi bolsa"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Adicionales.AnyOrientationCaptureActivity"
             android:screenOrientation="fullSensor"
@@ -30,9 +41,9 @@
         <activity
             android:name=".Inicio.LectorActivity"
             android:configChanges="orientation"
-            android:theme="@style/AppTheme.NoActionBar"
             android:label="Valorización"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Inicio.RegisterActivity"
             android:configChanges="orientation"
@@ -57,8 +68,8 @@
             android:name=".Grafico.ListBolsas"
             android:configChanges="orientation"
             android:label="Mi aporte"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Adicionales.CondicionesUso"
             android:configChanges="orientation"

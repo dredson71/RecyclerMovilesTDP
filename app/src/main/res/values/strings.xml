@@ -55,6 +55,9 @@
         Malorum" by Cicero are also reproduced in their exact original form, accompanied
         by English versions from the 1914 translation by H. Rackham.
     </string>
+    <string name="solicitud_Title">La presente solicitud es para uso de
+        los generadores residuales que desean
+        actualizar sus datos personales</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

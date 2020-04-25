@@ -26,7 +26,6 @@ public class ListaBolsaAdapter extends RecyclerView.Adapter<ListaBolsaAdapter.Vi
 
     private ArrayList<Bolsa> dataset;
     private Context context;
-    private int countBolsas;
     private Dialog myDialog;
     private int pos;
 
@@ -34,7 +33,6 @@ public class ListaBolsaAdapter extends RecyclerView.Adapter<ListaBolsaAdapter.Vi
     {
         this.context=context;
         dataset= new ArrayList<>();
-        countBolsas=0;
         pos = 0;
     }
 
@@ -52,7 +50,6 @@ public class ListaBolsaAdapter extends RecyclerView.Adapter<ListaBolsaAdapter.Vi
 
     @Override
     public void onBindViewHolder(ViewHolder holder,int position){
-        countBolsas++;
         Bolsa c = dataset.get(position);
         DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
         Date recojo = c.getRecojoFecha();
@@ -62,10 +59,15 @@ public class ListaBolsaAdapter extends RecyclerView.Adapter<ListaBolsaAdapter.Vi
         }else{
             holder.txt_RecojoFecha.setText("Recojo : Pendiente");
         }
+        if(c.getObservaciones() != null || c.getObservaciones() == " "){
+            holder.txt_Observacion.setText("Observaciones : SI");
+        }else{
+            holder.txt_Observacion.setText("Observaciones : NO");
+        }
         String creadoFecha = formatter.format(c.getCreadoFecha());
         holder.imageBolsaIcon.setAnimation(AnimationUtils.loadAnimation(context,R.anim.fade_transition_animation));
         holder.item_bolsas.setAnimation(AnimationUtils.loadAnimation(context,R.anim.fade_scale_animation));
-        holder.txt_Bolsa.setText("Bolsa "+Integer.toString(countBolsas));
+        holder.txt_Bolsa.setText("Bolsa "+Integer.toString(1+position));
         holder.txt_CreadoFecha.setText("Creada : "+creadoFecha);
 
     }
@@ -94,6 +96,7 @@ public class ListaBolsaAdapter extends RecyclerView.Adapter<ListaBolsaAdapter.Vi
         private TextView txt_RecojoFecha;
         private TextView txt_CreadoFecha;
         private ImageView imageBolsaIcon;
+        private TextView txt_Observacion;
         OnNoteListener onNoteListener;
 
         public ViewHolder(View itemView  ){
@@ -103,6 +106,7 @@ public class ListaBolsaAdapter extends RecyclerView.Adapter<ListaBolsaAdapter.Vi
             txt_CreadoFecha=(TextView) itemView.findViewById(R.id.txtCreadoFecha);
             txt_RecojoFecha=(TextView) itemView.findViewById(R.id.txtRecoojoFecha);
             imageBolsaIcon = itemView.findViewById(R.id.imageBolsaIcon);
+            txt_Observacion = itemView.findViewById(R.id.txtObservaciones);
         }
 
     }

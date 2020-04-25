@@ -4,54 +4,58 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.example.reciclemosdemo.Adicionales.dbHelper;
+import com.example.reciclemosdemo.Entities.JsonPlaceHolderApi;
+import com.example.reciclemosdemo.Entities.Solicitud;
+import com.example.reciclemosdemo.Entities.Usuario;
 import com.example.reciclemosdemo.Inicio.BolsaActivity;
 import com.example.reciclemosdemo.Inicio.LectorActivity;
+import com.example.reciclemosdemo.Inicio.LoginActivity;
 import com.example.reciclemosdemo.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 
-import android.app.Dialog;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import org.w3c.dom.Text;
-
-import java.text.SimpleDateFormat;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.util.Date;
 
-public class ProfileActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
+public class SolicitudActivity extends AppCompatActivity   implements NavigationView.OnNavigationItemSelectedListener {
+    private Retrofit retrofit;
     private DrawerLayout mDrawerLayout;
-    private ActionBarDrawerToggle mToggle;
-    private  TextView txtNombre,txtApellido,txtCorreo,txtPassword,txtDni;
-    private TextView txtDepartamento,txtDistrito,txtCondominio,txtDireccion,txtFechaNacimiento,txtSexo;
+
+    private EditText editTextSustento,editTextDatos;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_profile);
-        txtNombre = findViewById(R.id.txtInputNombre);
-        txtApellido = findViewById(R.id.txtInputApellidos);
-        txtCorreo = findViewById(R.id.txtInputCorreo);
-        txtPassword = findViewById(R.id.txtInputPassword);
-        txtDepartamento = findViewById(R.id.txtInputDepartamento);
-        txtDistrito = findViewById(R.id.txtInputDistrito);
-        txtCondominio = findViewById(R.id.txtInputCondominio);
-        txtDireccion = findViewById(R.id.txtInputDireccion);
-        txtFechaNacimiento = findViewById(R.id.txtInputFechaNacimiento);
-        txtSexo = findViewById(R.id.txtInputSexo);
-        txtDni = findViewById(R.id.txtInputDNI);
+        setContentView(R.layout.activity_solicitud);
+        retrofit = new Retrofit.Builder()
+                .baseUrl("https://recyclerapiresttdp.herokuapp.com/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        editTextSustento = findViewById(R.id.editTextSolicitudSustento);
+        editTextDatos = findViewById(R.id.editTextActualizaDatos);
 
 
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -63,44 +67,22 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
         mDrawerLayout.addDrawerListener(mToggle);
         mToggle.syncState();
 
+
+
         dbHelper helper = new dbHelper(this,"Usuario.sqlite", null, 1);
         SQLiteDatabase db = helper.getReadableDatabase();
-
-        Cursor fila2 = db.rawQuery("select codigo, nombre, apellido ,email, condominio , direccion  , email , fecha_Nacimiento , sexo ,distrito_name ,condominio_direccion ,departamento_name ,dni from Usuario", null);
+        Cursor fila2 = db.rawQuery("select nombre from Usuario", null);
 
         fila2.moveToFirst();
         View headerView = navigationView.getHeaderView(0);
         TextView navUsername = (TextView) headerView.findViewById(R.id.txtUser);
-        navUsername.setText(fila2.getString(1));
+        navUsername.setText(fila2.getString(0));
 
-        txtNombre.setText(fila2.getString(1));
-        txtApellido.setText(fila2.getString(2));
-        txtCorreo.setText(fila2.getString(3));
-        txtDepartamento.setText(fila2.getString(11));
-        txtDistrito.setText(fila2.getString(9));
-        txtCondominio.setText(fila2.getString(4));
-        txtDireccion.setText( fila2.getString(10) + " N° "+fila2.getString(5));
-        txtDni.setText(fila2.getString(12));
-        String[] parts = fila2.getString(7).split("-");
-        String year = parts[0];
-        String month = parts[1];
-        String dateAux = parts[2];
-        String[] partsDate = dateAux.split("T");
-        String date = partsDate[0];
-        txtFechaNacimiento.setText(date+"/"+month+"/"+year);
-        txtSexo.setText(fila2.getString(8));
-
-
-
-
-
-
-        navigationView.setNavigationItemSelectedListener(this);
         //INICIALIZA APP BAR
         BottomNavigationView bottomNavigationView = findViewById(R.id.botton_navigation);
 
         //SELECCIÓN
-        bottomNavigationView.setSelectedItemId(R.id.escaner);
+        bottomNavigationView.setSelectedItemId(R.id.miaporte);
 
         //CAMBIO DE SELECCIÓN
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -126,11 +108,56 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
             }
         });
 
+
+
     }
 
-    public void SolicitudSol(View v){
-        startActivity(new Intent(getApplicationContext(), SolicitudActivity.class));
-    }
+
+    public void RegistrarSolicitud(View view) throws InvalidKeySpecException, NoSuchAlgorithmException, ParseException {
+        dbHelper helper = new dbHelper(this,"Usuario.sqlite", null, 1);
+        SQLiteDatabase db = helper.getReadableDatabase();
+        Cursor fila2 = db.rawQuery("select codigo from Usuario", null);
+        fila2.moveToFirst();
+
+        int codigoUsuario = fila2.getInt(0);
+        Usuario userTemp = new Usuario();
+        userTemp.setCodigo(codigoUsuario);
+
+        String valor_sustento = editTextSustento.getText().toString();
+        String valor_datosActualizar = editTextDatos.getText().toString();
+
+        Solicitud solicitud = new Solicitud();
+        solicitud.setActiva(true);
+        solicitud.setSustento(valor_sustento);
+        solicitud.setDatosActualizar(valor_datosActualizar);
+        solicitud.setUsuario(userTemp);
+
+
+        JsonPlaceHolderApi jsonPlaceHolderApi = retrofit.create(JsonPlaceHolderApi.class);
+        Call<Solicitud> call = jsonPlaceHolderApi.createSolicitud(solicitud);
+        System.out.println(solicitud.toString());
+        call.enqueue(new Callback<Solicitud>() {
+            @Override
+            public void onResponse(Call<Solicitud> call, Response<Solicitud> response) {
+                if (response.isSuccessful()) {
+                    Toast.makeText(getApplicationContext(), "Registro Exitoso", Toast.LENGTH_LONG).show();
+                    Intent profileActi = new Intent(getApplicationContext(), ProfileActivity.class);
+                    startActivity(profileActi);
+                    Log.e("TAG", "post submitted to API.:" + response.toString());
+                } else {
+                    Log.e("TAG", "onResponse:" + response.toString());
+                    Intent profileActi = new Intent(getApplicationContext(), ProfileActivity.class);
+                    startActivity(profileActi);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Solicitud> call, Throwable t) {
+                Log.e("TAG", "onFailure:" + t.getMessage());
+            }
+        });
+
+}
 
     @Override
     public void onBackPressed() {
@@ -140,6 +167,7 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
             super.onBackPressed();
         }
     }
+
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -151,5 +179,4 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
         mDrawerLayout.closeDrawer(GravityCompat.START);
         return true;
     }
-    }
-
+}

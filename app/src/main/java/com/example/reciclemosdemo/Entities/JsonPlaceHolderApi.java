@@ -75,4 +75,7 @@ public interface JsonPlaceHolderApi {
 
     @POST("probolsa")
     Call<Probolsa> addProBolsa(@Body Probolsa probolsa);
+
+    @POST("solicitud")
+    Call<Solicitud> createSolicitud(@Body Solicitud solicitud);
 }

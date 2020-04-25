@@ -12,6 +12,7 @@ import com.example.reciclemosdemo.Entities.CategoriaDivided;
 import com.example.reciclemosdemo.Entities.JsonPlaceHolderApi;
 import com.example.reciclemosdemo.Entities.Probolsa;
 import com.example.reciclemosdemo.Entities.Producto;
+import com.example.reciclemosdemo.R;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -122,6 +123,22 @@ public class RetrofitMain {
                         }
                         String creadoFecha = formatter.format(probolsas.get(0).getBolsa().getCreadoFecha());
                         textViewsList.get(0).setText("Creada : "+creadoFecha);
+
+
+                        textViewsList.get(4).setText("Juan Lopez");
+
+                        String observaciones = probolsas.get(0).getBolsa().getObservaciones();
+                        if(observaciones != null ) {
+                            textViewsList.get(5).setText("SI");
+                            textViewsList.get(6).setText(observaciones);
+                        }
+                        else {
+                            textViewsList.get(5).setText("NO");
+                            textViewsList.get(6).setText("No hay observaciones");
+                        }
+
+
+
                     }
                     for(int i=0;i<probolsas.size();i++)
                     {

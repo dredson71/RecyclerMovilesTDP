@@ -26,7 +26,7 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/relativeTitleProduct"
                 android:layout_width="match_parent"
-                android:layout_height="150dp">
+                android:layout_height="wrap_content">
 
                 <TextView
                     android:id="@+id/txtBolsa"
@@ -45,29 +45,82 @@
 
                 <TextView
                     android:id="@+id/txtCreadoFecha"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="100dp"
+                    android:layout_marginStart="16dp"
                     android:layout_marginTop="16dp"
+                    android:layout_marginEnd="16dp"
                     android:text=""
                     android:textColor="#414142"
                     android:textSize="20dp"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/txtBolsa" />
 
                 <TextView
                     android:id="@+id/txtRecoojoFecha"
 
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="100dp"
                     android:layout_marginTop="16dp"
                     android:layout_marginBottom="16dp"
                     android:text=""
                     android:textColor="#414142"
                     android:textSize="20dp"
-                    app:layout_constraintStart_toStartOf="parent"
+                    android:layout_marginEnd="16dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="@+id/txtCreadoFecha"
                     app:layout_constraintTop_toBottomOf="@+id/txtCreadoFecha" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/txtTitleReciclador"
+                    app:layout_constraintEnd_toStartOf="@+id/txtReciclador"
+                    android:layout_marginTop="16dp"
+                    android:textSize="20dp"
+                    android:text="Reciclador: "
+                    app:layout_constraintStart_toStartOf="@+id/txtCreadoFecha"
+                    app:layout_constraintTop_toBottomOf="@+id/txtRecoojoFecha"/>
+
+                <TextView
+                    android:id="@+id/txtReciclador"
+
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="16dp"
+                    app:layout_goneMarginLeft="20dp"
+                    android:text=""
+                    android:textColor="#414142"
+                    android:textSize="20dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/txtTitleReciclador"
+                    app:layout_constraintTop_toBottomOf="@+id/txtRecoojoFecha" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/txtTitleObservaciones"
+                    android:layout_marginTop="16dp"
+                    android:textSize="20dp"
+                    android:text="Observaciones: "
+                    app:layout_constraintStart_toStartOf="@+id/txtCreadoFecha"
+                    app:layout_constraintTop_toBottomOf="@+id/txtReciclador"/>
+
+
+                <TextView
+                    android:id="@+id/txtObservaciones"
+
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="16dp"
+                    android:text=""
+                    android:textColor="#414142"
+                    android:textSize="20dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/txtTitleObservaciones"
+                    app:layout_constraintTop_toBottomOf="@+id/txtReciclador" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

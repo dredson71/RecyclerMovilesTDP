@@ -9,6 +9,7 @@ public class Bolsa {
     private int puntuacion;
     private boolean activa;
     private QrCode qrCode;
+    private String observaciones;
 
     public int getCodigo() {
         return codigo;
@@ -56,5 +57,15 @@ public class Bolsa {
 
     public void setQrCode(QrCode qrCode) {
         this.qrCode = qrCode;
+    }
+
+
+
+    public String getObservaciones() {
+        return observaciones;
+    }
+
+    public void setObservaciones(String observaciones) {
+        this.observaciones = observaciones;
     }
 }

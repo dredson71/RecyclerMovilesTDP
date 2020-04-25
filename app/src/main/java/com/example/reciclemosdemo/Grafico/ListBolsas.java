@@ -82,8 +82,6 @@ public class ListBolsas extends AppCompatActivity  implements NavigationView.OnN
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()){
                     case R.id.miaporte:
-                        startActivity(new Intent(getApplicationContext(), ListBolsas.class));
-                        overridePendingTransition(0,0);
                         return true;
                     case R.id.escaner:
                         startActivity(new Intent(getApplicationContext(), LectorActivity.class));
