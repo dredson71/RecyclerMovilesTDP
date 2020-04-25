@@ -51,7 +51,7 @@ public class ListaBolsaAdapter extends RecyclerView.Adapter<ListaBolsaAdapter.Vi
     @Override
     public void onBindViewHolder(ViewHolder holder,int position){
         Bolsa c = dataset.get(position);
-        DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+        DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
         Date recojo = c.getRecojoFecha();
         if(recojo != null){
             String recojoFecha = formatter.format(recojo);

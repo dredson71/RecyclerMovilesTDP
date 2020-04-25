@@ -111,7 +111,7 @@ public class RetrofitMain {
 
                     List<Probolsa> probolsas = response.body();
                     if(probolsas.size()>0) {
-                        DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+                        DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
                         Date recojo = probolsas.get(0).getBolsa().getRecojoFecha();
                         String recojoFecha;
                         if(recojo != null) {
@@ -125,7 +125,7 @@ public class RetrofitMain {
                         textViewsList.get(0).setText("Creada : "+creadoFecha);
 
 
-                        textViewsList.get(4).setText("Juan Lopez");
+                        textViewsList.get(4).setText("Juan Torres");
 
                         String observaciones = probolsas.get(0).getBolsa().getObservaciones();
                         if(observaciones != null ) {
