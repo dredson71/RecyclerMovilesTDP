@@ -59,10 +59,10 @@ public class ListaBolsaAdapter extends RecyclerView.Adapter<ListaBolsaAdapter.Vi
         }else{
             holder.txt_RecojoFecha.setText("Recojo : Pendiente");
         }
-        if(c.getObservaciones() != null || c.getObservaciones() == " "){
-            holder.txt_Observacion.setText("Observaciones : SI");
-        }else{
+        if(c.getObservaciones().equals("null") || c.getObservaciones().equals(null)){
             holder.txt_Observacion.setText("Observaciones : NO");
+        }else{
+            holder.txt_Observacion.setText("Observaciones : SI");
         }
         String creadoFecha = formatter.format(c.getCreadoFecha());
         holder.imageBolsaIcon.setAnimation(AnimationUtils.loadAnimation(context,R.anim.fade_transition_animation));

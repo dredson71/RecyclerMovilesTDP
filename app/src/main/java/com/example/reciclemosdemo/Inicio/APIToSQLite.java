@@ -19,11 +19,14 @@ import com.example.reciclemosdemo.Entities.Producto;
 import com.example.reciclemosdemo.Entities.Usuario;
 
 import java.io.IOException;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import lecho.lib.hellocharts.model.Axis;
 import lecho.lib.hellocharts.model.AxisValue;
@@ -48,6 +51,7 @@ public class APIToSQLite {
     private double vidrioCount,pesoVidrio,puntosVidrio;
     private double papelCartonCount,pesoPapelCarton,puntosPapelCarton;
     private double metalCount,pesoMetal,puntosMetal;
+    private  double pesoCount,bolsasCount,puntosCount;
     private int residuosTotal;
     private int [] yAxisDataMonth= {0,0,0,0,0,0,0};
     private int [] yAxisDataYear= {0,0,0,0,0,0,0,0,0,0,0,0};
@@ -158,6 +162,50 @@ public class APIToSQLite {
         });*/
     }
 
+    public void obtenerDatosProductByBolsa() throws IOException, InterruptedException{
+        initialCounter();
+        dbHelper helper = new dbHelper(context,"Usuario.sqlite", null, 1);
+        SQLiteDatabase db = helper.getReadableDatabase();
+        Cursor f1 = db.rawQuery("select codigo from LastBolsas ",null);
+        int codigoBolsa=0;
+        if(f1.moveToFirst()){
+            do {
+                codigoBolsa = f1.getInt(0);
+                JsonPlaceHolderApi jsonPlaceHolderApi = retrofit.create(JsonPlaceHolderApi.class);
+                Call<List<Probolsa>> call = jsonPlaceHolderApi.getProductoByIdBolsa("probolsa/bolsa/" + codigoBolsa);
+                Response<List<Probolsa>> response = call.execute();
+                for (Probolsa probolsas : response.body()) {
+                    if (probolsas.getProducto().getCategoria().getNombre().equals("Plastico")) {
+                        plasticoCount += probolsas.getCantidad();
+                        puntosPlastico += probolsas.getPuntuacion();
+                        pesoPlastico += probolsas.getPeso();
+                    } else if (probolsas.getProducto().getCategoria().getNombre().equals("Vidrio")) {
+                        vidrioCount += probolsas.getCantidad();
+                        puntosVidrio += probolsas.getPuntuacion();
+                        pesoVidrio += probolsas.getPeso();
+                    } else if (probolsas.getProducto().getCategoria().getNombre().equals("Metal")) {
+                        metalCount += probolsas.getCantidad();
+                        puntosMetal += probolsas.getPuntuacion();
+                        pesoMetal += probolsas.getPeso();
+                    } else {
+                        papelCartonCount += probolsas.getCantidad();
+                        puntosPapelCarton += probolsas.getPuntuacion();
+                        pesoPapelCarton += probolsas.getPeso();
+                    }
+                    String query = "insert into LastProbolsas (codigo,bolsa) " +
+                            "values (" + probolsas.getCodigo() + ","+probolsas.getBolsa().getCodigo()+")";
+                    db.execSQL(query);
+                    System.out.println(query);
+                }
+                generateQuery("LastBolsas", "Plastico", plasticoCount, pesoPlastico, puntosPlastico, codigoBolsa);
+                generateQuery("LastBolsas", "Vidrio", vidrioCount, pesoVidrio, puntosVidrio, codigoBolsa);
+                generateQuery("LastBolsas", "Papel", papelCartonCount, pesoPapelCarton, puntosPapelCarton,codigoBolsa);
+                generateQuery("LastBolsas", "Metal", metalCount, pesoMetal, puntosMetal, codigoBolsa);
+
+            }while(f1.moveToNext()); }
+        db.close();
+    }
+
     public void InsertBolsas() throws IOException, InterruptedException {
         dbHelper helper = new dbHelper(context, "Usuario.sqlite", null, 1);
         SQLiteDatabase db = helper.getWritableDatabase();
@@ -181,9 +229,9 @@ public class APIToSQLite {
                 db.execSQL(query);
                 System.out.println(query);
             } else{
-                String query = "insert into Bolsa (codigo, activa, creadoFecha, puntuacion, qrcode, recojoFecha) " +
+                String query = "insert into Bolsa (codigo, activa, creadoFecha, puntuacion, qrcode, recojoFecha,observaciones) " +
                         "values (" + p.getCodigo() + ", '" + p.getActiva() + "', '" + p.getCreadoFecha() + "', " + p.getPuntuacion() + ", " + p.getQrCode().getCodigo()
-                        + ", '" + p.getRecojoFecha() + "')";
+                        + ", '" + p.getRecojoFecha() + "','"+p.getObservaciones()+"')";
                 db.execSQL(query);
                 System.out.println(query);
             }
@@ -302,20 +350,20 @@ public class APIToSQLite {
         }
         if(valor>0) {
             if (urlDate.equals("bolsasWeek/")) {
-                generateQuery("Semana", "Plastico", plasticoCount, pesoPlastico, puntosPlastico);
-                generateQuery("Semana", "Vidrio", vidrioCount, pesoVidrio, puntosVidrio);
-                generateQuery("Semana", "Papel", papelCartonCount, pesoPapelCarton, puntosPapelCarton);
-                generateQuery("Semana", "Metal", metalCount, pesoMetal, puntosMetal);
+                generateQuery("Semana", "Plastico", plasticoCount, pesoPlastico, puntosPlastico,0);
+                generateQuery("Semana", "Vidrio", vidrioCount, pesoVidrio, puntosVidrio,0);
+                generateQuery("Semana", "Papel", papelCartonCount, pesoPapelCarton, puntosPapelCarton,0);
+                generateQuery("Semana", "Metal", metalCount, pesoMetal, puntosMetal,0);
                 String query = "insert into DatosDiarios(tipo,lunes,martes,miercoles,jueves,viernes,sabado,domingo) " +
                         "values ('Semana', " + yAxisDataMonth[0] + ", " + yAxisDataMonth[1] + ", "
                         + yAxisDataMonth[2] + ", " + yAxisDataMonth[3] + ", " + yAxisDataMonth[4] + "," + yAxisDataMonth[5] + "," + yAxisDataMonth[6] + ")";
                 db.execSQL(query);
                 System.out.println(query);
             } else {
-                generateQuery("Mes", "Plastico", plasticoCount, pesoPlastico, puntosPlastico);
-                generateQuery("Mes", "Vidrio", vidrioCount, pesoVidrio, puntosVidrio);
-                generateQuery("Mes", "Papel", papelCartonCount, pesoPapelCarton, puntosPapelCarton);
-                generateQuery("Mes", "Metal", metalCount, pesoMetal, puntosMetal);
+                generateQuery("Mes", "Plastico", plasticoCount, pesoPlastico, puntosPlastico,0);
+                generateQuery("Mes", "Vidrio", vidrioCount, pesoVidrio, puntosVidrio,0);
+                generateQuery("Mes", "Papel", papelCartonCount, pesoPapelCarton, puntosPapelCarton,0);
+                generateQuery("Mes", "Metal", metalCount, pesoMetal, puntosMetal,0);
                 String query = "insert into DatosDiarios(tipo,lunes,martes,miercoles,jueves,viernes,sabado,domingo) " +
                         "values ('Mes', " + yAxisDataMonth[0] + ", " + yAxisDataMonth[1] + ", "
                         + yAxisDataMonth[2] + ", " + yAxisDataMonth[3] + ", " + yAxisDataMonth[4] + "," + yAxisDataMonth[5] + "," + yAxisDataMonth[6] + ")";
@@ -325,6 +373,58 @@ public class APIToSQLite {
         }
 
 
+
+        db.close();
+        Log.e("TAG","onResponse:" + response.toString());
+    }
+
+    public void obtenerBolsasByDay()throws IOException, InterruptedException{
+        pesoCount=0;
+        bolsasCount=0;
+        puntosCount=0;
+        dbHelper helper = new dbHelper(context, "Usuario.sqlite", null, 1);
+        SQLiteDatabase db = helper.getWritableDatabase();
+        Cursor fila = db.rawQuery("select codigo from Usuario", null);
+        fila.moveToFirst();
+        String codigo = fila.getString(fila.getColumnIndex("codigo"));
+        Set<Integer> bolsas = new HashSet<>();
+        JsonPlaceHolderApi jsonPlaceHolderApi=retrofit.create(JsonPlaceHolderApi.class);
+        Call<List<Probolsa>> call=jsonPlaceHolderApi.getBolsasByDate("probolsa/bolsasDay/"+codigo);
+        Response<List<Probolsa>> response = call.execute();
+        for(Probolsa probolsas : response.body()){
+                        bolsas.add(probolsas.getBolsa().getCodigo());
+                        pesoCount+=probolsas.getPeso();
+                        puntosCount+=probolsas.getPuntuacion();
+        }
+        String query = "insert into Contador (tendenciaTipo,cantidad ,peso ,puntuacion ) " +
+                "values ('Dia', " +  bolsas.size()+ ", " + pesoCount + ", "
+                + puntosCount + ")";
+        db.execSQL(query);
+        System.out.println(query);
+
+
+        db.close();
+        Log.e("TAG","onResponse:" + response.toString());
+
+
+    }
+
+    public void obtenerUltimasBolsas()throws IOException, InterruptedException{
+        dbHelper helper = new dbHelper(context, "Usuario.sqlite", null, 1);
+        SQLiteDatabase db = helper.getWritableDatabase();
+        Cursor fila = db.rawQuery("select codigo from Usuario", null);
+        fila.moveToFirst();
+        int valor =0;
+        String codigo = fila.getString(fila.getColumnIndex("codigo"));
+        JsonPlaceHolderApi jsonPlaceHolderApi=retrofit.create(JsonPlaceHolderApi.class);
+        Call<List<Bolsa>> call=jsonPlaceHolderApi.getBolsasByUsuario("bolsa/last/"+codigo);
+        Response<List<Bolsa>> response = call.execute();
+        for(Bolsa lastBolsas : response.body()){
+            String query = "insert into LastBolsas (codigo) " +
+                    "values (" + lastBolsas.getCodigo() + ")";
+            db.execSQL(query);
+            System.out.println(query);
+        }
 
         db.close();
         Log.e("TAG","onResponse:" + response.toString());
@@ -380,10 +480,10 @@ public class APIToSQLite {
 
            }
         if(valor>0) {
-                generateQuery("Year", "Plastico", plasticoCount, pesoPlastico, puntosPlastico);
-                generateQuery("Year", "Vidrio", vidrioCount, pesoVidrio, puntosVidrio);
-                generateQuery("Year", "Papel", papelCartonCount, pesoPapelCarton, puntosPapelCarton);
-                generateQuery("Year", "Metal", metalCount, pesoMetal, puntosMetal);
+                generateQuery("Year", "Plastico", plasticoCount, pesoPlastico, puntosPlastico,0);
+                generateQuery("Year", "Vidrio", vidrioCount, pesoVidrio, puntosVidrio,0);
+                generateQuery("Year", "Papel", papelCartonCount, pesoPapelCarton, puntosPapelCarton,0);
+                generateQuery("Year", "Metal", metalCount, pesoMetal, puntosMetal,0);
                 String query = "insert into DatosAnuales(enero,febrero,marzo,abril,mayo,junio,julio,agosto,setiembre,octubre,noviembre,diciembre) " +
                         "values ( " + yAxisDataYear[0] + ", " + yAxisDataYear[1] + ", "
                         + yAxisDataYear[2] + ", " + yAxisDataYear[3] + ", " + yAxisDataYear[4] + "," + yAxisDataYear[5]  + ", "
@@ -396,6 +496,8 @@ public class APIToSQLite {
         db.close();
         Log.e("TAG","onResponse:" + response.toString());
     }
+
+
 
     public void initialCounter()
     {
@@ -432,10 +534,10 @@ public class APIToSQLite {
             metalCount++;
         }
     }
-    public void generateQuery(String tipo,String producto,double cantidad,double peso,double puntuacion ){
-        String query = "insert into Contador (tendenciaTipo,productoTipo,cantidad,peso,puntuacion) " +
+    public void generateQuery(String tipo,String producto,double cantidad,double peso,double puntuacion,int bolsaID){
+        String query = "insert into Contador (tendenciaTipo,productoTipo,cantidad,peso,puntuacion,bolsa) " +
                 "values ('" + tipo + "', '" + producto + "', " + cantidad + ", "
-                + peso + ", " + puntuacion + ")";
+                + peso + ", " + puntuacion + ","+bolsaID+")";
         db.execSQL(query);
         System.out.println(query);
     }

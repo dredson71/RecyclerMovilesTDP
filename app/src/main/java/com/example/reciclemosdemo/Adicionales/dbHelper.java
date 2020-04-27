@@ -23,13 +23,14 @@ public class dbHelper extends SQLiteOpenHelper {
         db.execSQL("drop table Contador");
         db.execSQL("drop table DatosDiarios");
         db.execSQL("drop table DatosAnuales");
-
+        db.execSQL("drop table LastBolsas");
+        db.execSQL("drop table LastProbolsas");
         onCreate(db);
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("create table Bolsa(id_lite integer primary key autoincrement, codigo integer, activa string, creadoFecha string, puntuacion integer, qrcode string, recojoFecha string)");
+        db.execSQL("create table Bolsa(id_lite integer primary key autoincrement, codigo integer, activa string, creadoFecha string, puntuacion integer, qrcode string, recojoFecha string,observaciones string)");
         db.execSQL("create table Categoria(codigo integer primary key, nombre string)");
         db.execSQL("insert into Categoria(codigo, nombre) values (1, 'Plástico'),(2, 'Vidrio'),(3, 'Papel/Carton'),(4, 'Metal')");
         db.execSQL("create table Probolsa(id_lite integer primary key autoincrement, bolsa integer, cantidad integer, codigo integer, peso double, producto integer, puntuacion integer)");
@@ -37,10 +38,11 @@ public class dbHelper extends SQLiteOpenHelper {
         db.execSQL("create table Sexo(codigo integer primary key autoincrement, nombre string)");
         db.execSQL("insert into Sexo(nombre) values ('Hombre'),('Mujer'),('Otros')");
         db.execSQL("create table Usuario(codigo integer primary key, nombre string, apellido string, condominio string, direccion string, dni string, email string, fecha_Nacimiento string, sexo string, telefono string,distrito_name string,condominio_direccion string,departamento_name string)");
-        db.execSQL("create table Contador(codigo integer primary key autoincrement,tendenciaTipo string ,productoTipo string,cantidad integer,peso double,puntuacion double)");
+        db.execSQL("create table Contador(codigo integer primary key autoincrement,tendenciaTipo string ,productoTipo string,cantidad integer,peso double,puntuacion double,bolsa integer)");
         db.execSQL("create table DatosDiarios(codigo integer primary key autoincrement,tipo string,lunes integer,martes integer,miercoles integer,jueves integer,viernes integer,sabado integer,domingo integer)  ");
         db.execSQL("create table DatosAnuales(codigo integer primary key autoincrement,enero integer,febrero integer,marzo integer,abril integer,mayo integer,junio integer,julio integer,agosto integer,setiembre integer,octubre integer,noviembre integer,diciembre integer)  ");
-
+        db.execSQL("create table LastBolsas(codigo integer primary key,string tipo)");
+        db.execSQL("create  table LastProbolsas(codigo integer primary key,string tipo,bolsa integer)");
     }
 
     @Override

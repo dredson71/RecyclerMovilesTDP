@@ -249,6 +249,9 @@ public class LoginActivity extends AppCompatActivity {
                 sqlitedb.insertBolsasByMonthOrWeek("bolsasWeek/");
                 sqlitedb.insertBolsasByMonthOrWeek("bolsasMonth/");
                 sqlitedb.obtenerBolsasByYear("bolsasYear/");
+                sqlitedb.obtenerBolsasByDay();
+                sqlitedb.obtenerUltimasBolsas();
+                sqlitedb.obtenerDatosProductByBolsa();
             } catch (IOException e) {
                 e.printStackTrace();
             } catch (InterruptedException e) {

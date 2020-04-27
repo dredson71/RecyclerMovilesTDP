@@ -1,5 +1,7 @@
 package com.example.reciclemosdemo.Grafico;
 
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,12 +15,16 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.reciclemosdemo.Adicionales.dbHelper;
 import com.example.reciclemosdemo.Entities.Bolsa;
 import com.example.reciclemosdemo.Entities.JsonPlaceHolderApi;
 import com.example.reciclemosdemo.Entities.Probolsa;
 import com.example.reciclemosdemo.R;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -39,6 +45,7 @@ public class BolsasUserFragment extends Fragment  implements ListaBolsaAdapter.O
     private ArrayList<TextView> textList = new ArrayList<>();
     private int bolsasCount,puntosCount,pesoCount;
     private TextView txtBolsasCount,txtPesoCount,txtPuntuacionCount;
+
 
 
     @Nullable
@@ -63,69 +70,64 @@ public class BolsasUserFragment extends Fragment  implements ListaBolsaAdapter.O
                 .build();
         String usuarioID = ((InitialValues)this.getActivity().getApplication()).getIdUsuario();
 
-        obtenerDatos(usuarioID);
+        try {
+            obtenerDatos(usuarioID);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         obtenerBolsasByDay("bolsasDay/",usuarioID,textList);
         return view;
 
     }
 
-    private void obtenerDatos(String usuarioID){
-        JsonPlaceHolderApi jsonPlaceHolderApi=retrofit.create(JsonPlaceHolderApi.class);
-        Call<List<Bolsa>> call=jsonPlaceHolderApi.getBolsasByUsuario("bolsa/last/"+usuarioID);
-        call.enqueue(new Callback<List<Bolsa>>() {
-            @Override
-            public void onResponse(Call<List<Bolsa>> call, Response<List<Bolsa>> response) {
-                if(response.isSuccessful()) {
+    private void obtenerDatos(String usuarioID) throws ParseException {
 
-                    List<Bolsa> probolsas = response.body();
-                    ArrayList<Bolsa> listaprodbolsas = (ArrayList) probolsas;
-                    dataset=(ArrayList) probolsas;
-                    listBolsasAdapter.adicionarListaCancion(listaprodbolsas);
+        dbHelper helper = new dbHelper(getActivity(),"Usuario.sqlite", null, 1);
+        SQLiteDatabase db = helper.getReadableDatabase();
+        ArrayList<Bolsa> listaprodbolsas = new ArrayList<>();
+        Cursor f1 = db.rawQuery("select codigo from LastBolsas ",null);
+        int codigoBolsa=0;
+        if(f1.moveToFirst()){
+            do{
+                Bolsa bolsa = new Bolsa();
+                codigoBolsa = f1.getInt(0);
+                System.out.println(codigoBolsa);
+                String query = "select codigo , creadoFecha , puntuacion  , recojoFecha ,observaciones  from Bolsa where codigo = "+codigoBolsa;
+                System.out.println(query);
+                Cursor f = db.rawQuery(query,null);
+                f.moveToFirst();
+                bolsa.setCodigo(f.getInt(0));
+                System.out.println(bolsa.getCodigo());
+                bolsa.setActiva(false);
+                String sDate1 = f.getString(1);
+                Date date1 = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy").parse(sDate1);
+                bolsa.setCreadoFecha(date1);
+                bolsa.setObservaciones(f.getString(4));
+                bolsa.setPuntuacion(f.getInt(2));
+                if(f.getString(3).equals("null") || f.getString(3).equals(null)) {
+                    bolsa.setRecojoFecha(null);
                 }else{
-                    Log.e(TAG,"onResponse:" + response.errorBody());
-                }
-            }
+                    String sDate2 = f.getString(3);
+                    Date date2 = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy").parse(sDate2);
+                    bolsa.setRecojoFecha(date2);
 
-            @Override
-            public void onFailure(Call<List<Bolsa>> call, Throwable t) {
-                Log.e(TAG,"onFailure:" + t.getMessage());
-            }
-        });
+                }
+                listaprodbolsas.add(0,bolsa);
+
+            }while(f1.moveToNext());        }
+        listBolsasAdapter.adicionarListaCancion(listaprodbolsas);
     }
 
     public void obtenerBolsasByDay(String urlDate,String usuarioID,ArrayList<TextView> textViewsList){
-        pesoCount=0;
-        bolsasCount=0;
-        puntosCount=0;
-        Set<Integer> bolsas = new HashSet<>();
-        JsonPlaceHolderApi jsonPlaceHolderApi=retrofit.create(JsonPlaceHolderApi.class);
-        Call<List<Probolsa>> call=jsonPlaceHolderApi.getBolsasByDate("probolsa/"+urlDate+usuarioID);
-        call.enqueue(new Callback<List<Probolsa>>() {
-            @Override
-            public void onResponse(Call<List<Probolsa>> call, Response<List<Probolsa>> response) {
-                if(response.isSuccessful()) {
+        dbHelper helper = new dbHelper(getActivity(),"Usuario.sqlite", null, 1);
+        SQLiteDatabase db = helper.getReadableDatabase();
 
-                    List<Probolsa> probolsas = response.body();
-                    for(int i=0;i<probolsas.size();i++)
-                    {
-                        bolsas.add(probolsas.get(i).getBolsa().getCodigo());
-                        pesoCount+=probolsas.get(i).getPeso();
-                        puntosCount+=probolsas.get(i).getPuntuacion();
-                    }
-                    textViewsList.get(0).setText(Integer.toString(bolsas.size()));
-                    textViewsList.get(2).setText(Integer.toString(puntosCount));
-                    textViewsList.get(1).setText(Integer.toString(pesoCount/1000));
-
-                }else{
-                    Log.e(TAG,"onResponse:" + response.errorBody());
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<Probolsa>> call, Throwable t) {
-                Log.e(TAG,"onFailure:" + t.getMessage());
-            }
-        });
+        Cursor f = db.rawQuery("select cantidad ,peso ,puntuacion from Contador where tendenciaTipo = 'Dia' ", null);
+        if(f.moveToFirst()) {
+            textViewsList.get(0).setText(Integer.toString(f.getInt(0)));
+            textViewsList.get(2).setText(Integer.toString(f.getInt(2)));
+            textViewsList.get(1).setText(Integer.toString(f.getInt(1)/1000));
+        }
     }
 
     @Override
