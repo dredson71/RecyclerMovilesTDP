@@ -20,6 +20,7 @@
             android:layout_marginEnd="241dp"
             android:fontFamily="sans-serif-black"
             android:text="Resumen"
+            android:textSize="20dp"
             android:textColor="@color/colorNotSelectedBar"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -29,10 +30,12 @@
             android:id="@+id/txtBolsas"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="20dp"
             android:layout_marginEnd="20dp"
             android:fontFamily="sans-serif-black"
             android:text="Cantidad de bolsas : "
+            android:textSize="20dp"
+
             app:layout_constraintEnd_toStartOf="@+id/txtInputBolsas"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@id/txtResiduos"
@@ -42,7 +45,9 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="20dp"
+            android:textSize="20dp"
+
             android:id="@+id/txtInputBolsas"
             android:text="0"
             app:layout_constraintStart_toStartOf="@id/txtInputResiduos"
@@ -55,6 +60,8 @@
             android:layout_marginLeft="20dp"
             app:layout_constraintStart_toStartOf="parent"
             android:id="@+id/txtResiduos"
+            android:textSize="20dp"
+
             android:layout_marginTop="10dp"
             android:fontFamily="sans-serif-black"
             android:text="Cantidad de residuos:  "
@@ -70,6 +77,8 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
             android:layout_marginEnd="8dp"
+            android:textSize="20dp"
+
             android:layout_marginTop="10dp"
             android:text="0"
             app:layout_constraintEnd_toEndOf="parent"
@@ -82,6 +91,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:layout_marginEnd="20dp"
+            android:textSize="20dp"
+
             android:fontFamily="sans-serif-black"
             android:text="Cantidad de plastico: "
             app:layout_constraintEnd_toStartOf="@+id/txtInputPlastico"
@@ -94,6 +105,8 @@
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginTop="10dp"
+            android:textSize="20dp"
+
             android:text="0"
             android:id="@+id/txtInputPlastico"
             app:layout_constraintStart_toStartOf="@id/txtInputResiduos"
@@ -105,6 +118,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
+            android:textSize="20dp"
+
             android:layout_marginEnd="20dp"
             android:fontFamily="sans-serif-black"
             android:text="Cantidad de vidrio: "
@@ -119,6 +134,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginTop="10dp"
             android:text="0"
+            android:textSize="20dp"
+
             android:id="@+id/txtInputVidrio"
             app:layout_constraintStart_toStartOf="@id/txtInputResiduos"
             app:layout_constraintTop_toBottomOf="@+id/txtInputPlastico"
@@ -130,6 +147,8 @@
             app:layout_constraintStart_toStartOf="@id/txtResiduos"
             android:id="@+id/txtPapelCarton"
             android:layout_marginTop="10dp"
+            android:textSize="20dp"
+
             android:fontFamily="sans-serif-black"
             android:text="Cantidad de Papel/Carton:  "
             app:layout_constraintEnd_toStartOf="@+id/txtInputPapelCarton"
@@ -145,6 +164,8 @@
             android:layout_marginLeft="15dp"
             android:layout_marginEnd="8dp"
             android:layout_marginTop="10dp"
+            android:textSize="20dp"
+
             android:text="0"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/txtPapelCarton"
@@ -154,6 +175,8 @@
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="@id/txtResiduos"
             android:id="@+id/txtMetal"
+            android:textSize="20dp"
+
             android:layout_marginTop="10dp"
             android:fontFamily="sans-serif-black"
             android:text="Cantidad de Metal:  "
@@ -166,6 +189,8 @@
         <TextView
             android:id="@+id/txtInputMetal"
             android:layout_width="0dp"
+            android:textSize="20dp"
+
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
             android:layout_marginEnd="8dp"

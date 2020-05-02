@@ -74,7 +74,7 @@ public class WeekFragment extends Fragment {
         getDataWeek();
         graphicData();
         txtResiduosCount.setText(Integer.toString(totalResiduo));
-        txtPesoResiduos.setText(Integer.toString(totalPeso));
+        txtPesoResiduos.setText(Integer.toString(totalPeso/1000));
         txtPuntajeResiduos.setText(Integer.toString(totalPuntos));
     }
 
@@ -86,8 +86,8 @@ public class WeekFragment extends Fragment {
 
         if(f.moveToFirst()) {
             txtPlasticoCount.setText(Integer.toString(f.getInt(0)));
-            txtPlasticoPeso.setText(Double.toString(f.getDouble(1))+ " g");
-            txtPlasticoPuntos.setText(Double.toString(f.getDouble(2))+ " ptos");
+            txtPlasticoPeso.setText(Integer.toString((int)f.getDouble(1))+ " g");
+            txtPlasticoPuntos.setText(Integer.toString((int)f.getDouble(2))+ " ptos");
             totalResiduo+=f.getInt(0);
             totalPuntos+=f.getDouble(2);
             totalPeso+=f.getDouble(1);
@@ -98,8 +98,8 @@ public class WeekFragment extends Fragment {
 
         if(f2.moveToFirst()) {
             txtVidrioCount.setText(Integer.toString(f2.getInt(0)));
-            txtVidrioPeso.setText(Double.toString(f2.getDouble(1))+ " g");
-            txtVidrioPuntos.setText(Double.toString(f2.getDouble(2))+ " ptos");
+            txtVidrioPeso.setText(Integer.toString((int)f2.getDouble(1))+ " g");
+            txtVidrioPuntos.setText(Integer.toString((int)f2.getDouble(2))+ " ptos");
             totalResiduo+=f2.getInt(0);
             totalPuntos+=f2.getDouble(2);
             totalPeso+=f2.getDouble(1);
@@ -108,8 +108,8 @@ public class WeekFragment extends Fragment {
         Cursor f3 = db.rawQuery("select cantidad ,peso ,puntuacion from Contador where tendenciaTipo = 'Semana' and productoTipo = 'Papel' ", null);
         if(f3.moveToFirst()) {
             txtPapelCartonCount.setText(Integer.toString(f3.getInt(0)));
-            txtPapelCartonPeso.setText(Double.toString(f3.getDouble(1)) + " g");
-            txtPapelCartonPuntos.setText(Double.toString(f3.getDouble(2))+ " ptos");
+            txtPapelCartonPeso.setText(Integer.toString((int)f3.getDouble(1)) + " g");
+            txtPapelCartonPuntos.setText(Integer.toString((int)f3.getDouble(2))+ " ptos");
             totalResiduo+=f3.getInt(0);
             totalPuntos+=f3.getDouble(2);
             totalPeso+=f3.getDouble(1);
@@ -119,8 +119,8 @@ public class WeekFragment extends Fragment {
 
         if(f4.moveToFirst()) {
             txtMetalesCount.setText(Integer.toString(f4.getInt(0)));
-            txtMetalesPeso.setText(Double.toString(f4.getDouble(1))+ " g");
-            txtMetalesPuntos.setText(Double.toString(f4.getDouble(2))+ " ptos");
+            txtMetalesPeso.setText(Integer.toString((int)f4.getDouble(1))+ " g");
+            txtMetalesPuntos.setText(Integer.toString((int)f4.getDouble(2))+ " ptos");
             totalResiduo+=f4.getInt(0);
             totalPuntos+=f4.getDouble(2);
             totalPeso+=f4.getDouble(1);

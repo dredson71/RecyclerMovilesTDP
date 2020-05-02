@@ -228,7 +228,7 @@
                     android:layout_below="@+id/txtPlasticoCantidad"
                     android:layout_centerInParent="true"
                     android:layout_marginTop="10dp"
-                    android:text="0 g" />
+                    android:text="0 kg" />
 
                 <TextView
                     android:id="@+id/txtPlasticoPuntos"
@@ -294,7 +294,7 @@
                     android:layout_below="@+id/txtPapelCartonCantidad"
                     android:layout_centerInParent="true"
                     android:layout_marginTop="10dp"
-                    android:text="0 g" />
+                    android:text="0 kg" />
 
                 <TextView
                     android:id="@+id/txtPapelCartonPuntos"
@@ -358,7 +358,7 @@
                     android:layout_below="@+id/txtVidrioCantidad"
                     android:layout_centerInParent="true"
                     android:layout_marginTop="10dp"
-                    android:text="0 g" />
+                    android:text="0 kg" />
 
                 <TextView
                     android:id="@+id/txtVidrioPuntos"
@@ -423,7 +423,7 @@
                     android:layout_below="@+id/txtMetalesCantidad"
                     android:layout_centerInParent="true"
                     android:layout_marginTop="10dp"
-                    android:text="0 g" />
+                    android:text="0 kg" />
 
                 <TextView
                     android:id="@+id/txtMetalesPuntos"
