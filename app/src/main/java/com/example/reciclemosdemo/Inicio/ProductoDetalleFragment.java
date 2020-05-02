@@ -116,7 +116,7 @@ public class ProductoDetalleFragment extends Fragment {
 
 
         do {
-            Cursor fila2 = db.rawQuery("select nombre, tipo_contenido, contenido, categoria,urlimagen from Producto where codigo = " + fila.getInt(4), null);
+            Cursor fila2 = db.rawQuery("select nombre, tipo_contenido, contenido, categoria, urlimagen from Producto where codigo = " + fila.getInt(4), null);
             fila2.moveToFirst();
 
             Cursor fila3 = db.rawQuery("select codigo, nombre from Categoria where codigo = " + fila2.getInt(3), null);
@@ -138,7 +138,7 @@ public class ProductoDetalleFragment extends Fragment {
             listDetalle.add(ayuda);
         } while (fila.moveToNext());
 
-        adapter = new AdapterDetalle(listDetalle);
+        adapter = new AdapterDetalle(listDetalle,"");
         rclDetalle.setAdapter(adapter);
 
         adapter.setOnItemClickListener(new AdapterDetalle.OnItemClickListener(){

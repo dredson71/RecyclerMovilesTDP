@@ -1,8 +1,13 @@
 package com.example.reciclemosdemo.Grafico;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Dialog;
@@ -12,7 +17,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.util.Log;
+import android.text.SpannableString;
+import android.text.style.UnderlineSpan;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.AnimationUtils;
@@ -21,36 +27,40 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.reciclemosdemo.Adicionales.dbHelper;
-import com.example.reciclemosdemo.Entities.JsonPlaceHolderApi;
+import com.example.reciclemosdemo.Entities.Bolsalist;
 import com.example.reciclemosdemo.Entities.Probolsa;
+import com.example.reciclemosdemo.Inicio.AdapterDetalle;
 import com.example.reciclemosdemo.Inicio.BolsaActivity;
-import com.example.reciclemosdemo.Inicio.LectorActivity;
+import com.example.reciclemosdemo.Inicio.CatalogoActivity;
+import com.example.reciclemosdemo.Inicio.LoginActivity;
+import com.example.reciclemosdemo.Inicio.MeInformoActivity;
+import com.example.reciclemosdemo.Inicio.ScanBarCodeActivity;
 import com.example.reciclemosdemo.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationView;
 
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-
-public class ProductByBolsa extends AppCompatActivity implements com.example.reciclemosdemo.Grafico.ListaProductoByBolsaAdapter.OnNoteListener  {
+public class ProductByBolsa extends AppCompatActivity implements com.example.reciclemosdemo.Grafico.ListaProductoByBolsaAdapter.OnNoteListener , NavigationView.OnNavigationItemSelectedListener {
     private static final String TAG ="PRODUCTOS";
+    RecyclerView rclDetalle;
+    private DrawerLayout mDrawerLayout;
     private ArrayList<Probolsa> dataset = new ArrayList<>();
     private com.example.reciclemosdemo.Grafico.RetrofitMain retrofit;
     private RecyclerView recyclerView;
     private com.example.reciclemosdemo.Grafico.ListaProductoByBolsaAdapter listBolsasAdapter;
     private ArrayList<TextView> textList = new ArrayList<>();
     private TextView txt_RecojoFecha;
+    AdapterDetalle adapter;
     private TextView txt_CreadoFecha;
     private TextView txt_PesoTotal;
     private TextView txt_PuntosTotal;
     private RelativeLayout item_product;
+    ArrayList<Bolsalist> listDetalle = new ArrayList<>();
     private TextView txt_Reciclador;
     private TextView txt_Observaciones;
     private Dialog myObservacionDialog;
@@ -65,6 +75,19 @@ public class ProductByBolsa extends AppCompatActivity implements com.example.rec
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product_by_bolsa);
+
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        mDrawerLayout = findViewById(R.id.drawer);
+        NavigationView navigationView = (NavigationView) findViewById(R.id.navigationView);
+        navigationView.setNavigationItemSelectedListener(this);
+        ActionBarDrawerToggle mToggle = new ActionBarDrawerToggle(this,mDrawerLayout,toolbar,R.string.open,R.string.close);
+        mDrawerLayout.addDrawerListener(mToggle);
+        mToggle.syncState();
+
+
+
+
         recyclerView = (RecyclerView) findViewById(R.id.recyclerProductos);
         listBolsasAdapter = new com.example.reciclemosdemo.Grafico.ListaProductoByBolsaAdapter(this);
         recyclerView.setAdapter(listBolsasAdapter);
@@ -82,6 +105,7 @@ public class ProductByBolsa extends AppCompatActivity implements com.example.rec
         textList.add(txt_PuntosTotal);
         textList.add(txt_Reciclador);
         textList.add(txt_Observaciones);
+
         myObservacionDialog = new Dialog(this);
         myObservacionDialog.setContentView(R.layout.editable_profile);
         myObservacionDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -89,10 +113,28 @@ public class ProductByBolsa extends AppCompatActivity implements com.example.rec
         GridLayoutManager layoutManager = new GridLayoutManager(this, 1);
         recyclerView.setLayoutManager(layoutManager);
         Bundle datos= getIntent().getExtras();
-        item_product.setAnimation(AnimationUtils.loadAnimation(this,R.anim.fade_scale_2));
         int position= datos.getInt("posicion");
         retrofit = new com.example.reciclemosdemo.Grafico.RetrofitMain();
         textList.add(txtObservacionesDialog);
+
+
+        dbHelper helper = new dbHelper(this, "Usuario.sqlite", null, 1);
+        SQLiteDatabase db = helper.getReadableDatabase();
+
+        Cursor filaUsuario = db.rawQuery("select codigo, nombre from Usuario", null);
+
+        filaUsuario.moveToFirst();
+        View headerView = navigationView.getHeaderView(0);
+        TextView navUsername = (TextView) headerView.findViewById(R.id.txtUser);
+        navUsername.setText(filaUsuario.getString(1));
+        TextView navViewProfile = headerView.findViewById(R.id.txtMiPerfil);
+        navViewProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(), ProfileActivity.class));
+            }
+        });
+
 
         try {
             obtenerDatosProductByBolsa(String.valueOf(position),textList);
@@ -100,12 +142,16 @@ public class ProductByBolsa extends AppCompatActivity implements com.example.rec
             e.printStackTrace();
         }
 
+        getProductsByBolsa(String.valueOf(position));
+
         txt_Reciclador.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(getApplicationContext(), RecicladorActivity.class));
             }
         });
+
+        if(txt_Observaciones.getText().equals("SI"))
         txt_Observaciones.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -128,7 +174,7 @@ public class ProductByBolsa extends AppCompatActivity implements com.example.rec
                         overridePendingTransition(0,0);
                         return true;
                     case R.id.escaner:
-                        startActivity(new Intent(getApplicationContext(), LectorActivity.class));
+                        startActivity(new Intent(getApplicationContext(), ScanBarCodeActivity.class));
                         overridePendingTransition(0,0);
                         return true;
                     case R.id.mibolsa:
@@ -136,6 +182,8 @@ public class ProductByBolsa extends AppCompatActivity implements com.example.rec
                         overridePendingTransition(0,0);
                         return true;
                     case R.id.catalogo:
+                        startActivity(new Intent(getApplicationContext(), CatalogoActivity.class));
+                        overridePendingTransition(0,0);
                         return true;
                 }
                 return false;
@@ -165,13 +213,22 @@ public class ProductByBolsa extends AppCompatActivity implements com.example.rec
         String creadoFecha;
         creadoFecha = formatter.format(creadoDate);
         textViewsList.get(0).setText("Creada : "+creadoFecha);
-        textViewsList.get(4).setText("Juan Torres");
+        String recicladorQuery = "select nombre , apellido  from Reciclador";
+        System.out.println(query);
+        Cursor reciclerF = db.rawQuery(recicladorQuery,null);
+    reciclerF.moveToFirst();
+        SpannableString reciclador = new SpannableString(reciclerF.getString(0) +" "+ reciclerF.getString(1));
+        reciclador.setSpan(new UnderlineSpan(), 0, reciclador.length(), 0);
+        textViewsList.get(4).setText(reciclador);
         if(f.getString(4).equals("null") || f.getString(4).equals(null)) {
             textViewsList.get(5).setText("NO");
             textViewsList.get(6).setText("No hay observaciones");
         }
+
         else {
-            textViewsList.get(5).setText("SI");
+            SpannableString content = new SpannableString("SI");
+            content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
+            textViewsList.get(5).setText(content);
             textViewsList.get(6).setText(f.getString(4));
         }
 
@@ -214,9 +271,74 @@ public class ProductByBolsa extends AppCompatActivity implements com.example.rec
         textViewsList.get(3).setText(Integer.toString(papelDivided.getPuntos()+metalDivided.getPuntos()+plasticoDivided.getPuntos()+vidrioDivided.getPuntos()));
     }
 
+    public void getProductsByBolsa(String posicion){
+        rclDetalle = findViewById(R.id.rclDetalle);
+        rclDetalle.setLayoutManager(new LinearLayoutManager(this));
+        dbHelper helper = new dbHelper(this,"Usuario.sqlite", null, 1);
+        SQLiteDatabase db = helper.getReadableDatabase();
+
+        String query = "select codigo from Bolsa where codigo = " + posicion;
+        Cursor f = db.rawQuery(query, null);
+
+        f.moveToFirst();
+
+        Cursor fila = db.rawQuery("select bolsa, cantidad, codigo, peso, producto, puntuacion from Probolsa where bolsa = " + f.getInt(0), null);
+        fila.moveToFirst();
+
+        System.out.println(fila.getString(1));
+
+
+        do {
+            Cursor fila2 = db.rawQuery("select nombre, tipo_contenido, contenido, categoria, urlimagen from Producto where codigo = " + fila.getInt(4), null);
+            fila2.moveToFirst();
+
+            Cursor fila3 = db.rawQuery("select codigo, nombre from Categoria where codigo = " + fila2.getInt(3), null);
+            fila3.moveToFirst();
+
+            Bolsalist ayuda = new Bolsalist();
+
+            ayuda.setNombre(fila2.getString(0));
+            ayuda.setCodigo(fila.getInt(2));
+            ayuda.setPeso(fila.getDouble(3));
+            ayuda.setCantidad(fila.getInt(1));
+            ayuda.setPuntos(fila.getInt(5));
+            ayuda.setContenido(fila2.getDouble(2));
+            ayuda.setUrlImage(fila2.getString(4));
+            ayuda.setAbreviatura(fila2.getString(1));
+            ayuda.setCategoria(fila3.getString(1));
+            ayuda.setCodcontenido(fila3.getInt(0));
+
+            listDetalle.add(ayuda);
+        } while (fila.moveToNext());
+
+        adapter = new AdapterDetalle(listDetalle,"view");
+        rclDetalle.setAdapter(adapter);
+
+        db.close();
+
+    }
+
 
 
     @Override
     public void oneNoteClick(int position) {
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.nav_info:
+                startActivity(new Intent(getApplicationContext(), MeInformoActivity.class));
+                break;
+            case R.id.nav_message:
+                Toast.makeText(this, "Proximamente 2", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.nav_logout:
+                startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+                break;
+
+        }
+        mDrawerLayout.closeDrawer(GravityCompat.START);
+        return true;
     }
 }

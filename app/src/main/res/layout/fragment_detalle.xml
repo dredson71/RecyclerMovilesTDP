@@ -30,7 +30,7 @@
             android:id="@+id/view"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:background="#D8D8D8"
+            android:background="#D3D3D3"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
@@ -101,11 +101,11 @@
             android:clickable="true"
             android:drawableEnd="@android:drawable/ic_media_play"
             android:gravity="center"
+            android:textColor="@color/botones_principales"
             android:text="Enlazar bolsa con el QR"
-            android:textColor="@color/colorPrimary"
             android:textSize="18sp"
             android:textStyle="bold"
-            app:drawableTint="@color/colorPrimary"
+            app:drawableTint="@color/botones_principales"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 

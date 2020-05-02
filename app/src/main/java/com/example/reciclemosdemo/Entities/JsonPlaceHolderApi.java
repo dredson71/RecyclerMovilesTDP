@@ -46,6 +46,10 @@ public interface JsonPlaceHolderApi {
     @GET
     Call<List<Probolsa>> getBolsasByDate(@Url String url);
 
+
+    @GET
+    Call<List<Bolsa>> getLastRecordBolsasYear(@Url String url);
+
     @GET
     Call<List<Producto>> getProductos(@Url String url);
 
@@ -68,6 +72,12 @@ public interface JsonPlaceHolderApi {
     Call<String[]> getUsuarioByEmail(@Url String url);
 
     @GET
+    Call<Integer> getEmail(@Url String url);
+
+    @GET
+    Call<Integer> getDNI(@Url String url);
+
+    @GET
     Call<Usuario> getUsuarioByEmailPassword(@Url String url);
 
     @POST("usuario")
@@ -78,4 +88,8 @@ public interface JsonPlaceHolderApi {
 
     @POST("solicitud")
     Call<Solicitud> createSolicitud(@Body Solicitud solicitud);
+
+    @GET
+    Call<Reciclador> getReciclador(@Url String url);
+
 }

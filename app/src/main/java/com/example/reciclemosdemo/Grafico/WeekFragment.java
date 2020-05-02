@@ -8,18 +8,14 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.reciclemosdemo.Adicionales.dbHelper;
 import com.example.reciclemosdemo.R;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -90,41 +86,41 @@ public class WeekFragment extends Fragment {
 
         if(f.moveToFirst()) {
             txtPlasticoCount.setText(Integer.toString(f.getInt(0)));
-            txtPlasticoPeso.setText(Double.toString(f.getDouble(1)));
-            txtPlasticoPuntos.setText(Double.toString(f.getDouble(2)));
+            txtPlasticoPeso.setText(Double.toString(f.getDouble(1))+ " g");
+            txtPlasticoPuntos.setText(Double.toString(f.getDouble(2))+ " ptos");
             totalResiduo+=f.getInt(0);
             totalPuntos+=f.getDouble(2);
             totalPeso+=f.getDouble(1);
 
         }
-            Cursor f2 = db.rawQuery("select cantidad ,peso ,puntuacion from Contador where tendenciaTipo = 'Semana' and productoTipo = 'Vidrio' ", null);
+        Cursor f2 = db.rawQuery("select cantidad ,peso ,puntuacion from Contador where tendenciaTipo = 'Semana' and productoTipo = 'Vidrio' ", null);
 
 
-            if(f2.moveToFirst()) {
-                txtVidrioCount.setText(Integer.toString(f2.getInt(0)));
-                txtVidrioPeso.setText(Double.toString(f2.getDouble(1)));
-                txtVidrioPuntos.setText(Double.toString(f2.getDouble(2)));
-                totalResiduo+=f2.getInt(0);
-                totalPuntos+=f2.getDouble(2);
-                totalPeso+=f2.getDouble(1);
-            }
+        if(f2.moveToFirst()) {
+            txtVidrioCount.setText(Integer.toString(f2.getInt(0)));
+            txtVidrioPeso.setText(Double.toString(f2.getDouble(1))+ " g");
+            txtVidrioPuntos.setText(Double.toString(f2.getDouble(2))+ " ptos");
+            totalResiduo+=f2.getInt(0);
+            totalPuntos+=f2.getDouble(2);
+            totalPeso+=f2.getDouble(1);
+        }
 
-            Cursor f3 = db.rawQuery("select cantidad ,peso ,puntuacion from Contador where tendenciaTipo = 'Semana' and productoTipo = 'Papel' ", null);
+        Cursor f3 = db.rawQuery("select cantidad ,peso ,puntuacion from Contador where tendenciaTipo = 'Semana' and productoTipo = 'Papel' ", null);
         if(f3.moveToFirst()) {
             txtPapelCartonCount.setText(Integer.toString(f3.getInt(0)));
-            txtPapelCartonPeso.setText(Double.toString(f3.getDouble(1)));
-            txtPapelCartonPuntos.setText(Double.toString(f3.getDouble(2)));
+            txtPapelCartonPeso.setText(Double.toString(f3.getDouble(1)) + " g");
+            txtPapelCartonPuntos.setText(Double.toString(f3.getDouble(2))+ " ptos");
             totalResiduo+=f3.getInt(0);
             totalPuntos+=f3.getDouble(2);
             totalPeso+=f3.getDouble(1);
         }
 
-            Cursor f4 = db.rawQuery("select cantidad ,peso ,puntuacion from Contador where tendenciaTipo = 'Semana' and productoTipo = 'Metal' ", null);
+        Cursor f4 = db.rawQuery("select cantidad ,peso ,puntuacion from Contador where tendenciaTipo = 'Semana' and productoTipo = 'Metal' ", null);
 
         if(f4.moveToFirst()) {
             txtMetalesCount.setText(Integer.toString(f4.getInt(0)));
-            txtMetalesPeso.setText(Double.toString(f4.getDouble(1)));
-            txtMetalesPuntos.setText(Double.toString(f4.getDouble(2)));
+            txtMetalesPeso.setText(Double.toString(f4.getDouble(1))+ " g");
+            txtMetalesPuntos.setText(Double.toString(f4.getDouble(2))+ " ptos");
             totalResiduo+=f4.getInt(0);
             totalPuntos+=f4.getDouble(2);
             totalPeso+=f4.getDouble(1);
@@ -142,40 +138,42 @@ public class WeekFragment extends Fragment {
                 yAxisDataYear[i] = f.getInt(i);
             }
         }
-            List yAxisValues = new ArrayList();
-            List axisValues = new ArrayList();
+        List yAxisValues = new ArrayList();
+        List axisValues = new ArrayList();
 
-            Line line = new Line(yAxisValues).setColor(Color.parseColor("#252525"));
-            for (int i = 0; i < axisDataMonth.length; i++) {
-                axisValues.add(i, new AxisValue(i).setLabel(axisDataMonth[i]));
-            }
-
-            for (int i = 0; i < yAxisDataYear.length; i++) {
-                yAxisValues.add(new PointValue(i, yAxisDataYear[i]));
-            }
-            List lines = new ArrayList();
-            lines.add(line);
-
-            LineChartData data = new LineChartData();
-            data.setLines(lines);
-
-            Axis axis = new Axis();
-            axis.setValues(axisValues);
-            axis.setTextSize(13);
-            axis.setTextColor(Color.parseColor("#03A9F4"));
-            data.setAxisXBottom(axis);
-
-            Axis yAxis = new Axis();
-            yAxis.setTextColor(Color.parseColor("#03A9F4"));
-            yAxis.setTextSize(13);
-            data.setAxisYLeft(yAxis);
-
-            lineChartView.setLineChartData(data);
-            Viewport viewport = new Viewport(lineChartView.getMaximumViewport());
-            viewport.top = 100;
-            lineChartView.animate().alpha(1f).setDuration(250);
-            lineChartView.setMaximumViewport(viewport);
-            lineChartView.setCurrentViewport(viewport);
+        Line line = new Line(yAxisValues).setColor(Color.parseColor("#252525"));
+        for (int i = 0; i < axisDataMonth.length; i++) {
+            axisValues.add(i, new AxisValue(i).setLabel(axisDataMonth[i]));
         }
+
+        for (int i = 0; i < yAxisDataYear.length; i++) {
+            yAxisValues.add(new PointValue(i, yAxisDataYear[i]));
+        }
+        List lines = new ArrayList();
+        lines.add(line);
+
+        LineChartData data = new LineChartData();
+        data.setLines(lines);
+
+        Axis axis = new Axis();
+        axis.setValues(axisValues);
+        axis.setTextSize(13);
+        axis.setTextColor(Color.parseColor("#03A9F4"));
+        data.setAxisXBottom(axis);
+
+        Axis yAxis = new Axis();
+        yAxis.setTextColor(Color.parseColor("#03A9F4"));
+        yAxis.setTextSize(13);
+        data.setAxisYLeft(yAxis);
+
+        lineChartView.setLineChartData(data);
+        Viewport viewport = new Viewport(lineChartView.getMaximumViewport());
+        viewport.top = 100;
+        lineChartView.animate().alpha(1f).setDuration(250);
+        lineChartView.setMaximumViewport(viewport);
+        lineChartView.setCurrentViewport(viewport);
+
+
+    }
 
 }

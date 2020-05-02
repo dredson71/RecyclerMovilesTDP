@@ -6,42 +6,37 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.text.method.HideReturnsTransformationMethod;
+import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.reciclemosdemo.Entities.JsonPlaceHolderApi;
-import com.example.reciclemosdemo.Entities.Probolsa;
-import com.example.reciclemosdemo.Entities.Usuario;
 import com.example.reciclemosdemo.R;
-import com.example.reciclemosdemo.Adicionales.dbHelper;
-import com.google.android.material.textfield.TextInputLayout;
 
 import java.io.IOException;
 import java.math.BigInteger;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
-import java.util.ArrayList;
 import java.util.Scanner;
 
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 
 import retrofit2.Call;
-import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -55,6 +50,7 @@ public class LoginActivity extends AppCompatActivity {
     private Retrofit retrofit;
     private String[] arrpassword = null;
     private APIToSQLite sqlitedb;
+    private CheckBox checkBox;
     private ProgressDialog progressDialog, progressDialog2;
     Handler mHandler = new Handler(Looper.getMainLooper()) {
         @Override
@@ -68,7 +64,7 @@ public class LoginActivity extends AppCompatActivity {
                 case 2:
                     progressDialog2.cancel();
                     Toast.makeText(getApplicationContext(), "Información cargada", Toast.LENGTH_LONG).show();
-                    Intent lectoractivity = new Intent(getApplicationContext(), LectorActivity.class);
+                    Intent lectoractivity = new Intent(getApplicationContext(), BolsaActivity.class);
                     startActivity(lectoractivity);
                     break;
                 case 3:
@@ -102,6 +98,18 @@ public class LoginActivity extends AppCompatActivity {
         btnIngresar = findViewById(R.id.btnIngresar);
         btnRegistrar = findViewById(R.id.btnRegistrar);
 
+        checkBox = findViewById(R.id.checkbox);
+        checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked){
+                    txtPassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+                }else {
+                    txtPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
+                }
+            }
+        });
+
         btnRegistrar.setOnClickListener(nOnClickListener);
         retrofit = new Retrofit.Builder()
                 .baseUrl("https://recyclerapiresttdp.herokuapp.com/")
@@ -114,7 +122,7 @@ public class LoginActivity extends AppCompatActivity {
         progressDialog2 = new ProgressDialog(this);
         progressDialog2.setMessage("Cargando información, por favor espere...");
 
-        sqlitedb = new APIToSQLite(this);
+        sqlitedb = new APIToSQLite(this,"");
     }
 
     //INTERFACE ENTITY
@@ -136,7 +144,7 @@ public class LoginActivity extends AppCompatActivity {
     //BUSCAR EMAIL
     public void BuscarEmail(@Nullable final EntityCallBack entityCallBack) throws InterruptedException, IOException {
         JsonPlaceHolderApi jsonPlaceHolderApi=retrofit.create(JsonPlaceHolderApi.class);
-        Call<String[]> call=jsonPlaceHolderApi.getUsuarioByEmail("usuario/correo/" + txtEmail.getText().toString());
+        Call<String[]> call=jsonPlaceHolderApi.getUsuarioByEmail("usuario/correo/" + txtEmail.getText().toString().toLowerCase());
         Response<String[]> response = call.execute();
         /*call.enqueue(new Callback<String[]>() {
             @Override
@@ -239,7 +247,7 @@ public class LoginActivity extends AppCompatActivity {
         @Override
         protected Void doInBackground(Void... voids) {
             try {
-                sqlitedb.InsertUsuario(txtEmail.getText().toString(), arrpassword[0]);
+                sqlitedb.InsertUsuario(txtEmail.getText().toString().toLowerCase(), arrpassword[0]);
                 Message msg = new Message();
                 msg.what = 1;
                 mHandler.sendMessage(msg);
@@ -247,11 +255,11 @@ public class LoginActivity extends AppCompatActivity {
                 sqlitedb.InsertBolsas();
                 sqlitedb.InsertProbolsa();
                 sqlitedb.insertBolsasByMonthOrWeek("bolsasWeek/");
-                sqlitedb.insertBolsasByMonthOrWeek("bolsasMonth/");
                 sqlitedb.obtenerBolsasByYear("bolsasYear/");
                 sqlitedb.obtenerBolsasByDay();
                 sqlitedb.obtenerUltimasBolsas();
                 sqlitedb.obtenerDatosProductByBolsa();
+                sqlitedb.InsertReciclador();
             } catch (IOException e) {
                 e.printStackTrace();
             } catch (InterruptedException e) {

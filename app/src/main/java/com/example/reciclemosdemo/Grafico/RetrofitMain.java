@@ -1,28 +1,20 @@
 package com.example.reciclemosdemo.Grafico;
 
-import android.content.Intent;
 import android.graphics.Color;
 import android.util.Log;
-import android.view.View;
 import android.widget.TextView;
 
 import com.example.reciclemosdemo.Entities.Bolsa;
-import com.example.reciclemosdemo.Entities.Categoria;
-import com.example.reciclemosdemo.Entities.CategoriaDivided;
 import com.example.reciclemosdemo.Entities.JsonPlaceHolderApi;
 import com.example.reciclemosdemo.Entities.Probolsa;
 import com.example.reciclemosdemo.Entities.Producto;
-import com.example.reciclemosdemo.R;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 import lecho.lib.hellocharts.model.Axis;
 import lecho.lib.hellocharts.model.AxisValue;
@@ -34,7 +26,6 @@ import lecho.lib.hellocharts.view.LineChartView;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RetrofitMain {
@@ -115,7 +106,7 @@ public class RetrofitMain {
                         Date recojo = probolsas.get(0).getBolsa().getRecojoFecha();
                         String recojoFecha;
                         if(recojo != null) {
-                             recojoFecha = formatter.format(recojo);
+                            recojoFecha = formatter.format(recojo);
                             textViewsList.get(1).setText("Recojo : "+recojoFecha);
                         }
                         else{
@@ -142,24 +133,24 @@ public class RetrofitMain {
                     }
                     for(int i=0;i<probolsas.size();i++)
                     {
-                       if(probolsas.get(i).getProducto().getCategoria().getNombre().equals("Plastico")){
-                           plasticoCount+=probolsas.get(i).getCantidad();;
-                           puntosPlastico+=probolsas.get(i).getPuntuacion();
-                           pesoPlastico+=probolsas.get(i).getPeso();
-                       }else if (probolsas.get(i).getProducto().getCategoria().getNombre().equals("Vidrio"))
-                       {
+                        if(probolsas.get(i).getProducto().getCategoria().getNombre().equals("Plastico")){
+                            plasticoCount+=probolsas.get(i).getCantidad();;
+                            puntosPlastico+=probolsas.get(i).getPuntuacion();
+                            pesoPlastico+=probolsas.get(i).getPeso();
+                        }else if (probolsas.get(i).getProducto().getCategoria().getNombre().equals("Vidrio"))
+                        {
                             vidrioCount+=probolsas.get(i).getCantidad();;
-                           puntosVidrio+=probolsas.get(i).getPuntuacion();
-                           pesoVidrio+=probolsas.get(i).getPeso();
-                       }else if (probolsas.get(i).getProducto().getCategoria().getNombre().equals("Metal")){
+                            puntosVidrio+=probolsas.get(i).getPuntuacion();
+                            pesoVidrio+=probolsas.get(i).getPeso();
+                        }else if (probolsas.get(i).getProducto().getCategoria().getNombre().equals("Metal")){
                             metalCount+=probolsas.get(i).getCantidad();;
-                           puntosMetal+=probolsas.get(i).getPuntuacion();
-                           pesoMetal+=probolsas.get(i).getPeso();
-                       }else{
+                            puntosMetal+=probolsas.get(i).getPuntuacion();
+                            pesoMetal+=probolsas.get(i).getPeso();
+                        }else{
                             papelCartonCount+=probolsas.get(i).getCantidad();
-                           puntosPapelCarton+=probolsas.get(i).getPuntuacion();
-                           pesoPapelCarton+=probolsas.get(i).getPeso();
-                       }
+                            puntosPapelCarton+=probolsas.get(i).getPuntuacion();
+                            pesoPapelCarton+=probolsas.get(i).getPeso();
+                        }
                     }
                     if(plasticoCount != 0){
                         plasticoDivided.setCantidad(plasticoCount);

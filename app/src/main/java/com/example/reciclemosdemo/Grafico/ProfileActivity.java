@@ -1,36 +1,30 @@
 package com.example.reciclemosdemo.Grafico;
 
+import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.os.Bundle;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.example.reciclemosdemo.Adicionales.dbHelper;
 import com.example.reciclemosdemo.Inicio.BolsaActivity;
-import com.example.reciclemosdemo.Inicio.LectorActivity;
+import com.example.reciclemosdemo.Inicio.CatalogoActivity;
+import com.example.reciclemosdemo.Inicio.LoginActivity;
+import com.example.reciclemosdemo.Inicio.MeInformoActivity;
+import com.example.reciclemosdemo.Inicio.ScanBarCodeActivity;
 import com.example.reciclemosdemo.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
-
-import android.app.Dialog;
-import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.os.Bundle;
-import android.view.MenuItem;
-import android.view.MotionEvent;
-import android.view.View;
-import android.widget.TextView;
-
-import org.w3c.dom.Text;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 public class ProfileActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private DrawerLayout mDrawerLayout;
@@ -100,7 +94,8 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
         BottomNavigationView bottomNavigationView = findViewById(R.id.botton_navigation);
 
         //SELECCIÓN
-        bottomNavigationView.setSelectedItemId(R.id.escaner);
+        bottomNavigationView.setSelectedItemId(R.id.miaporte);
+
 
         //CAMBIO DE SELECCIÓN
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -112,7 +107,7 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
                         overridePendingTransition(0,0);
                         return true;
                     case R.id.escaner:
-                        startActivity(new Intent(getApplicationContext(), LectorActivity.class));
+                        startActivity(new Intent(getApplicationContext(), ScanBarCodeActivity.class));
                         overridePendingTransition(0,0);
                         return true;
                     case R.id.mibolsa:
@@ -120,6 +115,8 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
                         overridePendingTransition(0,0);
                         return true;
                     case R.id.catalogo:
+                        startActivity(new Intent(getApplicationContext(), CatalogoActivity.class));
+                        overridePendingTransition(0,0);
                         return true;
                 }
                 return false;
@@ -144,12 +141,21 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
-            case R.id.txtMiPerfil:
-                startActivity(new Intent(getApplicationContext(), ProfileActivity.class));
+            case R.id.nav_info:
+                startActivity(new Intent(getApplicationContext(), MeInformoActivity.class));
                 break;
+            case R.id.nav_message:
+                Toast.makeText(this, "Proximamente 2", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.nav_logout:
+                startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+                break;
+
         }
         mDrawerLayout.closeDrawer(GravityCompat.START);
         return true;
     }
-    }
+}
+
+
 

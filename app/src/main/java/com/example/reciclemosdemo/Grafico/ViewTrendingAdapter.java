@@ -14,7 +14,7 @@ import java.util.List;
 public class ViewTrendingAdapter extends FragmentStatePagerAdapter {
 
     int tabCount;
-    private String[] tabTitles = new String[]{"Week", "Month", "Year"};
+    private String[] tabTitles = new String[]{"Semana", "Mes", "Record"};
 
     public ViewTrendingAdapter(@NonNull FragmentManager fm, int tabCount) {
         super(fm);
@@ -31,10 +31,10 @@ public class ViewTrendingAdapter extends FragmentStatePagerAdapter {
                 WeekFragment tab1 = new WeekFragment();
                 return tab1;
             case 1:
-                MonthFragment tab2 = new MonthFragment();
+                YearFragment tab2 = new YearFragment();
                 return tab2;
             case 2:
-                YearFragment tab3 = new YearFragment();
+                MonthFragment tab3 = new MonthFragment();
                 return tab3;
             default:
                 return null;

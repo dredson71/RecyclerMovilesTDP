@@ -65,9 +65,7 @@ public class ListaBolsaAdapter extends RecyclerView.Adapter<ListaBolsaAdapter.Vi
             holder.txt_Observacion.setText("Observaciones : SI");
         }
         String creadoFecha = formatter.format(c.getCreadoFecha());
-        holder.imageBolsaIcon.setAnimation(AnimationUtils.loadAnimation(context,R.anim.fade_transition_animation));
-        holder.item_bolsas.setAnimation(AnimationUtils.loadAnimation(context,R.anim.fade_scale_animation));
-        holder.txt_Bolsa.setText("Bolsa "+Integer.toString(1+position));
+        holder.txt_Bolsa.setText("Bolsa "+Integer.toString(dataset.size() - position));
         holder.txt_CreadoFecha.setText("Creada : "+creadoFecha);
 
     }
@@ -107,6 +105,7 @@ public class ListaBolsaAdapter extends RecyclerView.Adapter<ListaBolsaAdapter.Vi
             txt_RecojoFecha=(TextView) itemView.findViewById(R.id.txtRecoojoFecha);
             imageBolsaIcon = itemView.findViewById(R.id.imageBolsaIcon);
             txt_Observacion = itemView.findViewById(R.id.txtObservaciones);
+
         }
 
     }

@@ -42,7 +42,7 @@ public class ListaProductoByBolsaAdapter extends RecyclerView.Adapter<ListaProdu
         holder.txt_Contador.setText(Integer.toString(c.getCantidad()));
         holder.txt_PesoContrador.setText(Integer.toString(c.getPeso()));
         holder.txt_PuntosContador.setText(Integer.toString(c.getPuntos()));
-        int [] imagenes = {R.drawable.plastico,R.drawable.vidrio,R.drawable.metal,R.drawable.carton};
+        int [] imagenes = {R.drawable.plastico,R.drawable.vidrio,R.drawable.metal,R.drawable.papelcarton};
         if(c.getTipo().equals("Plastico"))
         {
             holder.img_ImageTipo.setImageResource(imagenes[0]);

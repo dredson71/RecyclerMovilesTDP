@@ -21,6 +21,7 @@ import java.util.ArrayList;
 public class AdapterDetalle extends RecyclerView.Adapter<AdapterDetalle.ViewHolderDetalle> {
 
     ArrayList<Bolsalist> listDetalle;
+    private String tipo;
     private OnItemClickListener onItemClickListener;
 
     public interface OnItemClickListener {
@@ -29,8 +30,9 @@ public class AdapterDetalle extends RecyclerView.Adapter<AdapterDetalle.ViewHold
 
     public void setOnItemClickListener(OnItemClickListener onItemClickListener) {this.onItemClickListener = onItemClickListener;}
 
-    public AdapterDetalle(ArrayList<Bolsalist> listDetalle){
+    public AdapterDetalle(ArrayList<Bolsalist> listDetalle,String tipo){
         this.listDetalle = listDetalle;
+        this.tipo = tipo;
     }
 
     @NonNull
@@ -78,18 +80,24 @@ public class AdapterDetalle extends RecyclerView.Adapter<AdapterDetalle.ViewHold
             txtTipo.setText(bolsalist.getCategoria());
             switch (bolsalist.getCodcontenido()){
                 case 1:
-                    imgTipo.getDrawable().setTint(Color.parseColor("#99E6E6E6"));
+                    imgTipo.getDrawable().setTint(Color.parseColor("#99EFEFEF"));
                     break;
                 case 2:
-                    imgTipo.getDrawable().setTint(Color.parseColor("#99777777"));
+                    imgTipo.getDrawable().setTint(Color.parseColor("#99808080"));
                     break;
                 case 3:
-                    imgTipo.getDrawable().setTint(Color.parseColor("#2196F3"));
+                    imgTipo.getDrawable().setTint(Color.parseColor("#0C4A7C"));
                     break;
                 case 4:
-                    imgTipo.getDrawable().setTint(Color.parseColor("#FFEB3B"));
+                    imgTipo.getDrawable().setTint(Color.parseColor("#FFC32C"));
                     break;
             }
+
+
+
+            if(tipo.equals("view"))
+                imageButton.setVisibility(View.GONE);
+
             txtContenido.setText((int) bolsalist.getContenido() + " " + bolsalist.getAbreviatura());
             if(bolsalist.getPeso() <= 500.0) {
                 txtPeso.setText(bolsalist.getPeso() + " gr");
@@ -119,6 +127,7 @@ public class AdapterDetalle extends RecyclerView.Adapter<AdapterDetalle.ViewHold
                     }
                 }
             });
+
         }
 
     }

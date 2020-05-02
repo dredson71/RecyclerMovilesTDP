@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
     <androidx.constraintlayout.widget.ConstraintLayout
 
         android:layout_width="match_parent"
@@ -14,15 +15,16 @@
             android:id="@+id/btnRegistrar"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:background="@drawable/shadow"
-            android:onClick="Registrar"
+            android:backgroundTint="@color/botones_principales"
             android:text="Registrarse"
             android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-            android:textColorHighlight="#009688"
+            android:textColor="@color/botones_principales_texto"
             android:textSize="18sp"
-            app:layout_constraintEnd_toEndOf="@+id/txtPassword"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="@+id/txtPassword"
+            app:cornerRadius="20dp"
+            app:layout_constraintBottom_toTopOf="@+id/btnLogin"
+            app:layout_constraintEnd_toEndOf="@+id/btntxtCondiciones"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="@+id/btntxtCondiciones"
             app:layout_constraintTop_toBottomOf="@+id/btntxtCondiciones" />
 
         <Button
@@ -30,14 +32,17 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
+            android:backgroundTint="@color/botones_principales_texto"
             android:text="Ya tengo una cuenta"
             android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+            android:textColor="@color/botones_principales"
             android:textSize="18sp"
+            app:cornerRadius="20dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/btnRegistrar"
+            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="@+id/btnRegistrar"
-            app:layout_constraintTop_toBottomOf="@+id/btnRegistrar"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintTop_toBottomOf="@+id/btnRegistrar" />
 
         <EditText
             android:id="@+id/txtPassword"
@@ -47,21 +52,48 @@
             android:hint="Contraseña: Min. 6 caracteres, 1 mayus, 1 minus y 1 número"
             android:inputType="textPassword"
             android:singleLine="true"
-            android:textSize="14sp"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toTopOf="@+id/txtRepetirPassword"
             app:layout_constraintEnd_toEndOf="@+id/txtEmail"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="@+id/txtEmail"
             app:layout_constraintTop_toBottomOf="@+id/txtEmail" />
 
         <EditText
+            android:id="@+id/txtRepetirPassword"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:hint="Repetir Contraseña"
+            android:inputType="textPassword"
+            android:singleLine="true"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toTopOf="@+id/checkbox"
+            app:layout_constraintEnd_toEndOf="@+id/txtPassword"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="@+id/txtPassword"
+            app:layout_constraintTop_toBottomOf="@+id/txtPassword" />
+
+        <CheckBox
+            android:id="@+id/checkbox"
+            android:layout_width="0dp"
+            android:layout_height="25dp"
+            android:text="Mostrar Contraseña"
+            app:layout_constraintBottom_toTopOf="@+id/btntxtCondiciones"
+            app:layout_constraintEnd_toEndOf="@+id/txtRepetirPassword"
+            app:layout_constraintStart_toStartOf="@+id/txtRepetirPassword"
+            app:layout_constraintTop_toBottomOf="@+id/txtRepetirPassword" />
+
+        <EditText
             android:id="@+id/txtEmail"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:hint="Correo"
+            android:hint="Correo electrónico"
             android:inputType="textEmailAddress"
             android:singleLine="true"
-            android:textSize="14sp"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toTopOf="@+id/txtPassword"
             app:layout_constraintEnd_toEndOf="@+id/txtDireccion"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="@+id/txtDireccion"
@@ -73,10 +105,11 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:hint="Piso - Número de departamento"
+            android:hint="N° piso / N° Departamento"
             android:inputType="text"
             android:singleLine="true"
-            android:textSize="14sp"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toTopOf="@+id/txtEmail"
             app:layout_constraintEnd_toEndOf="@+id/spnCondominio"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="@+id/spnCondominio"
@@ -91,7 +124,8 @@
             android:hint="Apellidos"
             android:inputType="text"
             android:singleLine="true"
-            android:textSize="14sp"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toTopOf="@+id/txtCelular"
             app:layout_constraintEnd_toEndOf="@+id/txtNombres"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="@+id/txtNombres"
@@ -107,9 +141,10 @@
             android:maxLength="9"
             android:phoneNumber="true"
             android:singleLine="true"
-            android:textSize="14sp"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toTopOf="@+id/txtNacimiento"
             app:layout_constraintEnd_toEndOf="@+id/txtApellidos"
-            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="@+id/txtApellidos"
             app:layout_constraintTop_toBottomOf="@+id/txtApellidos" />
 
@@ -122,22 +157,27 @@
             android:inputType="number"
             android:maxLength="8"
             android:singleLine="true"
-            android:textSize="14sp"
-            app:layout_constraintEnd_toStartOf="@+id/txtNacimiento"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toTopOf="@+id/spnDepartamento"
+            app:layout_constraintEnd_toEndOf="@+id/btnCalendar"
+            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="@+id/txtCelular"
-            app:layout_constraintTop_toBottomOf="@+id/txtCelular" />
+            app:layout_constraintTop_toBottomOf="@+id/txtNacimiento" />
 
         <TextView
             android:id="@+id/textView3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
             android:text="Registro"
+            android:textColor="#347032"
             android:textSize="30sp"
             android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/txtNombres"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -145,13 +185,14 @@
             android:id="@+id/txtNombres"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
+            android:layout_marginStart="32dp"
             android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
+            android:layout_marginEnd="32dp"
             android:hint="Nombres"
             android:inputType="text"
             android:singleLine="true"
-            android:textSize="14sp"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toTopOf="@+id/txtApellidos"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
@@ -161,12 +202,12 @@
             android:id="@+id/spnDepartamento"
             android:layout_width="0dp"
             android:layout_height="35dp"
-            android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:hint="Departamento"
+            app:layout_constraintBottom_toTopOf="@+id/spnCondominio"
             app:layout_constraintEnd_toStartOf="@+id/spnDistrito"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/txtDNI"
             app:layout_constraintTop_toBottomOf="@+id/txtDNI" />
 
         <Spinner
@@ -174,24 +215,22 @@
             android:layout_width="0dp"
             android:layout_height="35dp"
             android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
             android:hint="Distrito"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/txtDNI"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/spnDepartamento"
-            app:layout_constraintTop_toBottomOf="@+id/txtNacimiento"/>
+            app:layout_constraintTop_toBottomOf="@+id/txtDNI" />
 
         <Spinner
             android:id="@+id/spnCondominio"
             android:layout_width="0dp"
             android:layout_height="35dp"
-            android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
             android:hint="Condominio"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.500"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/btntxtCondominio"
+            app:layout_constraintEnd_toEndOf="@+id/spnDistrito"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="@+id/spnDepartamento"
             app:layout_constraintTop_toBottomOf="@+id/spnDepartamento" />
 
         <ImageButton
@@ -218,8 +257,11 @@
             android:hint="Fecha de nacimiento"
             android:inputType="text"
             android:singleLine="true"
-            android:textSize="14sp"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toTopOf="@+id/txtDNI"
             app:layout_constraintEnd_toStartOf="@+id/btnCalendar"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="@+id/txtCelular"
             app:layout_constraintTop_toBottomOf="@+id/txtCelular" />
 
 
@@ -227,35 +269,33 @@
             android:id="@+id/btntxtCondominio"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
             android:text="Solicita el registro de tu condominio aquí."
             android:textAllCaps="false"
             android:textColor="#2196F3"
-            android:textSize="12sp"
+            android:textSize="14sp"
             android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.492"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/txtDireccion"
+            app:layout_constraintEnd_toEndOf="@+id/spnCondominio"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="@+id/spnCondominio"
             app:layout_constraintTop_toBottomOf="@+id/spnCondominio" />
 
         <TextView
             android:id="@+id/btntxtCondiciones"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
             android:layout_marginTop="12dp"
-            android:layout_marginEnd="8dp"
             android:text="Al registrarte aceptas las condiciones de servicio."
             android:textAllCaps="false"
             android:textColor="#2196F3"
-            android:textSize="12sp"
+            android:textSize="14sp"
             android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.492"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/txtPassword" />
+            app:layout_constraintBottom_toTopOf="@+id/btnRegistrar"
+            app:layout_constraintEnd_toEndOf="@+id/checkbox"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="@+id/checkbox"
+            app:layout_constraintTop_toBottomOf="@+id/checkbox" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

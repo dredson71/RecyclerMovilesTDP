@@ -6,12 +6,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.net.wifi.aware.DiscoverySession;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.os.Handler;
@@ -27,7 +24,6 @@ import android.widget.NumberPicker;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.reciclemosdemo.Adicionales.AnyOrientationCaptureActivity;
 import com.example.reciclemosdemo.Adicionales.dbHelper;
 import com.example.reciclemosdemo.Entities.Bolsa;
 import com.example.reciclemosdemo.Entities.JsonPlaceHolderApi;
@@ -35,15 +31,12 @@ import com.example.reciclemosdemo.Entities.Probolsa;
 import com.example.reciclemosdemo.Entities.Producto;
 import com.example.reciclemosdemo.Entities.Usuario;
 import com.example.reciclemosdemo.R;
-import com.google.zxing.integration.android.IntentIntegrator;
-import com.google.zxing.integration.android.IntentResult;
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
 import java.util.List;
 
 import retrofit2.Call;
-import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -51,38 +44,44 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ProductoFragment extends Fragment {
 
-    Button btnEscanear, btnAgregar, btnAlerta;
-    TextView txtTipo, txtNombre, txtContenido, txtPeso, txtPuntos;
-    ImageView imgProducto;
+    Button btnAgregar, btnMeinformo;
+    TextView txtTipo, txtNombre, txtContenido, txtPeso, txtPuntos, txtTitleInformo, txtTextInformo;
     NumberPicker numberPicker;
+    ImageView imgProducto;
     private Retrofit retrofit;
     private double numpeso;
     private int bolsa, producto;
     private ProgressDialog progressDialog;
     private AlertDialog.Builder alertDialog;
     int nuevo = -1;
+    String barCode;
+
     private Handler mHandler = new Handler(Looper.getMainLooper()){
         @Override
         public void handleMessage(Message message) {
             switch (message.what){
                 case 1:
-                    progressDialog.cancel();
-                    txtTipo.setText("Tipo");
-                    txtNombre.setText("Nombre Producto");
-                    txtPeso.setText("Peso");
-                    txtContenido.setText("Contenido");
-                    numberPicker.setMinValue(0);
-                    numberPicker.setMaxValue(0);
-                    txtPuntos.setText("Puntos");
                     Toast.makeText(getActivity(), "Producto agregado a la bolsa activa", Toast.LENGTH_LONG).show();
+                    try {
+                        ((ScanBarCodeActivity) getActivity()).cambiarScanBarCode();
+                    }catch (Exception e){
+                        startActivity(new Intent(getContext(), CatalogoActivity.class));
+                    }
                     break;
                 case 2:
                     progressDialog.cancel();
                     Toast.makeText(getActivity().getApplicationContext(), "Escanee un producto", Toast.LENGTH_LONG).show();
                     break;
+                case 3:
+                    mostrarDialogo();
+                    break;
             }
         }
     };
+
+    public ProductoFragment(String barCode){
+        this.barCode = barCode;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -100,10 +99,12 @@ public class ProductoFragment extends Fragment {
         txtContenido = v.findViewById(R.id.txtContenido);
         txtPeso = v.findViewById(R.id.txtPeso);
         txtPuntos = v.findViewById(R.id.txtTotalPuntos);
-        btnEscanear = v.findViewById(R.id.btnEscanear);
         btnAgregar = v.findViewById(R.id.btnAgregar);
         numberPicker = v.findViewById(R.id.numberPicker);
         imgProducto = v.findViewById(R.id.imageView2);
+        txtTitleInformo = v.findViewById(R.id.textTitleInformo);
+        txtTextInformo = v.findViewById(R.id.textTextInformo);
+        btnMeinformo = v.findViewById(R.id.btnMeinformo);
 
         retrofit = new Retrofit.Builder()
                 .baseUrl("https://recyclerapiresttdp.herokuapp.com/")
@@ -112,13 +113,23 @@ public class ProductoFragment extends Fragment {
 
         numberPicker.setOnValueChangedListener(onValueChangeListener);
 
-        btnEscanear.setOnClickListener(mOnClickListener);
         btnAgregar.setOnClickListener(mOnClickListener);
 
         progressDialog = new ProgressDialog(getActivity());
         progressDialog.setMessage("Añadiendo Producto...");
 
         GetBolsa();
+
+        if (barCode != null) {
+                GetProducto(barCode);
+            } else {
+                invisible();
+                txtTitleInformo.setVisibility(View.INVISIBLE);
+                txtTextInformo.setVisibility(View.INVISIBLE);
+                btnMeinformo.setVisibility(View.INVISIBLE);
+                Toast.makeText(getActivity().getApplicationContext(), "Error al escanear", Toast.LENGTH_LONG).show();
+            }
+
         return v;
     }
 
@@ -156,30 +167,14 @@ public class ProductoFragment extends Fragment {
         }
     };
 
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data){
-        IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
-        if(result != null)
-            if (result.getContents() != null) {
-                GetProducto(result.getContents());
-            } else {
-                Toast.makeText(getActivity().getApplicationContext(), "Error al escanear", Toast.LENGTH_LONG).show();
-            }
-    }
-
     private View.OnClickListener mOnClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             switch (v.getId()){
-                case R.id.btnEscanear:
-                    IntentIntegrator integrator = new IntentIntegrator(getActivity()).forSupportFragment(ProductoFragment.this);
-                    integrator.setCaptureActivity(AnyOrientationCaptureActivity.class);
-                    integrator.setOrientationLocked(false);
-                    integrator.initiateScan();
-                    break;
                 case R.id.btnAgregar:
                     progressDialog.show();
                     progressDialog.setCancelable(false);
-                    new Buscar(numberPicker.getValue()).execute();
+                    new Buscar(numberPicker.getValue(), txtNombre.getText().toString()).execute();
                     break;
             }
         }
@@ -236,14 +231,17 @@ public class ProductoFragment extends Fragment {
         dbHelper helper = new dbHelper(getActivity(),"Usuario.sqlite", null, 1);
         SQLiteDatabase db = helper.getReadableDatabase();
 
-        Cursor f = db.rawQuery("select categoria, contenido, nombre, peso, tipo_contenido, codigo,urlimagen from Producto where barcode = '"+ barCode+ "'", null);
+        Cursor f = db.rawQuery("select categoria, contenido, nombre, peso, tipo_contenido, codigo, urlimagen from Producto where barcode = '"+ barCode+ "'", null);
 
         if(f.moveToFirst()) {
+            visible();
             Cursor f2 = db.rawQuery("select codigo from Probolsa where bolsa = "+ bolsa + " and producto = " + f.getInt(5), null);
 
             if(f2.moveToFirst()){
                 nuevo = f2.getInt(0);
-                mostrarDialogo();
+                Message msg = new Message();
+                msg.what = 3;
+                mHandler.sendMessage(msg);
             } else {
                 nuevo = -1;
             }
@@ -279,8 +277,36 @@ public class ProductoFragment extends Fragment {
             numberPicker.setMinValue(0);
             numberPicker.setMaxValue(0);
             txtPuntos.setText("Puntos");
-            Toast.makeText(getActivity(), "No existe producto", Toast.LENGTH_LONG).show();
+            invisible();
         }
+    }
+
+    void visible(){
+        txtTipo.setVisibility(View.VISIBLE);
+        txtNombre.setVisibility(View.VISIBLE);
+        txtContenido.setVisibility(View.VISIBLE);
+        txtPeso.setVisibility(View.VISIBLE);
+        txtPuntos.setVisibility(View.VISIBLE);
+        btnAgregar.setVisibility(View.VISIBLE);
+        numberPicker.setVisibility(View.VISIBLE);
+        imgProducto.setVisibility(View.VISIBLE);
+        txtTitleInformo.setVisibility(View.INVISIBLE);
+        txtTextInformo.setVisibility(View.INVISIBLE);
+        btnMeinformo.setVisibility(View.INVISIBLE);
+    }
+
+    void invisible(){
+        txtTipo.setVisibility(View.INVISIBLE);
+        txtNombre.setVisibility(View.INVISIBLE);
+        txtContenido.setVisibility(View.INVISIBLE);
+        txtPeso.setVisibility(View.INVISIBLE);
+        txtPuntos.setVisibility(View.INVISIBLE);
+        btnAgregar.setVisibility(View.INVISIBLE);
+        numberPicker.setVisibility(View.INVISIBLE);
+        imgProducto.setVisibility(View.INVISIBLE);
+        txtTitleInformo.setVisibility(View.VISIBLE);
+        txtTextInformo.setVisibility(View.VISIBLE);
+        btnMeinformo.setVisibility(View.VISIBLE);
     }
 
     public void GetBolsa()  {
@@ -297,14 +323,16 @@ public class ProductoFragment extends Fragment {
     public class Buscar extends AsyncTask<Void,Void,Void> {
 
         int numpicker;
+        String nomproducto;
 
-        public Buscar(int numpicker){
+        public Buscar(int numpicker, String nomproducto){
             this.numpicker = numpicker;
+            this.nomproducto = nomproducto;
         }
 
         @Override
         protected Void doInBackground(Void... voids) {
-            if(txtNombre.getText().toString().compareTo("Nombre Producto") != 0){
+            if(nomproducto.compareTo("Nombre Producto") != 0){
                 try {
                     AddProBolsa(numpicker);
                     Message msg = new Message();

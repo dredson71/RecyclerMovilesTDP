@@ -31,9 +31,9 @@ public class TendenciaActivity extends Fragment implements  TabLayout.OnTabSelec
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.activity_tendencia,container,false);
         tabLayout = (TabLayout)view.findViewById(R.id.tabLayoutTendencia2);
-        tabLayout.addTab(tabLayout.newTab().setText("Week"));
-        tabLayout.addTab(tabLayout.newTab().setText("Month"));
-        tabLayout.addTab(tabLayout.newTab().setText("Year"));
+        tabLayout.addTab(tabLayout.newTab().setText("Semana"));
+        tabLayout.addTab(tabLayout.newTab().setText("Mes"));
+        tabLayout.addTab(tabLayout.newTab().setText("Record"));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
         viewPager =view.findViewById(R.id.viewPagerTendencia2);
         adapter = new ViewTrendingAdapter(getFragmentManager(),tabLayout.getTabCount());

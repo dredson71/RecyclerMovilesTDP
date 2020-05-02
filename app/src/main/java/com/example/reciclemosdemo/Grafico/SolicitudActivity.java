@@ -1,5 +1,16 @@
 package com.example.reciclemosdemo.Grafico;
 
+import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,28 +23,17 @@ import com.example.reciclemosdemo.Entities.JsonPlaceHolderApi;
 import com.example.reciclemosdemo.Entities.Solicitud;
 import com.example.reciclemosdemo.Entities.Usuario;
 import com.example.reciclemosdemo.Inicio.BolsaActivity;
-import com.example.reciclemosdemo.Inicio.LectorActivity;
+import com.example.reciclemosdemo.Inicio.CatalogoActivity;
 import com.example.reciclemosdemo.Inicio.LoginActivity;
+import com.example.reciclemosdemo.Inicio.MeInformoActivity;
+import com.example.reciclemosdemo.Inicio.ScanBarCodeActivity;
 import com.example.reciclemosdemo.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 
-import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.EditText;
-import android.widget.TextView;
-import android.widget.Toast;
-
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
-import java.text.DateFormat;
 import java.text.ParseException;
-import java.util.Date;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -63,7 +63,7 @@ public class SolicitudActivity extends AppCompatActivity   implements Navigation
         mDrawerLayout = findViewById(R.id.drawer);
         NavigationView navigationView = (NavigationView) findViewById(R.id.navigationView);
         navigationView.setNavigationItemSelectedListener(this);
-        ActionBarDrawerToggle mToggle = new ActionBarDrawerToggle(this,mDrawerLayout,toolbar,R.string.open,R.string.close);
+        ActionBarDrawerToggle mToggle = new ActionBarDrawerToggle(this,mDrawerLayout,toolbar, R.string.open, R.string.close);
         mDrawerLayout.addDrawerListener(mToggle);
         mToggle.syncState();
 
@@ -94,7 +94,7 @@ public class SolicitudActivity extends AppCompatActivity   implements Navigation
                         overridePendingTransition(0,0);
                         return true;
                     case R.id.escaner:
-                        startActivity(new Intent(getApplicationContext(), LectorActivity.class));
+                        startActivity(new Intent(getApplicationContext(), ScanBarCodeActivity.class));
                         overridePendingTransition(0,0);
                         return true;
                     case R.id.mibolsa:
@@ -102,6 +102,8 @@ public class SolicitudActivity extends AppCompatActivity   implements Navigation
                         overridePendingTransition(0,0);
                         return true;
                     case R.id.catalogo:
+                        startActivity(new Intent(getApplicationContext(), CatalogoActivity.class));
+                        overridePendingTransition(0,0);
                         return true;
                 }
                 return false;
@@ -172,9 +174,16 @@ public class SolicitudActivity extends AppCompatActivity   implements Navigation
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
-            case R.id.txtMiPerfil:
-                startActivity(new Intent(getApplicationContext(), ProfileActivity.class));
+            case R.id.nav_info:
+                startActivity(new Intent(getApplicationContext(), MeInformoActivity.class));
                 break;
+            case R.id.nav_message:
+                Toast.makeText(this, "Proximamente 2", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.nav_logout:
+                startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+                break;
+
         }
         mDrawerLayout.closeDrawer(GravityCompat.START);
         return true;

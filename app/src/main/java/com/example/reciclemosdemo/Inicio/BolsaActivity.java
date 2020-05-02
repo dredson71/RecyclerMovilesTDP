@@ -30,7 +30,7 @@ import com.google.android.material.navigation.NavigationView;
 
 import java.util.ArrayList;
 
-public class BolsaActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener  {
+public class BolsaActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
     private DrawerLayout mDrawerLayout;
     FragmentManager fragmentManager;
     FragmentTransaction transaction, transaction2;
@@ -83,8 +83,6 @@ public class BolsaActivity extends AppCompatActivity implements NavigationView.O
             }
         });
 
-
-
         //INICIALIZA APP BAR
         BottomNavigationView bottomNavigationView = findViewById(R.id.botton_navigation);
 
@@ -101,12 +99,16 @@ public class BolsaActivity extends AppCompatActivity implements NavigationView.O
                         overridePendingTransition(0,0);
                         return true;
                     case R.id.escaner:
-                        startActivity(new Intent(getApplicationContext(), LectorActivity.class));
+                        startActivity(new Intent(getApplicationContext(), ScanBarCodeActivity.class));
                         overridePendingTransition(0,0);
                         return true;
                     case R.id.mibolsa:
+                        startActivity(new Intent(getApplicationContext(), BolsaActivity.class));
+                        overridePendingTransition(0,0);
                         return true;
                     case R.id.catalogo:
+                        startActivity(new Intent(getApplicationContext(), CatalogoActivity.class));
+                        overridePendingTransition(0,0);
                         return true;
                 }
                 return false;
@@ -122,6 +124,7 @@ public class BolsaActivity extends AppCompatActivity implements NavigationView.O
             super.onBackPressed();
         }
     }
+
     public void setEscaneaAlgoFragment(){
         fragmentManager = getSupportFragmentManager();
         transaction2 = fragmentManager.beginTransaction();
@@ -133,11 +136,15 @@ public class BolsaActivity extends AppCompatActivity implements NavigationView.O
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
             case R.id.nav_info:
-                Toast.makeText(this, "Proximamente", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(getApplicationContext(), MeInformoActivity.class));
                 break;
             case R.id.nav_message:
                 Toast.makeText(this, "Proximamente 2", Toast.LENGTH_SHORT).show();
                 break;
+            case R.id.nav_logout:
+                startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+                break;
+
         }
         mDrawerLayout.closeDrawer(GravityCompat.START);
         return true;

@@ -19,7 +19,10 @@ import android.widget.Toast;
 
 import com.example.reciclemosdemo.Adicionales.dbHelper;
 import com.example.reciclemosdemo.Inicio.BolsaActivity;
-import com.example.reciclemosdemo.Inicio.LectorActivity;
+import com.example.reciclemosdemo.Inicio.CatalogoActivity;
+import com.example.reciclemosdemo.Inicio.LoginActivity;
+import com.example.reciclemosdemo.Inicio.MeInformoActivity;
+import com.example.reciclemosdemo.Inicio.ScanBarCodeActivity;
 import com.example.reciclemosdemo.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
@@ -32,11 +35,13 @@ public class ListBolsas extends AppCompatActivity  implements NavigationView.OnN
     private ViewPager viewPager;
     private com.example.reciclemosdemo.Grafico.ViewTrendAdapter adapter;
     private TabLayout tabLayout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         com.example.reciclemosdemo.Grafico.RetrofitMain retrofitMain;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_bolsas);
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         mDrawerLayout = findViewById(R.id.drawer);
@@ -84,7 +89,7 @@ public class ListBolsas extends AppCompatActivity  implements NavigationView.OnN
                     case R.id.miaporte:
                         return true;
                     case R.id.escaner:
-                        startActivity(new Intent(getApplicationContext(), LectorActivity.class));
+                        startActivity(new Intent(getApplicationContext(), ScanBarCodeActivity.class));
                         overridePendingTransition(0,0);
                         return true;
                     case R.id.mibolsa:
@@ -92,6 +97,8 @@ public class ListBolsas extends AppCompatActivity  implements NavigationView.OnN
                         overridePendingTransition(0,0);
                         return true;
                     case R.id.catalogo:
+                        startActivity(new Intent(getApplicationContext(), CatalogoActivity.class));
+                        overridePendingTransition(0,0);
                         return true;
                 }
                 return false;
@@ -117,11 +124,15 @@ public class ListBolsas extends AppCompatActivity  implements NavigationView.OnN
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
             case R.id.nav_info:
-                Toast.makeText(this, "Proximamente", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(getApplicationContext(), MeInformoActivity.class));
                 break;
             case R.id.nav_message:
                 Toast.makeText(this, "Proximamente 2", Toast.LENGTH_SHORT).show();
                 break;
+            case R.id.nav_logout:
+                startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+                break;
+
         }
         mDrawerLayout.closeDrawer(GravityCompat.START);
         return true;

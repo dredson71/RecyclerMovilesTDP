@@ -32,11 +32,12 @@
             android:layout_marginEnd="16dp"
             android:text="¿Olvidaste tu contraseña?"
             android:textAlignment="center"
+            android:textSize="16sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.502"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/txtPassword" />
+            app:layout_constraintTop_toBottomOf="@+id/checkbox" />
 
         <TextView
             android:id="@+id/textView"
@@ -45,8 +46,9 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="24dp"
             android:layout_marginEnd="16dp"
-            android:text="Login"
+            android:text="Iniciar sesión"
             android:textAlignment="center"
+            android:textColor="#347032"
             android:textSize="30sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
@@ -58,14 +60,18 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
+            android:backgroundTint="@color/botones_principales"
             android:onClick="Autenticar"
             android:text="Ingresar"
             android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+            android:textColor="@color/botones_principales_texto"
             android:textSize="18sp"
+            app:cornerRadius="20dp"
             app:layout_constraintEnd_toEndOf="@+id/txtPassword"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="@+id/txtPassword"
             app:layout_constraintTop_toBottomOf="@+id/txtForget" />
+
 
         <EditText
             android:id="@+id/txtPassword"
@@ -75,11 +81,21 @@
             android:hint="Contraseña"
             android:inputType="textPassword"
             android:maxLines="1"
-            android:textSize="14sp"
+            android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="@+id/txtEmail"
             app:layout_constraintHorizontal_bias="0.500"
             app:layout_constraintStart_toStartOf="@+id/txtEmail"
             app:layout_constraintTop_toBottomOf="@+id/txtEmail" />
+
+        <CheckBox
+            android:id="@+id/checkbox"
+            android:layout_width="0dp"
+            android:layout_height="25dp"
+            android:text="Mostrar Contraseña"
+            app:layout_constraintBottom_toTopOf="@+id/txtForget"
+            app:layout_constraintEnd_toEndOf="@+id/txtPassword"
+            app:layout_constraintStart_toStartOf="@+id/txtPassword"
+            app:layout_constraintTop_toBottomOf="@+id/txtPassword" />
 
         <View
             android:id="@+id/divider"
@@ -94,21 +110,21 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/btnIngresar" />
 
-            <EditText
-                android:id="@+id/txtEmail"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:inputType="textEmailAddress"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginEnd="8dp"
-                android:maxLines="1"
-                android:hint="Correo"
-                android:textSize="14sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.500"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView"/>
+        <EditText
+            android:id="@+id/txtEmail"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="8dp"
+            android:hint="Correo electrónico"
+            android:inputType="textEmailAddress"
+            android:maxLines="1"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.500"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView" />
 
         <Button
             android:id="@+id/btnRegistrar"
@@ -116,9 +132,12 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="16dp"
+            android:backgroundTint="@color/botones_principales_texto"
             android:text="Registrarse"
             android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+            android:textColor="@color/botones_principales"
             android:textSize="18sp"
+            app:cornerRadius="20dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/btnIngresar"
             app:layout_constraintHorizontal_bias="0.5"
@@ -132,8 +151,9 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="20dp"
             android:layout_marginEnd="16dp"
-            android:text="¿No tienes cuenta?"
+            android:text="¿Todavía no tienes una cuenta?"
             android:textAlignment="center"
+            android:textSize="16sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

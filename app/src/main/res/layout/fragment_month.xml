@@ -10,356 +10,170 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         >
+        <TextView
 
-        <lecho.lib.hellocharts.view.LineChartView
-            android:id="@+id/chart"
-            android:layout_width="match_parent"
-            android:layout_height="300dp"
-            android:layout_marginStart="32dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="32dp"
-            android:layout_marginBottom="16dp"
-            android:alpha="0"
-            app:layout_constraintBottom_toTopOf="@+id/relativeTendenciasHoy"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:id="@+id/txtCuenta"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="241dp"
+            android:fontFamily="sans-serif-black"
+            android:text="Resumen"
+            android:textColor="@color/colorNotSelectedBar"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <RelativeLayout
-            android:id="@+id/relativeTendenciasHoy"
+
+        <TextView
+            android:id="@+id/txtBolsas"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
-            app:layout_constraintBottom_toTopOf="@+id/relativeReciclados"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="20dp"
+            android:fontFamily="sans-serif-black"
+            android:text="Cantidad de bolsas : "
+            app:layout_constraintEnd_toStartOf="@+id/txtInputBolsas"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@id/txtResiduos"
+            app:layout_constraintTop_toBottomOf="@+id/txtCuenta" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="10dp"
+            android:id="@+id/txtInputBolsas"
+            android:text="0"
+            app:layout_constraintStart_toStartOf="@id/txtInputResiduos"
+            app:layout_constraintTop_toBottomOf="@+id/txtCuenta"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/chart">
-
-            <RelativeLayout
-                android:id="@+id/txtinsertDatos"
-                android:layout_width="69dp"
-                android:layout_height="69dp">
-
-                <TextView
-                    android:id="@+id/txtCantBolsasHoy"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="10dp"
-                    android:text="0"
-                    android:textColor="#252525"
-                    android:textSize="20dp" />
-
-                <TextView
-                    android:id="@+id/txtdatosHoyBolsas"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/txtCantBolsasHoy"
-                    android:layout_centerHorizontal="true"
-                    android:text="residuos "
-                    android:textColor="#252525"
-                    android:textSize="10dp" />
+            android:id="@+id/txtResiduos"
+            android:layout_marginTop="10dp"
+            android:fontFamily="sans-serif-black"
+            android:text="Cantidad de residuos:  "
+            app:layout_constraintEnd_toStartOf="@+id/txtInputResiduos"
+            app:layout_constraintTop_toBottomOf="@+id/txtInputBolsas"
+            />
 
 
-            </RelativeLayout>
 
-            <RelativeLayout
-                android:id="@+id/txtPtosHoy"
-                android:layout_width="69dp"
-                android:layout_height="69dp"
-                android:layout_marginLeft="30dp"
-                android:layout_toEndOf="@+id/txtinsertDatos">
-
-                <TextView
-                    android:id="@+id/txtPtosBolsasHoy"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginTop="10dp"
-                    android:text="0"
-                    android:textColor="#252525"
-                    android:textSize="20dp" />
-
-                <TextView
-                    android:id="@+id/txtptoshoys"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/txtPtosBolsasHoy"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginLeft="20dp"
-                    android:text="ptos"
-                    android:textColor="#252525"
-                    android:textSize="10dp" />
-
-
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="69dp"
-                android:layout_height="69dp"
-                android:layout_marginLeft="30dp"
-                android:layout_toEndOf="@+id/txtPtosHoy"
-
-                >
-
-                <TextView
-                    android:id="@+id/txtPesoBolsasHoy"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginTop="10dp"
-                    android:text="0"
-                    android:textColor="#252525"
-                    android:textSize="20dp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/txtPesoBolsasHoy"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginLeft="20dp"
-                    android:text="kg"
-                    android:textColor="#252525"
-                    android:textSize="10dp" />
-            </RelativeLayout>
-        </RelativeLayout>
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="250dp"
-            android:layout_marginTop="20dp"
+        <TextView
+            android:id="@+id/txtInputResiduos"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginTop="10dp"
+            android:text="0"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/relativeTendenciasHoy"
-            android:id="@+id/relativeReciclados">
+            app:layout_constraintStart_toEndOf="@+id/txtResiduos"
+            app:layout_constraintTop_toBottomOf="@+id/txtInputBolsas" />
 
-            <RelativeLayout
-                android:id="@+id/relativePlastico"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_marginStart="16dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/relativePapelCarton"
-                app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+        <TextView
+            android:id="@+id/txtPlastico"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="20dp"
+            android:fontFamily="sans-serif-black"
+            android:text="Cantidad de plastico: "
+            app:layout_constraintEnd_toStartOf="@+id/txtInputPlastico"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@id/txtResiduos"
+            app:layout_constraintTop_toBottomOf="@+id/txtResiduos" />
 
-                <ImageView
-                    android:id="@+id/imagePlastic"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
-                    android:layout_centerHorizontal="true"
-                    android:background="@drawable/plastico"
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="10dp"
+            android:text="0"
+            android:id="@+id/txtInputPlastico"
+            app:layout_constraintStart_toStartOf="@id/txtInputResiduos"
+            app:layout_constraintTop_toBottomOf="@+id/txtInputResiduos"
+            />
 
-                    />
+        <TextView
+            android:id="@+id/txtVidrio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="20dp"
+            android:fontFamily="sans-serif-black"
+            android:text="Cantidad de vidrio: "
+            app:layout_constraintEnd_toStartOf="@+id/txtInputVidrio"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@id/txtResiduos"
+            app:layout_constraintTop_toBottomOf="@+id/txtInputPlastico" />
 
-                <TextView
-                    android:id="@+id/txtPlastico"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/imagePlastic"
-                    android:layout_marginTop="10dp"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginBottom="30dp"
-                    android:text="Plastico" />
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="10dp"
+            android:text="0"
+            android:id="@+id/txtInputVidrio"
+            app:layout_constraintStart_toStartOf="@id/txtInputResiduos"
+            app:layout_constraintTop_toBottomOf="@+id/txtInputPlastico"
+            />
 
-                <TextView
-                    android:id="@+id/txtPlasticoCantidad"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/txtPlastico"
-                    android:layout_centerInParent="true"
-                    android:layout_marginTop="-10dp"
-                    android:text="0" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="@id/txtResiduos"
+            android:id="@+id/txtPapelCarton"
+            android:layout_marginTop="10dp"
+            android:fontFamily="sans-serif-black"
+            android:text="Cantidad de Papel/Carton:  "
+            app:layout_constraintEnd_toStartOf="@+id/txtInputPapelCarton"
+            app:layout_constraintTop_toBottomOf="@+id/txtInputVidrio"
+            />
 
-                <TextView
-                    android:id="@+id/txtPlasticoPeso"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/txtPlasticoCantidad"
-                    android:layout_centerInParent="true"
-                    android:layout_marginTop="10dp"
-                    android:text="0gr" />
 
-                <TextView
-                    android:id="@+id/txtPlasticoPuntos"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/txtPlasticoPeso"
-                    android:layout_centerInParent="true"
-                    android:layout_marginTop="10dp"
-                    android:text="0  ptos" />
-            </RelativeLayout>
 
-            <RelativeLayout
-                android:id="@+id/relativePapelCarton"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/relativeVidrio"
-                app:layout_constraintStart_toEndOf="@+id/relativePlastico"
-                app:layout_constraintTop_toTopOf="parent">
+        <TextView
+            android:id="@+id/txtInputPapelCarton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginTop="10dp"
+            android:text="0"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/txtPapelCarton"
+            app:layout_constraintTop_toBottomOf="@+id/txtInputVidrio" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="@id/txtResiduos"
+            android:id="@+id/txtMetal"
+            android:layout_marginTop="10dp"
+            android:fontFamily="sans-serif-black"
+            android:text="Cantidad de Metal:  "
+            app:layout_constraintEnd_toStartOf="@+id/txtInputMetal"
+            app:layout_constraintTop_toBottomOf="@+id/txtInputPapelCarton"
+            />
 
-                <ImageView
-                    android:id="@+id/imagePaper"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
-                    android:layout_centerHorizontal="true"
-                    android:background="@drawable/carton"
 
-                    />
 
-                <TextView
-                    android:id="@+id/txtPapelCarton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/imagePaper"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="30dp"
-                    android:layout_centerHorizontal="true"
-                    android:text="Papel/Carton" />
-
-                <TextView
-                    android:id="@+id/txtPapelCartonCantidad"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/txtPapelCarton"
-                    android:layout_centerInParent="true"
-                    android:layout_marginTop="-10dp"
-                    android:text="0" />
-
-                <TextView
-                    android:id="@+id/txtPapelCartonPeso"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/txtPapelCartonCantidad"
-                    android:layout_centerInParent="true"
-                    android:layout_marginTop="10dp"
-                    android:text="0gr" />
-
-                <TextView
-                    android:id="@+id/txtPapelCartonPuntos"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/txtPapelCartonPeso"
-                    android:layout_centerInParent="true"
-                    android:layout_marginTop="10dp"
-                    android:text="0  ptos" />
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:id="@+id/relativeVidrio"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/relativeMetales"
-                app:layout_constraintStart_toEndOf="@+id/relativePapelCarton"
-                app:layout_constraintTop_toTopOf="parent">
-
-                <ImageView
-                    android:id="@+id/imageVidrio"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
-                    android:layout_centerHorizontal="true"
-                    android:background="@drawable/vidrio" />
-
-                <TextView
-                    android:id="@+id/txtVidrio"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/imageVidrio"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="30dp"
-                    android:text="Vidrio" />
-
-                <TextView
-                    android:id="@+id/txtVidrioCantidad"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/txtVidrio"
-                    android:layout_centerInParent="true"
-                    android:layout_marginTop="-10dp"
-                    android:text="0" />
-
-                <TextView
-                    android:id="@+id/txtVidrioPeso"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/txtVidrioCantidad"
-                    android:layout_centerInParent="true"
-                    android:layout_marginTop="10dp"
-                    android:text="0gr" />
-
-                <TextView
-                    android:id="@+id/txtVidrioPuntos"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/txtVidrioPeso"
-                    android:layout_centerInParent="true"
-                    android:layout_marginTop="10dp"
-                    android:text="0  ptos" />
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:id="@+id/relativeMetales"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_marginEnd="16dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintStart_toEndOf="@+id/relativeVidrio"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.0">
-
-                <ImageView
-                    android:id="@+id/imageMetal"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
-                    android:layout_centerHorizontal="true"
-                    android:background="@drawable/metal" />
-
-                <TextView
-                    android:id="@+id/txtMetales"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/imageMetal"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="30dp"
-                    android:text="Metales" />
-
-                <TextView
-                    android:id="@+id/txtMetalesCantidad"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/txtMetales"
-                    android:layout_centerInParent="true"
-                    android:layout_marginTop="-10dp"
-                    android:text="0" />
-
-                <TextView
-                    android:id="@+id/txtMetalesPeso"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/txtMetalesCantidad"
-                    android:layout_centerInParent="true"
-                    android:layout_marginTop="10dp"
-                    android:text="0gr" />
-
-                <TextView
-                    android:id="@+id/txtMetalesPuntos"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/txtMetalesPeso"
-                    android:layout_centerInParent="true"
-                    android:layout_marginTop="10dp"
-                    android:text="0  ptos" />
-            </RelativeLayout>
+        <TextView
+            android:id="@+id/txtInputMetal"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginTop="10dp"
+            android:text="0"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/txtMetal"
+            app:layout_constraintTop_toBottomOf="@+id/txtInputPapelCarton" />
         </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </ScrollView>

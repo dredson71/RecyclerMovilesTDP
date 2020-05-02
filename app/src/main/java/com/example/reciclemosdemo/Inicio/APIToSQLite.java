@@ -3,40 +3,27 @@ package com.example.reciclemosdemo.Inicio;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Color;
 import android.util.Log;
-import android.widget.ArrayAdapter;
-import android.widget.TextView;
-
-import androidx.annotation.NonNull;
 
 import com.example.reciclemosdemo.Adicionales.dbHelper;
 import com.example.reciclemosdemo.Entities.Bolsa;
-import com.example.reciclemosdemo.Entities.Departamento;
 import com.example.reciclemosdemo.Entities.JsonPlaceHolderApi;
 import com.example.reciclemosdemo.Entities.Probolsa;
 import com.example.reciclemosdemo.Entities.Producto;
+import com.example.reciclemosdemo.Entities.Reciclador;
 import com.example.reciclemosdemo.Entities.Usuario;
 
 import java.io.IOException;
-import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.TimeZone;
 
-import lecho.lib.hellocharts.model.Axis;
-import lecho.lib.hellocharts.model.AxisValue;
-import lecho.lib.hellocharts.model.Line;
-import lecho.lib.hellocharts.model.LineChartData;
-import lecho.lib.hellocharts.model.PointValue;
-import lecho.lib.hellocharts.model.Viewport;
-import lecho.lib.hellocharts.view.LineChartView;
 import retrofit2.Call;
-import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -55,11 +42,19 @@ public class APIToSQLite {
     private int residuosTotal;
     private int [] yAxisDataMonth= {0,0,0,0,0,0,0};
     private int [] yAxisDataYear= {0,0,0,0,0,0,0,0,0,0,0,0};
+    private int [] yAxisDataYearBolsa= {0,0,0,0,0,0,0,0,0,0,0,0};
+    private  Set<Integer> bolsasLast = new HashSet<>();
 
-    public APIToSQLite(Context context){
+
+    public APIToSQLite(Context context,String tipo){
         helper = new dbHelper(context,"Usuario.sqlite", null, 1);
         db = helper.getWritableDatabase();
-        helper.DropCreate(db);
+        if(!tipo.equals("actualizar")) {
+            helper.DropCreate(db);
+        }
+        else{
+            helper.UpdateTable(db);
+        }
         this.context = context;
         retrofit = new Retrofit.Builder()
                 .baseUrl("https://recyclerapiresttdp.herokuapp.com/")
@@ -124,6 +119,26 @@ public class APIToSQLite {
                 Log.e("TAG","onFailure:" + t.getMessage());
             }
         });*/
+    }
+
+    public void InsertReciclador()throws  IOException, InterruptedException{
+        dbHelper helper = new dbHelper(context,"Usuario.sqlite", null, 1);
+        SQLiteDatabase db = helper.getReadableDatabase();
+        Cursor f1 = db.rawQuery("select distrito_name from Usuario ",null);
+        f1.moveToFirst();
+        String nombreDistrito = f1.getString(0);
+        JsonPlaceHolderApi jsonPlaceHolderApi=retrofit.create(JsonPlaceHolderApi.class);
+        Call<Reciclador> call=jsonPlaceHolderApi.getReciclador("/reciclador/distrito/"+nombreDistrito);
+        System.out.println(nombreDistrito);
+        Response<Reciclador> response = call.execute();
+        Reciclador p = response.body();
+        String query = "insert into Reciclador (codigo,distrito ,asociacion ,zona , password ,salt ,apellido ,direccion ,dni ,email ,fecha_Nacimiento ,nombre ,codFormalizado ,celular ,imagen) " +
+                "values ("+p.getCodigo()+",'"+p.getDistrito()+"','"+p.getAsociacion().getNombre()+"','"+p.getZona()+"','"+p.getPassword()+"','"+p.getSalt()+"','"+p.getApellido()+"','"+p.getDireccion()+"',+'"+
+        p.getDni()+"','"+p.getEmail()+"','"+p.getFecha_Nacimiento()+"','"+p.getNombre()+"','"+p.getCodFormalizado()+"','"+p.getCelular()+"','"+p.getRecilador_Imagen()+"')";
+        db.execSQL(query);
+        System.out.println(query);
+        db.close();
+        Log.e("TAG","onResponse:" + response.toString());
     }
 
     public void InsertProductos() throws IOException, InterruptedException {
@@ -224,7 +239,7 @@ public class APIToSQLite {
         for (Bolsa p: response.body()) {
             if(p.getCreadoFecha() == null){
                 String query = "insert into Bolsa (codigo, activa, creadoFecha, puntuacion, qrcode, recojoFecha) " +
-                        "values (" + p.getCodigo() + ", '" + p.getActiva() + "', " + null + ", " + p.getPuntuacion() + ", " + null
+                        "values (" + p.getCodigo() + ", 'true', " + null + ", " + p.getPuntuacion() + ", " + null
                         + ", " + null + ")";
                 db.execSQL(query);
                 System.out.println(query);
@@ -237,34 +252,6 @@ public class APIToSQLite {
             }
         }
         Log.e("TAG","onResponse:" + response.toString());
-        /*call.enqueue(new Callback<List<Bolsa>>() {
-            @Override
-            public void onResponse(Call<List<Bolsa>> call, Response<List<Bolsa>> response) {
-                if(response.isSuccessful()) {
-                    for (Bolsa p: response.body()) {
-                        if(p.getCreadoFecha() == null){
-                            String query = "insert into Bolsa (codigo, activa, creadoFecha, puntuacion, qrcode, recojoFecha) " +
-                                    "values (" + p.getCodigo() + ", " + p.getActiva() + ", " + null + ", " + p.getPuntuacion() + ", " + null
-                                    + ", " + null + ")";
-                            db.execSQL(query);
-                            System.out.println(query);
-                        } else{
-                            String query = "insert into Bolsa (codigo, activa, creadoFecha, puntuacion, qrcode, recojoFecha) " +
-                                    "values (" + p.getCodigo() + ", '" + p.getActiva() + "', '" + p.getCreadoFecha() + "', " + p.getPuntuacion() + ", " + p.getQrCode().getCodigo()
-                                    + ", '" + p.getRecojoFecha() + "')";
-                            db.execSQL(query);
-                            System.out.println(query);
-                        }
-                    }
-                    Log.e("TAG","onResponse:" + response.toString());
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<Bolsa>> call, Throwable t) {
-                Log.e("TAG","onFailure:" + t.getMessage());
-            }
-        });*/
     }
 
     public void InsertProbolsa() throws IOException, InterruptedException {
@@ -284,15 +271,15 @@ public class APIToSQLite {
             @Override
             public void onResponse(Call<List<Probolsa>> call, Response<List<Probolsa>> response) {
                 if(response.isSuccessful()) {*/
-                    for (Probolsa p: response.body()) {
-                        String query = "insert into Probolsa (bolsa, cantidad, codigo, peso, producto, puntuacion) " +
-                                "values (" + p.getBolsa().getCodigo() + ", " + p.getCantidad() + ", " + p.getCodigo() + ", "
-                                + p.getPeso() + ", " + p.getProducto().getCodigo() + ", " + p.getPuntuacion() + ")";
-                        db.execSQL(query);
-                        System.out.println(query);
-                    }
-                    db.close();
-                    Log.e("TAG","onResponse:" + response.toString());
+        for (Probolsa p: response.body()) {
+            String query = "insert into Probolsa (bolsa, cantidad, codigo, peso, producto, puntuacion) " +
+                    "values (" + p.getBolsa().getCodigo() + ", " + p.getCantidad() + ", " + p.getCodigo() + ", "
+                    + p.getPeso() + ", " + p.getProducto().getCodigo() + ", " + p.getPuntuacion() + ")";
+            db.execSQL(query);
+            System.out.println(query);
+        }
+        db.close();
+        Log.e("TAG","onResponse:" + response.toString());
                 /*}else{
                     Log.e("TAG","onResponse:" + response.toString());
                 }
@@ -392,9 +379,9 @@ public class APIToSQLite {
         Call<List<Probolsa>> call=jsonPlaceHolderApi.getBolsasByDate("probolsa/bolsasDay/"+codigo);
         Response<List<Probolsa>> response = call.execute();
         for(Probolsa probolsas : response.body()){
-                        bolsas.add(probolsas.getBolsa().getCodigo());
-                        pesoCount+=probolsas.getPeso();
-                        puntosCount+=probolsas.getPuntuacion();
+            bolsas.add(probolsas.getBolsa().getCodigo());
+            pesoCount+=probolsas.getPeso();
+            puntosCount+=probolsas.getPuntuacion();
         }
         String query = "insert into Contador (tendenciaTipo,cantidad ,peso ,puntuacion ) " +
                 "values ('Dia', " +  bolsas.size()+ ", " + pesoCount + ", "
@@ -434,7 +421,7 @@ public class APIToSQLite {
         initialCounter();
         dbHelper helper = new dbHelper(context, "Usuario.sqlite", null, 1);
         SQLiteDatabase db = helper.getWritableDatabase();
-
+        Set<Integer> bolsas = new HashSet<>();
         Cursor fila = db.rawQuery("select codigo from Usuario", null);
 
         fila.moveToFirst();
@@ -443,64 +430,126 @@ public class APIToSQLite {
         JsonPlaceHolderApi jsonPlaceHolderApi=retrofit.create(JsonPlaceHolderApi.class);
         Call<List<Probolsa>> call=jsonPlaceHolderApi.getBolsasByDate("probolsa/"+urlDate+codigo);
         Response<List<Probolsa>> response = call.execute();
-       for (Probolsa bolsasbydate : response.body()) {
-           valor++;
-               if (bolsasbydate.getBolsa().getRecojoFecha() != null) {
+        for (Probolsa bolsasbydate : response.body()) {
+            valor++;
+            if (bolsasbydate.getBolsa().getRecojoFecha() != null) {
+                bolsasLast.add(bolsasbydate.getBolsa().getCodigo());
+                Date dia = bolsasbydate.getBolsa().getRecojoFecha();
+                Calendar cal = Calendar.getInstance();
+                cal.setTime(dia);
+                if (cal.get(Calendar.MONTH) == 1)
+                    yAxisDataYear[0] += 1;
+                else if (cal.get(Calendar.MONTH) == 2)
+                    yAxisDataYear[1] += 1;
+                else if (cal.get(Calendar.MONTH) == 3)
+                    yAxisDataYear[2] += 1;
+                else if (cal.get(Calendar.MONTH) == 4)
+                    yAxisDataYear[3] += 1;
+                else if (cal.get(Calendar.MONTH) == 5)
+                    yAxisDataYear[4] += 1;
+                else if (cal.get(Calendar.MONTH) == 6)
+                    yAxisDataYear[5] += 1;
+                else if (cal.get(Calendar.MONTH) == 7)
+                    yAxisDataYear[6] += 1;
+                else if (cal.get(Calendar.MONTH) == 8)
+                    yAxisDataYear[7] += 1;
+                else if (cal.get(Calendar.MONTH) == 9)
+                    yAxisDataYear[8] += 1;
+                else if (cal.get(Calendar.MONTH) == 10)
+                    yAxisDataYear[9] += 1;
+                else if (cal.get(Calendar.MONTH) == 11)
+                    yAxisDataYear[10] += 1;
+                else if (cal.get(Calendar.MONTH) == 12)
+                    yAxisDataYear[11] += 1;
+                bolsas.add(bolsasbydate.getBolsa().getCodigo());
+                addingValuestoText(bolsasbydate);
+            }
 
-                   Date dia = bolsasbydate.getBolsa().getRecojoFecha();
-                   Calendar cal = Calendar.getInstance();
-                   cal.setTime(dia);
-                   if (cal.get(Calendar.MONTH) == 1)
-                       yAxisDataYear[0] += 1;
-                   else if (cal.get(Calendar.MONTH) == 2)
-                       yAxisDataYear[1] += 1;
-                   else if (cal.get(Calendar.MONTH) == 3)
-                       yAxisDataYear[2] += 1;
-                   else if (cal.get(Calendar.MONTH) == 4)
-                       yAxisDataYear[3] += 1;
-                   else if (cal.get(Calendar.MONTH) == 5)
-                       yAxisDataYear[4] += 1;
-                   else if (cal.get(Calendar.MONTH) == 6)
-                       yAxisDataYear[5] += 1;
-                   else if (cal.get(Calendar.MONTH) == 7)
-                       yAxisDataYear[6] += 1;
-                   else if (cal.get(Calendar.MONTH) == 8)
-                       yAxisDataYear[7] += 1;
-                   else if (cal.get(Calendar.MONTH) == 9)
-                       yAxisDataYear[8] += 1;
-                   else if (cal.get(Calendar.MONTH) == 10)
-                       yAxisDataYear[9] += 1;
-                   else if (cal.get(Calendar.MONTH) == 11)
-                       yAxisDataYear[10] += 1;
-                   else if (cal.get(Calendar.MONTH) == 12)
-                       yAxisDataYear[11] += 1;
-
-                   addingValuestoText(bolsasbydate);
-               }
-
-           }
+        }
         if(valor>0) {
-                generateQuery("Year", "Plastico", plasticoCount, pesoPlastico, puntosPlastico,0);
-                generateQuery("Year", "Vidrio", vidrioCount, pesoVidrio, puntosVidrio,0);
-                generateQuery("Year", "Papel", papelCartonCount, pesoPapelCarton, puntosPapelCarton,0);
-                generateQuery("Year", "Metal", metalCount, pesoMetal, puntosMetal,0);
-                String query = "insert into DatosAnuales(enero,febrero,marzo,abril,mayo,junio,julio,agosto,setiembre,octubre,noviembre,diciembre) " +
-                        "values ( " + yAxisDataYear[0] + ", " + yAxisDataYear[1] + ", "
-                        + yAxisDataYear[2] + ", " + yAxisDataYear[3] + ", " + yAxisDataYear[4] + "," + yAxisDataYear[5]  + ", "
-                        + yAxisDataYear[6] + ", " + yAxisDataYear[7] + ","+ + yAxisDataYear[8] + ","+yAxisDataYear[9] + ", " + yAxisDataYear[10] +","+ yAxisDataYear[11] +  ")";
-                db.execSQL(query);
-                System.out.println(query);
+            generateQuery("Year", "Plastico", plasticoCount, pesoPlastico, puntosPlastico,bolsas.size());
+            generateQuery("Year", "Vidrio", vidrioCount, pesoVidrio, puntosVidrio,bolsas.size());
+            generateQuery("Year", "Papel", papelCartonCount, pesoPapelCarton, puntosPapelCarton,bolsas.size());
+            generateQuery("Year", "Metal", metalCount, pesoMetal, puntosMetal,bolsas.size());
+            String query = "insert into DatosAnuales(enero,febrero,marzo,abril,mayo,junio,julio,agosto,setiembre,octubre,noviembre,diciembre,tipo) " +
+                    "values ( " + yAxisDataYear[0] + ", " + yAxisDataYear[1] + ", "
+                    + yAxisDataYear[2] + ", " + yAxisDataYear[3] + ", " + yAxisDataYear[4] + "," + yAxisDataYear[5]  + ", "
+                    + yAxisDataYear[6] + ", " + yAxisDataYear[7] + ","+ + yAxisDataYear[8] + ","+yAxisDataYear[9] + ", " + yAxisDataYear[10] +","+ yAxisDataYear[11] +  ",'probolsa')";
+            db.execSQL(query);
+            System.out.println(query);
 
         }
 
         db.close();
         Log.e("TAG","onResponse:" + response.toString());
+        System.out.println(bolsasLast.size());
+        try {
+            obtenerLasBolsasMonth("bolsasYear/");
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
     }
 
+    public void obtenerLasBolsasMonth(String urlDate) throws ParseException {
+        initialCounter();
+        dbHelper helper = new dbHelper(context, "Usuario.sqlite", null, 1);
+        SQLiteDatabase db = helper.getWritableDatabase();
+        int valor = 0;
+        for (Integer bolsasLast : bolsasLast) {
+            Cursor f1 = db.rawQuery("select recojoFecha from Bolsa where codigo = "+ bolsasLast,null);
+            if(f1.moveToFirst()){
+                do {
+                    valor++;
+                    if(!f1.getString(0).equals("null") || !f1.getString(0).equals(null)) {
+                        String sDate1 = f1.getString(0);
+                        Date dia=new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy").parse(sDate1);
+                        Calendar cal = Calendar.getInstance();
+                        cal.setTime(dia);
+                        if (cal.get(Calendar.MONTH) == 1)
+                            yAxisDataYearBolsa[0] += 1;
+                        else if (cal.get(Calendar.MONTH) == 2)
+                            yAxisDataYearBolsa[1] += 1;
+                        else if (cal.get(Calendar.MONTH) == 3)
+                            yAxisDataYearBolsa[2] += 1;
+                        else if (cal.get(Calendar.MONTH) == 4)
+                            yAxisDataYearBolsa[3] += 1;
+                        else if (cal.get(Calendar.MONTH) == 5)
+                            yAxisDataYearBolsa[4] += 1;
+                        else if (cal.get(Calendar.MONTH) == 6)
+                            yAxisDataYearBolsa[5] += 1;
+                        else if (cal.get(Calendar.MONTH) == 7)
+                            yAxisDataYearBolsa[6] += 1;
+                        else if (cal.get(Calendar.MONTH) == 8)
+                            yAxisDataYearBolsa[7] += 1;
+                        else if (cal.get(Calendar.MONTH) == 9)
+                            yAxisDataYearBolsa[8] += 1;
+                        else if (cal.get(Calendar.MONTH) == 10)
+                            yAxisDataYearBolsa[9] += 1;
+                        else if (cal.get(Calendar.MONTH) == 11)
+                            yAxisDataYearBolsa[10] += 1;
+                        else if (cal.get(Calendar.MONTH) == 12)
+                            yAxisDataYearBolsa[11] += 1;
+                    }
+
+                }while(f1.moveToNext());
+            }
+
+        }
+        if(valor>0) {
+            String query = "insert into DatosAnuales(enero,febrero,marzo,abril,mayo,junio,julio,agosto,setiembre,octubre,noviembre,diciembre,tipo) " +
+                    "values ( " + yAxisDataYearBolsa[0] + ", " + yAxisDataYearBolsa[1] + ", "
+                    + yAxisDataYearBolsa[2] + ", " + yAxisDataYearBolsa[3] + ", " + yAxisDataYearBolsa[4] + "," + yAxisDataYearBolsa[5]  + ", "
+                    + yAxisDataYearBolsa[6] + ", " + yAxisDataYearBolsa[7] + ","+ + yAxisDataYearBolsa[8] + ","+yAxisDataYearBolsa[9] + ", " + yAxisDataYearBolsa[10] +","+ yAxisDataYearBolsa[11] +  ",'bolsa')";
+            db.execSQL(query);
+            System.out.println(query);
+
+        }
 
 
-    public void initialCounter()
-    {
+        db.close();
+    }
+
+    public void initialCounter(){
         plasticoCount=0;
         pesoPlastico=0;
         puntosPlastico=0;
@@ -515,6 +564,7 @@ public class APIToSQLite {
         puntosMetal=0;
         residuosTotal=0;
     }
+
     public void addingValuestoText(Probolsa bolsasbydate ){
         if (bolsasbydate.getProducto().getCategoria().getNombre().equals("Plastico")) {
             pesoPlastico += bolsasbydate.getProducto().getPeso();
@@ -534,6 +584,7 @@ public class APIToSQLite {
             metalCount++;
         }
     }
+
     public void generateQuery(String tipo,String producto,double cantidad,double peso,double puntuacion,int bolsaID){
         String query = "insert into Contador (tendenciaTipo,productoTipo,cantidad,peso,puntuacion,bolsa) " +
                 "values ('" + tipo + "', '" + producto + "', " + cantidad + ", "

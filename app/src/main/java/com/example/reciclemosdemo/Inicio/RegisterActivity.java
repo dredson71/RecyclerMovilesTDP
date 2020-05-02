@@ -5,18 +5,27 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.DatePickerDialog;
+import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Paint;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
+import android.text.method.HideReturnsTransformationMethod;
+import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -26,6 +35,7 @@ import android.widget.Toast;
 
 
 import com.example.reciclemosdemo.Adicionales.CondicionesUso;
+import com.example.reciclemosdemo.Adicionales.dbHelper;
 import com.example.reciclemosdemo.Entities.Condominio;
 import com.example.reciclemosdemo.Entities.Departamento;
 import com.example.reciclemosdemo.Entities.Distrito;
@@ -35,6 +45,7 @@ import com.example.reciclemosdemo.Entities.Tipo_Usuario;
 import com.example.reciclemosdemo.Entities.Usuario;
 import com.example.reciclemosdemo.R;
 
+import java.io.IOException;
 import java.math.BigInteger;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
@@ -69,10 +80,11 @@ public class RegisterActivity extends AppCompatActivity {
 
     private static Pattern NOMAPE_PATTERN = Pattern.compile("^[a-zA-Z\\s]*$");
 
-    private EditText txtNombres, txtApellidos, txtDNI, txtNacimiento, txtDireccion, txtEmail, txtPassword, txtCelular;
+    private EditText txtNombres, txtApellidos, txtDNI, txtNacimiento, txtDireccion, txtEmail, txtPassword, txtCelular, txtRepetirPassword;
     private TextView btntxtCondominio, btntxtCondiciones;
     private Button btnRegistrar, btnLogin;
     private ImageButton btnCalendar;
+    private CheckBox checkBox;
     private Spinner spnDepartamento, spnDistrito, spnCondominio;
 
     public Calendar c = Calendar.getInstance();
@@ -87,6 +99,38 @@ public class RegisterActivity extends AppCompatActivity {
     public Sexo sexo = new Sexo();
     public Tipo_Usuario tipousuario = new Tipo_Usuario();
 
+
+    private ProgressDialog progressDialog, progressDialog2;
+    Handler mHandler = new Handler(Looper.getMainLooper()) {
+        @Override
+        public void handleMessage(Message message) {
+            switch (message.what){
+                case 1:
+                    progressDialog.show();
+                    progressDialog.setCancelable(false);
+                    break;
+                case 2:
+                    txtDNI.setError("El DNI ya existe");
+                    break;
+                case 3:
+                    txtEmail.setError("El email ya existe");
+                    break;
+                case 4:
+                    progressDialog.cancel();
+                    break;
+                case 5:
+                    progressDialog2.show();
+                    progressDialog2.setCancelable(false);
+                    break;
+                case 6:
+                    progressDialog2.cancel();
+                    Toast.makeText(getApplicationContext(), "Registro exitoso", Toast.LENGTH_LONG).show();
+                    Intent loginactivity = new Intent(getApplicationContext(), LoginActivity.class);
+                    startActivity(loginactivity);
+                    break;
+            }
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,6 +157,21 @@ public class RegisterActivity extends AppCompatActivity {
         txtEmail = findViewById(R.id.txtEmail);
         txtPassword = findViewById(R.id.txtPassword);
         txtCelular = findViewById(R.id.txtCelular);
+        txtRepetirPassword = findViewById(R.id.txtRepetirPassword);
+
+        checkBox = findViewById(R.id.checkbox);
+        checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked){
+                    txtPassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+                    txtRepetirPassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+                }else {
+                    txtPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
+                    txtRepetirPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
+                }
+            }
+        });
 
         spnDepartamento = findViewById(R.id.spnDepartamento);
         spnDistrito = findViewById(R.id.spnDistrito);
@@ -125,9 +184,16 @@ public class RegisterActivity extends AppCompatActivity {
 
         btnLogin.setOnClickListener(mOnClickListener);
         btntxtCondiciones.setOnClickListener(nOnClickListener);
+        btnRegistrar.setOnClickListener(oOnClickListener);
 
         btntxtCondiciones.setPaintFlags(btntxtCondiciones.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
         btntxtCondominio.setPaintFlags(btntxtCondominio.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Validando, por favor espere...");
+
+        progressDialog2 = new ProgressDialog(this);
+        progressDialog2.setMessage("Registrando...");
 
 
         obtenerSexo(new EntityCallBack<Sexo>() {
@@ -217,6 +283,17 @@ public class RegisterActivity extends AppCompatActivity {
         public void onClick(View v) {
             Intent condicionesuso = new Intent(getApplicationContext(), CondicionesUso.class);
             startActivity(condicionesuso);
+        }
+    };
+
+    private View.OnClickListener oOnClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            try {
+                validacionSimple();
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
         }
     };
 
@@ -386,6 +463,7 @@ public class RegisterActivity extends AppCompatActivity {
     //VALIDACION DE PASSWORD
     private boolean validarPassword(){
         String passwordInput = txtPassword.getText().toString().trim();
+        String passwordRepetido = txtRepetirPassword.getText().toString().trim();
 
         if(passwordInput.isEmpty()){
             txtPassword.setError("Debe llenar el campo");
@@ -393,7 +471,10 @@ public class RegisterActivity extends AppCompatActivity {
         } else if (!PASSWORD_PATTERN.matcher(passwordInput).matches()){
             txtPassword.setError("Contraseña débil");
             return false;
-        } else{
+        } else if(passwordInput.compareTo(passwordRepetido) != 0) {
+            txtPassword.setError("Las contraseñas no coinciden");
+            return false;
+        }else {
             txtPassword.setError(null);
             return true;
         }
@@ -528,36 +609,34 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     //VALIDAR EMAIL REPETIDO
-    /*public boolean BuscarEmail(){
-        dbHelper helper = new dbHelper(this, "usuarios.sqlite", null, 1);
-        SQLiteDatabase db = helper.getWritableDatabase();
-
-        String valor_email = txtEmail.getText().toString();
-
-        Cursor fila = db.rawQuery("select codigo from usuarios where email =" + "\'"+valor_email+"\'", null);
-
-        boolean rpta = fila.moveToFirst();
-
-        db.close();
-
-        return rpta;
-    }*/
+    public boolean BuscarEmail(String email) throws IOException {
+        JsonPlaceHolderApi jsonPlaceHolderApi=retrofit.create(JsonPlaceHolderApi.class);
+        Call<Integer> call=jsonPlaceHolderApi.getEmail("usuario/correo/activo/" + email);
+        Response<Integer> response = call.execute();
+        Log.e("TAG","onResponse:" + response.toString());
+        if(response.body() == 1){
+            Message msg = new Message();
+            msg.what = 3;
+            mHandler.sendMessage(msg);
+            return false;
+        }else
+            return true;
+    }
 
     //VALIDAR EMAIL DNI
-    /*public boolean BuscarDNI(){
-        dbHelper helper = new dbHelper(this, "usuarios.sqlite", null, 1);
-        SQLiteDatabase db = helper.getWritableDatabase();
-
-        String valor_dni = txtDNI.getText().toString();
-
-        Cursor fila = db.rawQuery("select codigo from usuarios where dni =" + "\'"+valor_dni+"\'", null);
-
-        boolean rpta = fila.moveToFirst();
-
-        db.close();
-
-        return rpta;
-    }*/
+    public boolean BuscarDNI(String dni) throws IOException {
+        JsonPlaceHolderApi jsonPlaceHolderApi=retrofit.create(JsonPlaceHolderApi.class);
+        Call<Integer> call=jsonPlaceHolderApi.getDNI("usuario/dni/activo/" + dni);
+        Response<Integer> response = call.execute();
+        Log.e("TAG","onResponse:" + response.toString());
+        if(response.body() == 1){
+            Message msg = new Message();
+            msg.what = 2;
+            mHandler.sendMessage(msg);
+            return false;
+        }else
+            return true;
+    }
 
     //OBETENER SEXO
     public void obtenerSexo(@Nullable final EntityCallBack entityCallBack){
@@ -603,24 +682,32 @@ public class RegisterActivity extends AppCompatActivity {
         });
     }
 
-    public void Registrar(View view) throws InvalidKeySpecException, NoSuchAlgorithmException, ParseException {
-        /*if(BuscarDNI())
-                    txtDNI.setError("El DNI ya existe");
-                if(BuscarEmail())
-                    txtEmail.setError("El email ya existe");*/
+    public void validacionSimple() throws ParseException {
         String valor_nombres = txtNombres.getText().toString();
         String valor_apellidos = txtApellidos.getText().toString();
         String valor_dni = txtDNI.getText().toString();
         String valor_nacimiento = txtNacimiento.getText().toString();
         Integer valor_condominio = spnCondominio.getSelectedItemPosition();
         String valor_direccion = txtDireccion.getText().toString();
-        String valor_email = txtEmail.getText().toString();
+        String valor_email = txtEmail.getText().toString().toLowerCase();
         String valor_celular = txtCelular.getText().toString();
         String password = txtPassword.getText().toString();
 
         if(validarNombres() & validarApellidos() & validarDNI() & validarEdad()
                 & validarCondominio(valor_condominio) & validarDireccion()
                 & validarEmail() & validarPassword() & validarCelular()) {
+            new BackgroundJob(valor_nombres, valor_apellidos, valor_dni, valor_nacimiento, valor_condominio,
+                    valor_direccion, valor_email, valor_celular, password).execute();
+        }
+    }
+
+    public boolean Registrar(String valor_nombres, String valor_apellidos, String valor_dni, String valor_nacimiento, Integer valor_condominio,
+                             String valor_direccion, String valor_email, String valor_celular, String password) throws InvalidKeySpecException, NoSuchAlgorithmException, ParseException, IOException {
+
+        if(BuscarDNI(valor_dni) & BuscarEmail(valor_email)) {
+            Message msg2 = new Message();
+            msg2.what = 5;
+            mHandler.sendMessage(msg2);
             String[] valor_password = generateStorngPasswordHash(password);
             Usuario user = new Usuario();
             user.setNombre(valor_nombres);
@@ -638,24 +725,63 @@ public class RegisterActivity extends AppCompatActivity {
             JsonPlaceHolderApi jsonPlaceHolderApi = retrofit.create(JsonPlaceHolderApi.class);
             Call<Usuario> call = jsonPlaceHolderApi.createUsuario(user);
             System.out.println(user.toString());
-            call.enqueue(new Callback<Usuario>() {
-                @Override
-                public void onResponse(Call<Usuario> call, Response<Usuario> response) {
-                    if (response.isSuccessful()) {
-                        Toast.makeText(getApplicationContext(), "Registro Exitoso", Toast.LENGTH_LONG).show();
-                        Intent loginactivity = new Intent(getApplicationContext(), LoginActivity.class);
-                        startActivity(loginactivity);
-                        Log.e("TAG", "post submitted to API.:" + response.toString());
-                    } else {
-                        Log.e("TAG", "onResponse:" + response.toString());
-                    }
-                }
+            call.execute();
+            return true;
+        }else{
+            return false;
+        }
+    }
 
-                @Override
-                public void onFailure(Call<Usuario> call, Throwable t) {
-                    Log.e("TAG", "onFailure:" + t.getMessage());
-                }
-            });
+    private class BackgroundJob extends AsyncTask<Void,Void,Void> {
+
+        boolean resultado = false;
+        String valor_nombres, valor_apellidos, valor_dni, valor_nacimiento, valor_direccion, valor_email, valor_celular, password;
+        Integer valor_condominio;
+
+        public BackgroundJob(String valor_nombres, String valor_apellidos, String valor_dni, String valor_nacimiento, Integer valor_condominio,
+                      String valor_direccion, String valor_email, String valor_celular, String password){
+            this.valor_nombres = valor_nombres;
+            this.valor_apellidos = valor_apellidos;
+            this.valor_dni = valor_dni;
+            this.valor_nacimiento = valor_nacimiento;
+            this.valor_direccion = valor_direccion;
+            this.valor_condominio = valor_condominio;
+            this.valor_direccion = valor_direccion;
+            this.valor_email = valor_email;
+            this.valor_celular = valor_celular;
+            this.password = password;
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            try {
+                Message msg = new Message();
+                msg.what = 1;
+                mHandler.sendMessage(msg);
+                resultado = Registrar(valor_nombres, valor_apellidos, valor_dni, valor_nacimiento, valor_condominio,
+                        valor_direccion, valor_email, valor_celular, password);
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (InvalidKeySpecException | NoSuchAlgorithmException | ParseException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void avoid){
+            if(resultado){
+                Message msg2 = new Message();
+                msg2.what = 4;
+                mHandler.sendMessage(msg2);
+                Message msg = new Message();
+                msg.what = 6;
+                mHandler.sendMessage(msg);
+            } else{
+                Message msg = new Message();
+                msg.what = 4;
+                mHandler.sendMessage(msg);
+            }
         }
     }
 

@@ -4,6 +4,7 @@
     package="com.example.reciclemosdemo">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CAMERA" />
 
     <application
         android:name=".Grafico.InitialValues"
@@ -13,10 +14,17 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Grafico.RecicladorActivity"
-            android:theme="@style/AppTheme.NoActionBar"
+        <activity android:name=".Grafico.ExitosoTest"></activity>
+        <activity
+            android:name=".Inicio.CatalogoActivity"
+            android:configChanges="orientation"
+            android:label="Catálogo"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".Grafico.RecicladorActivity"
             android:label="Mi reciclador"
-            ></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Grafico.SolicitudActivity"
             android:label="Actualizacion de datos"
@@ -27,21 +35,21 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".Inicio.RegistrarBolsaActivity" />
         <activity
-            android:name=".Inicio.BolsaActivity"
+            android:name=".Inicio.MeInformoActivity"
             android:configChanges="orientation"
-            android:label="Mi bolsa"
+            android:label="Catálogo"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".Adicionales.AnyOrientationCaptureActivity"
-            android:screenOrientation="fullSensor"
-            android:stateNotNeeded="true"
-            android:theme="@style/zxing_CaptureTheme"
-            android:windowSoftInputMode="stateAlwaysHidden" />
-        <activity
-            android:name=".Inicio.LectorActivity"
+            android:name=".Inicio.ScanBarCodeActivity"
             android:configChanges="orientation"
-            android:label="Valorización"
+            android:label="Escáner"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Inicio.BolsaActivity"
+            android:configChanges="orientation"
+            android:label="Mi bolsa"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
@@ -62,8 +70,9 @@
         <activity
             android:name=".Grafico.ProductByBolsa"
             android:configChanges="orientation"
-            android:label="Mi aporte"
-            android:screenOrientation="portrait" />
+            android:label="Detalle de mis registros"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Grafico.ListBolsas"
             android:configChanges="orientation"

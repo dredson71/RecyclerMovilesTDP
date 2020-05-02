@@ -59,8 +59,6 @@ public class Bolsa {
         this.qrCode = qrCode;
     }
 
-
-
     public String getObservaciones() {
         return observaciones;
     }

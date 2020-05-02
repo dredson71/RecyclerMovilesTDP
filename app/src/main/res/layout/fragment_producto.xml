@@ -16,6 +16,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="32dp"
+            android:visibility="invisible"
             app:layout_constraintBottom_toBottomOf="@+id/txtPeso"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/txtNombre" />
@@ -27,9 +28,10 @@
             android:layout_marginTop="16dp"
             android:text="Tipo"
             android:textSize="30sp"
+            android:visibility="invisible"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageView2" />
+            app:layout_constraintTop_toBottomOf="@+id/imageView2"/>
 
         <TextView
             android:id="@+id/txtPeso"
@@ -40,6 +42,7 @@
             android:text="Peso"
             android:textSize="18sp"
             android:textStyle="bold"
+            android:visibility="invisible"
             app:layout_constraintEnd_toStartOf="@+id/txtTotalPuntos"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
@@ -54,6 +57,7 @@
             android:text="Nombre Producto"
             android:textSize="18sp"
             android:textStyle="bold"
+            android:visibility="invisible"
             app:layout_constraintEnd_toStartOf="@+id/numberPicker"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/txtTipo" />
@@ -65,44 +69,34 @@
             android:layout_marginTop="16dp"
             android:text="Contenido"
             android:textSize="18sp"
+            android:visibility="invisible"
             app:layout_constraintEnd_toEndOf="@+id/txtNombre"
             app:layout_constraintStart_toStartOf="@+id/txtNombre"
-            app:layout_constraintTop_toBottomOf="@+id/txtNombre" />
+            app:layout_constraintTop_toBottomOf="@+id/txtNombre"/>
 
         <Button
             android:id="@+id/btnAgregar"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
             android:text="Agregar"
             android:textAppearance="@style/TextAppearance.AppCompat.Body2"
             android:textSize="18sp"
+            android:visibility="invisible"
             app:layout_constraintEnd_toEndOf="@+id/numberPicker"
             app:layout_constraintStart_toStartOf="@+id/txtPeso"
-            app:layout_constraintTop_toBottomOf="@+id/numberPicker" />
-
-        <Button
-            android:id="@+id/btnEscanear"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="Escanear"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-            android:textSize="18sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/btnAgregar"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@+id/btnAgregar"
-            app:layout_constraintTop_toBottomOf="@+id/btnAgregar"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintTop_toBottomOf="@+id/numberPicker"/>
 
         <ImageView
             android:id="@+id/imageView2"
-            android:layout_width="400dp"
-            android:layout_height="230dp"
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
             android:adjustViewBounds="true"
+            android:scaleType="fitXY"
             android:src="@drawable/slide5"
+            android:visibility="invisible"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -115,10 +109,72 @@
             android:text="Puntos"
             android:textSize="18sp"
             android:textStyle="bold"
+            android:visibility="invisible"
             app:layout_constraintEnd_toStartOf="@+id/numberPicker"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/txtPeso"
             app:layout_constraintTop_toBottomOf="@+id/txtContenido" />
+
+        <TextView
+            android:id="@+id/textTitleInformo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="!Este residuo no es reciclable¡"
+            android:textAlignment="center"
+            android:textColor="#000000"
+            android:textSize="36sp"
+            android:textStyle="bold"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toTopOf="@+id/textTextInformo"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/btnMeinformo"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textTextInformo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="50dp"
+            android:layout_marginEnd="32dp"
+            android:text="Presiona en el siguiente botón para descubrir que residuos son reciclables y que tipos participan del proyecto."
+            android:textAlignment="center"
+            android:textColor="#000000"
+            android:textSize="24sp"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toTopOf="@+id/btnMeinformo"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/imageView2"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/btnMeinformo"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textTitleInformo" />
+
+        <Button
+            android:id="@+id/btnMeinformo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginEnd="32dp"
+            android:layout_marginBottom="32dp"
+            android:backgroundTint="@color/botones_principales"
+            android:text="Me informo"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+            android:textColor="@color/botones_principales_texto"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:visibility="invisible"
+            app:cornerRadius="20dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/textTextInformo"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/textTitleInformo"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textTextInformo" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 

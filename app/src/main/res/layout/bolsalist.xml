@@ -19,46 +19,46 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         android:id="@+id/item_LastBolsa"
-            android:paddingBottom="20dp"
+        android:paddingBottom="20dp"
 
         >
 
 
-    <TextView
-        android:layout_marginTop="20dp"
-        android:layout_marginLeft="50dp"
-        android:id="@+id/txtBolsa"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="sans-serif-black"
-        android:text="@string/app_name"
-        android:textColor="#414142"
-         />
+        <TextView
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="50dp"
+            android:id="@+id/txtBolsa"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-black"
+            android:text="@string/app_name"
+            android:textColor="#414142"
+            />
 
 
-    <TextView
-        android:id="@+id/txtCreadoFecha"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:fontFamily="sans-serif-black"
-        android:layout_alignStart="@+id/txtBolsa"
-        android:layout_alignLeft="@+id/txtBolsa"
-        android:text="@string/app_name"
-        android:layout_below="@+id/txtBolsa"
-        android:textColor="#414142" />
-    <TextView
-        android:id="@+id/txtRecoojoFecha"
+        <TextView
+            android:id="@+id/txtCreadoFecha"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:fontFamily="sans-serif-black"
+            android:layout_alignStart="@+id/txtBolsa"
+            android:layout_alignLeft="@+id/txtBolsa"
+            android:text="@string/app_name"
+            android:layout_below="@+id/txtBolsa"
+            android:textColor="#414142" />
+        <TextView
+            android:id="@+id/txtRecoojoFecha"
 
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/txtBolsa"
-        android:layout_marginTop="20dp"
-        android:layout_alignLeft="@+id/txtBolsa"
-        android:fontFamily="sans-serif-black"
-        android:text="@string/app_name"
-        android:layout_below="@+id/txtCreadoFecha"
-        android:textColor="#414142" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@+id/txtBolsa"
+            android:layout_marginTop="20dp"
+            android:layout_alignLeft="@+id/txtBolsa"
+            android:fontFamily="sans-serif-black"
+            android:text="@string/app_name"
+            android:layout_below="@+id/txtCreadoFecha"
+            android:textColor="#414142" />
         <TextView
             android:id="@+id/txtObservaciones"
 
@@ -83,7 +83,7 @@
             android:layout_marginTop="20dp"
             android:fontFamily="sans-serif-black"
             android:text="Ver detalle "
-            android:textColor="#258bd6" />
+            android:textColor="@color/botones_principales" />
 
     </RelativeLayout>
 
@@ -98,7 +98,7 @@
         app:layout_constraintEnd_toStartOf="@+id/item_LastBolsa"
         app:layout_constraintStart_toStartOf="@+id/item_LastBolsa"
         app:layout_constraintTop_toTopOf="@+id/item_LastBolsa"
-       />
+        />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -11,8 +11,46 @@
         android:layout_height="match_parent"
         >
 
+        <TextView
+            android:id="@+id/txtTitleChartBolsas"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:text="Grafico de Bolsas"
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="24dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
         <lecho.lib.hellocharts.view.LineChartView
             android:id="@+id/chart"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="32dp"
+            android:layout_marginBottom="16dp"
+            android:alpha="0"
+            app:layout_constraintBottom_toTopOf="@+id/txtTitleChartResiduos"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txtTitleChartBolsas" />
+
+
+
+        <TextView
+            android:id="@+id/txtTitleChartResiduos"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:text="Grafico de Residuos"
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="24dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/chart" />
+        <lecho.lib.hellocharts.view.LineChartView
+            android:id="@+id/chart2"
             android:layout_width="match_parent"
             android:layout_height="300dp"
             android:layout_marginStart="32dp"
@@ -23,7 +61,7 @@
             app:layout_constraintBottom_toTopOf="@+id/relativeTendenciasHoy"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/txtTitleChartResiduos" />
 
         <RelativeLayout
             android:id="@+id/relativeTendenciasHoy"
@@ -33,7 +71,7 @@
             app:layout_constraintBottom_toTopOf="@+id/relativeReciclados"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/chart">
+            app:layout_constraintTop_toBottomOf="@+id/chart2">
 
             <RelativeLayout
                 android:id="@+id/txtinsertDatos"
@@ -148,21 +186,30 @@
 
                 <ImageView
                     android:id="@+id/imagePlastic"
-                    android:layout_width="60dp"
+                    android:layout_width="80dp"
+                    android:paddingStart="5dp"
+                    android:paddingTop="5dp"
+                    android:paddingEnd="5dp"
                     android:layout_height="60dp"
+                    android:background="@color/colorPlastico"
                     android:layout_centerHorizontal="true"
-                    android:background="@drawable/plastico"
+                    android:src="@drawable/ic_plastico"
+                    android:adjustViewBounds="false"
+
 
                     />
 
                 <TextView
                     android:id="@+id/txtPlastico"
-                    android:layout_width="wrap_content"
+                    android:layout_width="80dp"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/imagePlastic"
-                    android:layout_marginTop="10dp"
                     android:layout_centerHorizontal="true"
                     android:layout_marginBottom="30dp"
+                    android:textAlignment="center"
+                    android:background="@color/colorPlastico"
+                    android:textSize="10sp"
+                    android:textColor="#000000"
                     android:text="Plastico" />
 
                 <TextView
@@ -181,7 +228,7 @@
                     android:layout_below="@+id/txtPlasticoCantidad"
                     android:layout_centerInParent="true"
                     android:layout_marginTop="10dp"
-                    android:text="0gr" />
+                    android:text="0 g" />
 
                 <TextView
                     android:id="@+id/txtPlasticoPuntos"
@@ -204,22 +251,32 @@
 
                 <ImageView
                     android:id="@+id/imagePaper"
-                    android:layout_width="60dp"
+                    android:layout_width="80dp"
                     android:layout_height="60dp"
                     android:layout_centerHorizontal="true"
-                    android:background="@drawable/carton"
+                    android:adjustViewBounds="false"
+                    android:background="@color/colorPapelCarton"
+                    android:paddingStart="5dp"
+                    android:paddingTop="5dp"
+                    android:paddingEnd="5dp"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/ic_papel_carton"
+                    android:tint="#FFFFFF"
 
                     />
 
                 <TextView
                     android:id="@+id/txtPapelCarton"
-                    android:layout_width="wrap_content"
+                    android:layout_width="80dp"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/imagePaper"
-                    android:layout_marginTop="10dp"
                     android:layout_marginBottom="30dp"
                     android:layout_centerHorizontal="true"
-                    android:text="Papel/Carton" />
+                    android:textAlignment="center"
+                    android:text="Papel/Carton"
+                    android:background="@color/colorPapelCarton"
+                    android:textColor="@android:color/white"
+                    android:textSize="10dp"/>
 
                 <TextView
                     android:id="@+id/txtPapelCartonCantidad"
@@ -237,7 +294,7 @@
                     android:layout_below="@+id/txtPapelCartonCantidad"
                     android:layout_centerInParent="true"
                     android:layout_marginTop="10dp"
-                    android:text="0gr" />
+                    android:text="0 g" />
 
                 <TextView
                     android:id="@+id/txtPapelCartonPuntos"
@@ -260,19 +317,29 @@
 
                 <ImageView
                     android:id="@+id/imageVidrio"
-                    android:layout_width="60dp"
+                    android:layout_width="80dp"
                     android:layout_height="60dp"
                     android:layout_centerHorizontal="true"
-                    android:background="@drawable/vidrio" />
+                    android:background="@color/colorVidrio"
+                    android:src="@drawable/ic_vidrio"
+                    android:tint="#FFFFFF"
+                    android:paddingStart="5dp"
+                    android:paddingTop="5dp"
+                    android:paddingEnd="5dp"
+                    />
 
                 <TextView
                     android:id="@+id/txtVidrio"
-                    android:layout_width="wrap_content"
+                    android:layout_width="80dp"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/imageVidrio"
                     android:layout_centerHorizontal="true"
-                    android:layout_marginTop="10dp"
+                    android:background="@color/colorVidrio"
+                    android:textAlignment="center"
                     android:layout_marginBottom="30dp"
+                    android:textSize="10dp"
+
+                    android:textColor="@android:color/white"
                     android:text="Vidrio" />
 
                 <TextView
@@ -291,7 +358,7 @@
                     android:layout_below="@+id/txtVidrioCantidad"
                     android:layout_centerInParent="true"
                     android:layout_marginTop="10dp"
-                    android:text="0gr" />
+                    android:text="0 g" />
 
                 <TextView
                     android:id="@+id/txtVidrioPuntos"
@@ -317,18 +384,26 @@
 
                 <ImageView
                     android:id="@+id/imageMetal"
-                    android:layout_width="60dp"
+                    android:layout_width="80dp"
                     android:layout_height="60dp"
                     android:layout_centerHorizontal="true"
-                    android:background="@drawable/metal" />
+                    android:paddingStart="5dp"
+                    android:paddingTop="5dp"
+                    android:paddingEnd="5dp"
+                    android:background="@color/colorMetal"
+                    android:src="@drawable/ic_metal"
+                    />
 
                 <TextView
                     android:id="@+id/txtMetales"
-                    android:layout_width="wrap_content"
+                    android:layout_width="80dp"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/imageMetal"
+                    android:background="@color/colorMetal"
+                    android:textColor="#000000"
+                    android:textAlignment="center"
+                    android:textSize="10dp"
                     android:layout_centerHorizontal="true"
-                    android:layout_marginTop="10dp"
                     android:layout_marginBottom="30dp"
                     android:text="Metales" />
 
@@ -348,7 +423,7 @@
                     android:layout_below="@+id/txtMetalesCantidad"
                     android:layout_centerInParent="true"
                     android:layout_marginTop="10dp"
-                    android:text="0gr" />
+                    android:text="0 g" />
 
                 <TextView
                     android:id="@+id/txtMetalesPuntos"

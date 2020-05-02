@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_centerVertical="true">
+    android:layout_height="wrap_content">
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -14,29 +13,32 @@
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="20dp"
             android:id="@+id/relativePlasticoProduct">
             <ImageView
-                android:layout_width="60dp"
-                android:layout_height="60dp"
+                android:layout_width="110dp"
+                android:layout_height="90dp"
                 android:id="@+id/imagePlastic"
-                android:layout_centerVertical="true"
                 />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/txtCantidadPlastic"
                 android:layout_marginLeft="30dp"
-                android:textSize="20dp"
+                android:textColor="#414142"
+
+                android:textSize="16dp"
                 android:text="Cantidad :"
                 android:layout_toEndOf="@+id/imagePlastic"
                 />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="#414142"
+
                 android:id="@+id/txtCountProductsPlastic"
                 android:layout_marginLeft="30dp"
-                android:textSize="20dp"
+                android:textSize="16dp"
                 android:text="0"
                 android:layout_toEndOf="@+id/txtCantidadPlastic"
                 />
@@ -45,8 +47,10 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/txtPesoPlastic"
                 android:layout_marginLeft="30dp"
-                android:textSize="20dp"
+                android:textSize="16dp"
                 android:text="Peso aprox :"
+                android:textColor="#414142"
+
                 android:layout_toEndOf="@+id/imagePlastic"
                 android:layout_below="@+id/txtCantidadPlastic"
                 android:layout_marginTop="10dp"
@@ -55,7 +59,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/txtPesoProductsPlastic"
-                android:textSize="20dp"
+                android:textSize="16dp"
+                android:textColor="#414142"
+
                 android:text="0"
                 android:layout_below="@+id/txtCountProductsPlastic"
 
@@ -67,7 +73,9 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/txtCantidadMetal"
                 android:layout_marginLeft="30dp"
-                android:textSize="20dp"
+                android:textSize="16dp"
+                android:textColor="#414142"
+
                 android:layout_marginTop="10dp"
                 android:text="Puntuacion :"
                 android:layout_below="@+id/txtPesoPlastic"
@@ -77,7 +85,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/txtCantidadMetalCount"
-                android:textSize="20dp"
+                android:textSize="16dp"
+                android:textColor="#414142"
+
                 android:text="0"
                 android:layout_below="@+id/txtPesoProductsPlastic"
 

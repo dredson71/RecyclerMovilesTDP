@@ -31,64 +31,35 @@ import lecho.lib.hellocharts.view.LineChartView;
 
 
 public class MonthFragment extends Fragment {
-    private RetrofitMain retrofit;
+    View view;
+    private com.example.reciclemosdemo.Grafico.RetrofitMain retrofit;
     private ArrayList<TextView> textList = new ArrayList<>();
-    TextView txtPlasticoCount,txtPlasticoPuntos,txtPlasticoPeso;
-    TextView txtVidrioCount,txtVidrioPuntos,txtVidrioPeso;
-    TextView txtMetalesCount,txtMetalesPuntos,txtMetalesPeso;
-    TextView txtPapelCartonCount,txtPapelCartonPuntos,txtPapelCartonPeso,txtResiduosCount,txtPesoResiduos,txtPuntajeResiduos;
-    LineChartView lineChartView;
-    private int totalResiduo,totalPeso,totalPuntos;
-    private int [] yAxisDataYear= {0,0,0,0,0,0,0};
-    String[] axisDataMonth = {"Lun", "Mar", "Mie", "Jue", "Vie", "Sab", "Dom"};
+    TextView txtPlasticoCount;
+    TextView txtVidrioCount;
+    TextView txtMetalesCount;
+    TextView txtPapelCartonCount,txtResiduosCount,txtPesoResiduos,txtPuntajeResiduos;
+    TextView txtBolsasCount;
+    private int totalResiduo;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_month,container,false);    }
+        view = inflater.inflate(R.layout.fragment_month,container,false);
+        return view;
+    }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        retrofit = new RetrofitMain();
-        txtPlasticoCount =getView().findViewById(R.id.txtPlasticoCantidad) ;
-        txtPlasticoPuntos =getView().findViewById(R.id.txtPlasticoPuntos) ;
-        txtPlasticoPeso =getView().findViewById(R.id.txtPlasticoPeso) ;
-        txtVidrioCount =getView().findViewById(R.id.txtVidrioCantidad) ;
-        txtVidrioPuntos =getView().findViewById(R.id.txtVidrioPuntos) ;
-        txtVidrioPeso =getView().findViewById(R.id.txtVidrioPeso) ;
-        txtMetalesCount =getView().findViewById(R.id.txtMetalesCantidad) ;
-        txtMetalesPuntos =getView().findViewById(R.id.txtMetalesPuntos) ;
-        txtMetalesPeso =getView().findViewById(R.id.txtMetalesPeso);
-        txtPapelCartonCount =getView().findViewById(R.id.txtPapelCartonCantidad) ;
-        txtPapelCartonPuntos =getView().findViewById(R.id.txtPapelCartonPuntos) ;
-        txtPapelCartonPeso =getView().findViewById(R.id.txtPapelCartonPeso) ;
-        txtResiduosCount = getView().findViewById(R.id.txtCantBolsasHoy);
-        txtPesoResiduos = getView().findViewById(R.id.txtPesoBolsasHoy);
-        txtPuntajeResiduos = getView().findViewById(R.id.txtPtosBolsasHoy);
-        textList.add(txtPlasticoCount);
-        textList.add(txtVidrioCount);
-        textList.add(txtPapelCartonCount);
-        textList.add(txtMetalesCount);
-        textList.add(txtPlasticoPeso);
-        textList.add(txtVidrioPeso);
-        textList.add(txtPapelCartonPeso);
-        textList.add(txtMetalesPeso);
-        textList.add(txtPlasticoPuntos);
-        textList.add(txtVidrioPuntos);
-        textList.add(txtPapelCartonPuntos);
-        textList.add(txtMetalesPuntos);
-        textList.add(txtResiduosCount);
-        textList.add(txtPesoResiduos);
-        textList.add(txtPuntajeResiduos);
-        lineChartView = getView().findViewById(R.id.chart);
-        totalPeso=0;
-        totalPuntos=0;
+        retrofit = new com.example.reciclemosdemo.Grafico.RetrofitMain();
+        txtPlasticoCount =view.findViewById(R.id.txtInputPlastico) ;
+        txtVidrioCount =view.findViewById(R.id.txtInputVidrio) ;
+        txtMetalesCount =view.findViewById(R.id.txtInputMetal) ;
+        txtPapelCartonCount =view.findViewById(R.id.txtInputPapelCarton) ;
+        txtResiduosCount = getView().findViewById(R.id.txtInputResiduos);
+        txtBolsasCount = getView().findViewById(R.id.txtInputBolsas);
         totalResiduo=0;
         getDataWeek();
-        graphicData();
         txtResiduosCount.setText(Integer.toString(totalResiduo));
-        txtPesoResiduos.setText(Integer.toString(totalPeso));
-        txtPuntajeResiduos.setText(Integer.toString(totalPuntos));
 
     }
 
@@ -96,96 +67,39 @@ public class MonthFragment extends Fragment {
         dbHelper helper = new dbHelper(getActivity(),"Usuario.sqlite", null, 1);
         SQLiteDatabase db = helper.getReadableDatabase();
 
-        Cursor f = db.rawQuery("select cantidad ,peso ,puntuacion from Contador where tendenciaTipo = 'Mes' and productoTipo = 'Plastico' ", null);
+        Cursor f = db.rawQuery("select cantidad ,peso ,puntuacion,bolsa from Contador where tendenciaTipo = 'Year' and productoTipo = 'Plastico' ", null);
 
         if(f.moveToFirst()) {
             txtPlasticoCount.setText(Integer.toString(f.getInt(0)));
-            txtPlasticoPeso.setText(Double.toString(f.getDouble(1)));
-            txtPlasticoPuntos.setText(Double.toString(f.getDouble(2)));
             totalResiduo+=f.getInt(0);
-            totalPuntos+=f.getDouble(2);
-            totalPeso+=f.getDouble(1);
+            txtBolsasCount.setText(Integer.toString(f.getInt(3)));
 
         }
-        Cursor f2 = db.rawQuery("select cantidad ,peso ,puntuacion from Contador where tendenciaTipo = 'Mes' and productoTipo = 'Vidrio' ", null);
+        Cursor f2 = db.rawQuery("select cantidad ,peso ,puntuacion,bolsa from Contador where tendenciaTipo = 'Year' and productoTipo = 'Vidrio' ", null);
 
 
         if(f2.moveToFirst()) {
             txtVidrioCount.setText(Integer.toString(f2.getInt(0)));
-            txtVidrioPeso.setText(Double.toString(f2.getDouble(1)));
-            txtVidrioPuntos.setText(Double.toString(f2.getDouble(2)));
             totalResiduo+=f2.getInt(0);
-            totalPuntos+=f2.getDouble(2);
-            totalPeso+=f2.getDouble(1);
+            txtBolsasCount.setText(Integer.toString(f.getInt(3)));
         }
 
-        Cursor f3 = db.rawQuery("select cantidad ,peso ,puntuacion from Contador where tendenciaTipo = 'Mes' and productoTipo = 'Papel' ", null);
+        Cursor f3 = db.rawQuery("select cantidad ,peso ,puntuacion,bolsa from Contador where tendenciaTipo = 'Year' and productoTipo = 'Papel' ", null);
         if(f3.moveToFirst()) {
             txtPapelCartonCount.setText(Integer.toString(f3.getInt(0)));
-            txtPapelCartonPeso.setText(Double.toString(f3.getDouble(1)));
-            txtPapelCartonPuntos.setText(Double.toString(f3.getDouble(2)));
             totalResiduo+=f3.getInt(0);
-            totalPuntos+=f3.getDouble(2);
-            totalPeso+=f3.getDouble(1);
+            txtBolsasCount.setText(Integer.toString(f.getInt(3)));
         }
 
-        Cursor f4 = db.rawQuery("select cantidad ,peso ,puntuacion from Contador where tendenciaTipo = 'Mes' and productoTipo = 'Metal' ", null);
+        Cursor f4 = db.rawQuery("select cantidad ,peso ,puntuacion,bolsa from Contador where tendenciaTipo = 'Year' and productoTipo = 'Metal' ", null);
 
         if(f4.moveToFirst()) {
             txtMetalesCount.setText(Integer.toString(f4.getInt(0)));
-            txtMetalesPeso.setText(Double.toString(f4.getDouble(1)));
-            txtMetalesPuntos.setText(Double.toString(f4.getDouble(2)));
             totalResiduo+=f4.getInt(0);
-            totalPuntos+=f4.getDouble(2);
-            totalPeso+=f4.getDouble(1);
+            txtBolsasCount.setText(Integer.toString(f.getInt(3)));
         }
     }
 
-    public void graphicData(){
-        dbHelper helper = new dbHelper(getActivity(),"Usuario.sqlite", null, 1);
-        SQLiteDatabase db = helper.getReadableDatabase();
 
-        Cursor f = db.rawQuery("select lunes,martes,miercoles,jueves,viernes,sabado,domingo from DatosDiarios where tipo = 'Mes' ", null);
-        if(f.moveToFirst()) {
 
-            for (int i = 0; i < 7; i++) {
-                yAxisDataYear[i] = f.getInt(i);
-            }
-        }
-            List yAxisValues = new ArrayList();
-            List axisValues = new ArrayList();
-
-            Line line = new Line(yAxisValues).setColor(Color.parseColor("#252525"));
-            for (int i = 0; i < axisDataMonth.length; i++) {
-                axisValues.add(i, new AxisValue(i).setLabel(axisDataMonth[i]));
-            }
-
-            for (int i = 0; i < yAxisDataYear.length; i++) {
-                yAxisValues.add(new PointValue(i, yAxisDataYear[i]));
-            }
-            List lines = new ArrayList();
-            lines.add(line);
-
-            LineChartData data = new LineChartData();
-            data.setLines(lines);
-
-            Axis axis = new Axis();
-            axis.setValues(axisValues);
-            axis.setTextSize(13);
-            axis.setTextColor(Color.parseColor("#03A9F4"));
-            data.setAxisXBottom(axis);
-
-            Axis yAxis = new Axis();
-            yAxis.setTextColor(Color.parseColor("#03A9F4"));
-            yAxis.setTextSize(13);
-            data.setAxisYLeft(yAxis);
-
-            lineChartView.setLineChartData(data);
-            Viewport viewport = new Viewport(lineChartView.getMaximumViewport());
-            viewport.top = 100;
-            lineChartView.animate().alpha(1f).setDuration(250);
-            lineChartView.setMaximumViewport(viewport);
-            lineChartView.setCurrentViewport(viewport);
-
-    }
 }

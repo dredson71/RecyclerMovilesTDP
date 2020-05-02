@@ -67,14 +67,6 @@ public class Bolsalist {
         return puntos;
     }
 
-    public String getUrlImage() {
-        return urlImage;
-    }
-
-    public void setUrlImage(String urlImage) {
-        this.urlImage = urlImage;
-    }
-
     public void setPuntos(int puntos) {
         this.puntos = puntos;
     }
@@ -93,5 +85,13 @@ public class Bolsalist {
 
     public void setCodcontenido(int codcontenido) {
         this.codcontenido = codcontenido;
+    }
+
+    public String getUrlImage() {
+        return urlImage;
+    }
+
+    public void setUrlImage(String urlImage) {
+        this.urlImage = urlImage;
     }
 }

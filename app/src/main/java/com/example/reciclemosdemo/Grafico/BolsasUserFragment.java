@@ -36,7 +36,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class BolsasUserFragment extends Fragment  implements ListaBolsaAdapter.OnNoteListener{
-   View view;
+    View view;
     private static final String TAG ="BOLSAS";
     private ArrayList<Bolsa> dataset = new ArrayList<>();
     private Retrofit retrofit;

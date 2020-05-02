@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/drawer"
-    tools:openDrawer="start"
+
 
     tools:context=".Grafico.RecicladorActivity">
 
@@ -35,90 +35,57 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-                <TextView
-                    android:id="@+id/txtTitleNombre"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="30dp"
-                    android:layout_marginTop="32dp"
-                    android:fontFamily="sans-serif-black"
-                    android:text="Nombre"
-                    android:textColor="@color/colorNotSelectedBar"
+
+                <ImageView
+                    android:id="@+id/imageRecycler"
+                    android:layout_width="200dp"
+                    android:layout_height="200dp"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="32dp"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <TextView
-                    android:layout_marginTop="10dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintStart_toStartOf="parent"
-                    android:fontFamily="sans-serif-black"
-                    android:id="@+id/txtNombre"
-                    android:text="Nombre:  "
-                    android:layout_marginLeft="20dp"
-
-                    app:layout_constraintEnd_toStartOf="@+id/txtInputNombre"
-                    app:layout_constraintTop_toBottomOf="@+id/txtTitleNombre"
-                    />
 
                 <TextView
                     android:id="@+id/txtInputNombre"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="15dp"
                     android:layout_marginEnd="8dp"
                     android:layout_marginTop="10dp"
                     android:text="Juan"
+                    android:textSize="20dp"
+
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/txtNombre"
-                    app:layout_constraintTop_toBottomOf="@+id/txtTitleNombre" />
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/imageRecycler"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/txtApellido"
-                    android:fontFamily="sans-serif-black"
-                    android:layout_marginTop="10dp"
-                    android:text="Apellido:"
-                    app:layout_constraintStart_toStartOf="@id/txtNombre"
-
-                    app:layout_constraintTop_toBottomOf="@+id/txtInputNombre"
-                    />
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintEnd_toEndOf="parent"
                     android:layout_marginTop="10dp"
                     android:text="Torres Martinez"
+                    android:textSize="20dp"
                     android:id="@+id/txtInputApellidos"
-                    app:layout_constraintStart_toStartOf="@id/txtInputNombre"
-                    app:layout_constraintTop_toBottomOf="@+id/txtInputNombre"
-                    />
-
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:layout_marginStart="32dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginEnd="32dp"
-                    android:id="@+id/imgLine1"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    android:background="@drawable/line"
-                    app:layout_constraintTop_toBottomOf="@+id/txtInputApellidos" />
+                    app:layout_constraintTop_toBottomOf="@+id/txtInputNombre"
+                    />
 
                 <TextView
                     android:id="@+id/txtCuenta"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="30dp"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginEnd="241dp"
+                    android:layout_marginStart="20dp"
                     android:fontFamily="sans-serif-black"
                     android:text="Datos"
+                    android:layout_marginTop="20dp"
+                    app:layout_constraintTop_toBottomOf="@+id/txtInputApellidos"
                     android:textColor="@color/colorNotSelectedBar"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/imgLine1" />
+                    tools:layout_editor_absoluteY="364dp" />
 
 
                 <TextView
@@ -128,7 +95,7 @@
                     android:layout_marginTop="10dp"
                     android:layout_marginEnd="20dp"
                     android:fontFamily="sans-serif-black"
-                    android:text="Email : "
+                    android:text="DNI : "
                     app:layout_constraintEnd_toStartOf="@+id/txtInputCorreo"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="@id/txtCelular"
@@ -148,11 +115,12 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:layout_constraintStart_toStartOf="@id/txtNombre"
+                    app:layout_constraintStart_toStartOf="parent"
                     android:id="@+id/txtCelular"
                     android:layout_marginTop="10dp"
+                    android:layout_marginLeft="20dp"
                     android:fontFamily="sans-serif-black"
-                    android:text="Celular:  "
+                    android:text="Asociacion:  "
                     app:layout_constraintEnd_toStartOf="@+id/txtInputPassword"
                     app:layout_constraintTop_toBottomOf="@+id/txtInputCorreo"
                     />
@@ -174,11 +142,12 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:layout_constraintStart_toStartOf="@id/txtNombre"
+                    app:layout_constraintStart_toStartOf="parent"
                     android:id="@+id/txtFechaNacimiento"
+                    android:layout_marginLeft="20dp"
                     android:layout_marginTop="10dp"
                     android:fontFamily="sans-serif-black"
-                    android:text="Fecha de Nacimiento:  "
+                    android:text="Edad:  "
                     app:layout_constraintEnd_toStartOf="@+id/txtInputFechaNacimiento"
                     app:layout_constraintTop_toBottomOf="@+id/txtInputCelular"
                     />
@@ -197,6 +166,21 @@
                     app:layout_constraintStart_toEndOf="@+id/txtFechaNacimiento"
                     app:layout_constraintTop_toBottomOf="@+id/txtInputCelular" />
 
+
+                <EditText
+                    android:id="@+id/editTextActualizaDatos"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="24dp"
+                    android:hint="Escribele un mensaje motivador por su trabajo"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/txtInputFechaNacimiento" />
+
+
+
                 <Button
                     android:id="@+id/imgCerrarSesion"
                     android:layout_width="match_parent"
@@ -205,12 +189,11 @@
                     android:layout_marginTop="24dp"
                     android:layout_marginEnd="64dp"
                     android:layout_marginBottom="16dp"
-                    android:onClick="ListReturn"
-                    android:text="Regresar"
+                    android:text="Enviar Mensaje"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/txtInputFechaNacimiento" />
+                    app:layout_constraintTop_toBottomOf="@+id/editTextActualizaDatos" />
 
 
 
