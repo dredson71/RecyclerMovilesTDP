@@ -44,6 +44,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Locale;
 
 public class ProductByBolsa extends AppCompatActivity implements com.example.reciclemosdemo.Grafico.ListaProductoByBolsaAdapter.OnNoteListener , NavigationView.OnNavigationItemSelectedListener {
     private static final String TAG ="PRODUCTOS";
@@ -198,17 +199,17 @@ public class ProductByBolsa extends AppCompatActivity implements com.example.rec
         System.out.println(query);
         Cursor f = db.rawQuery(query,null);
         f.moveToFirst();
-        DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+        DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss",Locale.ENGLISH);
         if(f.getString(3).equals("null") || f.getString(3).equals(null)) {
             textViewsList.get(1).setText("Recojo : Pendiente");
         }else {
-            Date date1 = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy").parse(f.getString(3));
+            Date date1 = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy",Locale.ENGLISH).parse(f.getString(3));
             Date recojo = date1;
             String recojoFecha;
             recojoFecha = formatter.format(recojo);
             textViewsList.get(1).setText("Recojo : "+recojoFecha);
         }
-        Date creado = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy").parse(f.getString(1));
+        Date creado = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.ENGLISH).parse(f.getString(1));
         Date creadoDate = creado;
         String creadoFecha;
         creadoFecha = formatter.format(creadoDate);

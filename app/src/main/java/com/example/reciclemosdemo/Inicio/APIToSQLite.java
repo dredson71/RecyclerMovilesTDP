@@ -20,6 +20,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 import java.util.TimeZone;
 
@@ -218,7 +219,6 @@ public class APIToSQLite {
                 generateQuery("LastBolsas", "Metal", metalCount, pesoMetal, puntosMetal, codigoBolsa);
 
             }while(f1.moveToNext()); }
-        db.close();
     }
 
     public void InsertBolsas() throws IOException, InterruptedException {
@@ -278,7 +278,6 @@ public class APIToSQLite {
             db.execSQL(query);
             System.out.println(query);
         }
-        db.close();
         Log.e("TAG","onResponse:" + response.toString());
                 /*}else{
                     Log.e("TAG","onResponse:" + response.toString());
@@ -311,7 +310,7 @@ public class APIToSQLite {
 
                 if(urlDate.equals("bolsasWeek/") || urlDate.equals("bolsasMonth/")) {
                     Date dia = bolsasbydate.getBolsa().getRecojoFecha();
-                    SimpleDateFormat simpleDateformat = new SimpleDateFormat("EEEE");
+                    SimpleDateFormat simpleDateformat = new SimpleDateFormat("EEEE",Locale.ENGLISH);
 
 
                     if (simpleDateformat.format(dia).equals("Monday")) {
@@ -359,9 +358,6 @@ public class APIToSQLite {
             }
         }
 
-
-
-        db.close();
         Log.e("TAG","onResponse:" + response.toString());
     }
 
@@ -390,7 +386,6 @@ public class APIToSQLite {
         System.out.println(query);
 
 
-        db.close();
         Log.e("TAG","onResponse:" + response.toString());
 
 
@@ -413,7 +408,6 @@ public class APIToSQLite {
             System.out.println(query);
         }
 
-        db.close();
         Log.e("TAG","onResponse:" + response.toString());
     }
 
@@ -480,7 +474,6 @@ public class APIToSQLite {
 
         }
 
-        db.close();
         Log.e("TAG","onResponse:" + response.toString());
         System.out.println(bolsasLast.size());
         try {
@@ -502,7 +495,7 @@ public class APIToSQLite {
                     valor++;
                     if(!f1.getString(0).equals("null") || !f1.getString(0).equals(null)) {
                         String sDate1 = f1.getString(0);
-                        Date dia=new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy").parse(sDate1);
+                        Date dia=new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.ENGLISH).parse(sDate1);
                         Calendar cal = Calendar.getInstance();
                         cal.setTime(dia);
                         if (cal.get(Calendar.MONTH) == 1)
@@ -544,9 +537,6 @@ public class APIToSQLite {
             System.out.println(query);
 
         }
-
-
-        db.close();
     }
 
     public void initialCounter(){

@@ -14,6 +14,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Locale;
 
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -51,7 +52,7 @@ public class ListaBolsaAdapter extends RecyclerView.Adapter<ListaBolsaAdapter.Vi
     @Override
     public void onBindViewHolder(ViewHolder holder,int position){
         Bolsa c = dataset.get(position);
-        DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+        DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.ENGLISH);
         Date recojo = c.getRecojoFecha();
         if(recojo != null){
             String recojoFecha = formatter.format(recojo);

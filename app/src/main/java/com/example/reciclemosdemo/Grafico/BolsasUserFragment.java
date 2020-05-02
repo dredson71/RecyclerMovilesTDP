@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 
 import retrofit2.Call;
@@ -75,7 +76,7 @@ public class BolsasUserFragment extends Fragment  implements ListaBolsaAdapter.O
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        obtenerBolsasByDay("bolsasDay/",usuarioID,textList);
+     //   obtenerBolsasByDay("bolsasDay/",usuarioID,textList);
         return view;
 
     }
@@ -100,7 +101,8 @@ public class BolsasUserFragment extends Fragment  implements ListaBolsaAdapter.O
                 System.out.println(bolsa.getCodigo());
                 bolsa.setActiva(false);
                 String sDate1 = f.getString(1);
-                Date date1 = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy").parse(sDate1);
+                SimpleDateFormat  smpDate = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy",Locale.ENGLISH);
+                Date date1 = smpDate.parse(sDate1);
                 bolsa.setCreadoFecha(date1);
                 bolsa.setObservaciones(f.getString(4));
                 bolsa.setPuntuacion(f.getInt(2));
@@ -108,7 +110,7 @@ public class BolsasUserFragment extends Fragment  implements ListaBolsaAdapter.O
                     bolsa.setRecojoFecha(null);
                 }else{
                     String sDate2 = f.getString(3);
-                    Date date2 = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy").parse(sDate2);
+                    Date date2 = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy",Locale.ENGLISH).parse(sDate2);
                     bolsa.setRecojoFecha(date2);
 
                 }
@@ -117,7 +119,7 @@ public class BolsasUserFragment extends Fragment  implements ListaBolsaAdapter.O
             }while(f1.moveToNext());        }
         listBolsasAdapter.adicionarListaCancion(listaprodbolsas);
     }
-
+/*
     public void obtenerBolsasByDay(String urlDate,String usuarioID,ArrayList<TextView> textViewsList){
         dbHelper helper = new dbHelper(getActivity(),"Usuario.sqlite", null, 1);
         SQLiteDatabase db = helper.getReadableDatabase();
@@ -129,7 +131,7 @@ public class BolsasUserFragment extends Fragment  implements ListaBolsaAdapter.O
             textViewsList.get(1).setText(Integer.toString(f.getInt(1)/1000));
         }
     }
-
+*/
     @Override
     public void oneNoteClick(int position) {
 
