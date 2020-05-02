@@ -176,7 +176,7 @@ public class YearFragment extends Fragment {
 
         lineChartView.setLineChartData(data);
         Viewport viewport = new Viewport(lineChartView.getMaximumViewport());
-        viewport.top = 100;
+        viewport.top = 20;
         lineChartView.animate().alpha(1f).setDuration(250);
         lineChartView.setMaximumViewport(viewport);
         lineChartView.setCurrentViewport(viewport);
@@ -224,7 +224,7 @@ public class YearFragment extends Fragment {
 
         lineChartViewBolsa.setLineChartData(data);
         Viewport viewport = new Viewport(lineChartView.getMaximumViewport());
-        viewport.top = 100;
+        viewport.top = 20;
         lineChartViewBolsa.animate().alpha(1f).setDuration(250);
         lineChartViewBolsa.setMaximumViewport(viewport);
         lineChartViewBolsa.setCurrentViewport(viewport);

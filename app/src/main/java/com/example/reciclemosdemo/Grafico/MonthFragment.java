@@ -18,8 +18,12 @@ import androidx.fragment.app.FragmentTransaction;
 import com.example.reciclemosdemo.Adicionales.dbHelper;
 import com.example.reciclemosdemo.R;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 import lecho.lib.hellocharts.model.Axis;
 import lecho.lib.hellocharts.model.AxisValue;
@@ -35,6 +39,7 @@ public class MonthFragment extends Fragment {
     private com.example.reciclemosdemo.Grafico.RetrofitMain retrofit;
     private ArrayList<TextView> textList = new ArrayList<>();
     TextView txtPlasticoCount;
+    TextView title;
     TextView txtVidrioCount;
     TextView txtMetalesCount;
     TextView txtPapelCartonCount,txtResiduosCount,txtPesoResiduos,txtPuntajeResiduos;
@@ -51,6 +56,7 @@ public class MonthFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         retrofit = new com.example.reciclemosdemo.Grafico.RetrofitMain();
+        title = view.findViewById(R.id.txtCuenta);
         txtPlasticoCount =view.findViewById(R.id.txtInputPlastico) ;
         txtVidrioCount =view.findViewById(R.id.txtInputVidrio) ;
         txtMetalesCount =view.findViewById(R.id.txtInputMetal) ;
@@ -60,6 +66,11 @@ public class MonthFragment extends Fragment {
         totalResiduo=0;
         getDataWeek();
         txtResiduosCount.setText(Integer.toString(totalResiduo));
+        Date date = new Date();
+        Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("Europe/Paris"));
+        cal.setTime(date);
+        int year = cal.get(Calendar.YEAR);
+        title.setText("Resumen "+Integer.toString(year));
 
     }
 

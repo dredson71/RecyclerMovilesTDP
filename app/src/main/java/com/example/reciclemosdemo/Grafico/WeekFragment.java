@@ -168,7 +168,7 @@ public class WeekFragment extends Fragment {
 
         lineChartView.setLineChartData(data);
         Viewport viewport = new Viewport(lineChartView.getMaximumViewport());
-        viewport.top = 100;
+        viewport.top = 5;
         lineChartView.animate().alpha(1f).setDuration(250);
         lineChartView.setMaximumViewport(viewport);
         lineChartView.setCurrentViewport(viewport);
