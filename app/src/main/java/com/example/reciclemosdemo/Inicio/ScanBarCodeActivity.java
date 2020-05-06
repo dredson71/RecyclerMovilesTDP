@@ -151,7 +151,6 @@ public class ScanBarCodeActivity extends AppCompatActivity implements Navigation
             case R.id.nav_logout:
                 startActivity(new Intent(getApplicationContext(), LoginActivity.class));
                 break;
-
         }
         mDrawerLayout.closeDrawer(GravityCompat.START);
         return true;

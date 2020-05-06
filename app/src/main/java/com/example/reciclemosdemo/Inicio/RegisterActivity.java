@@ -724,7 +724,6 @@ public class RegisterActivity extends AppCompatActivity {
             user.setSexo(sexo);
             JsonPlaceHolderApi jsonPlaceHolderApi = retrofit.create(JsonPlaceHolderApi.class);
             Call<Usuario> call = jsonPlaceHolderApi.createUsuario(user);
-            System.out.println(user.toString());
             call.execute();
             return true;
         }else{

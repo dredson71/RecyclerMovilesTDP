@@ -50,7 +50,6 @@ public class RetrofitMain {
     String[] axisDataYear ={"Jan", "Feb", "Mar", "Apr", "May", "June", "July", "Aug", "Sept",
             "Oct", "Nov", "Dec"};
 
-
     public RetrofitMain(){
         retrofit = new retrofit2.Retrofit.Builder()
                 .baseUrl("https://recyclerapiresttdp.herokuapp.com/")
@@ -197,9 +196,6 @@ public class RetrofitMain {
         });
     }
 
-
-
-
     public void obtenerBolsasByYear(String urlDate,String usuarioID,ArrayList<TextView> textViewsList,LineChartView lineChartView){
         initialCounter();
         JsonPlaceHolderApi jsonPlaceHolderApi=retrofit.create(JsonPlaceHolderApi.class);
@@ -296,6 +292,7 @@ public class RetrofitMain {
 
         });
     }
+
     public void obtenerBolsasByMonthorWeek(String urlDate,String usuarioID,ArrayList<TextView> textViewsList,LineChartView lineChartView){
         initialCounter();
         JsonPlaceHolderApi jsonPlaceHolderApi=retrofit.create(JsonPlaceHolderApi.class);
@@ -387,7 +384,6 @@ public class RetrofitMain {
         });
     }
 
-
     public void addingValuestoText(List<Probolsa> bolsasbydate ,int i,ArrayList<TextView> textViewsList){
         if (bolsasbydate.get(i).getProducto().getCategoria().getNombre().equals("Plastico")) {
             pesoPlastico += bolsasbydate.get(i).getProducto().getPeso();
@@ -437,13 +433,10 @@ public class RetrofitMain {
         residuosTotal=0;
     }
 
-
     public void trendingData(ArrayList<TextView> textViewsList){
         textViewsList.get(12).setText(Integer.toString(plasticoCount+vidrioCount+metalCount+papelCartonCount));
         textViewsList.get(13).setText(Integer.toString((pesoPapelCarton+pesoVidrio+pesoPlastico+pesoMetal)/1000));
         textViewsList.get(14).setText(Integer.toString(puntosMetal+puntosPlastico+puntosVidrio+puntosPapelCarton));
     }
-
-
 
 }

@@ -18,7 +18,6 @@ import androidx.fragment.app.FragmentTransaction;
 import com.example.reciclemosdemo.Adicionales.dbHelper;
 import com.example.reciclemosdemo.R;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -58,8 +57,6 @@ public class MonthFragment extends Fragment {
         retrofit = new com.example.reciclemosdemo.Grafico.RetrofitMain();
         title = view.findViewById(R.id.txtCuenta);
         txtPlasticoCount =view.findViewById(R.id.txtInputPlastico) ;
-        txtVidrioCount =view.findViewById(R.id.txtInputVidrio) ;
-        txtMetalesCount =view.findViewById(R.id.txtInputMetal) ;
         txtPapelCartonCount =view.findViewById(R.id.txtInputPapelCarton) ;
         txtResiduosCount = getView().findViewById(R.id.txtInputResiduos);
         txtBolsasCount = getView().findViewById(R.id.txtInputBolsas);
@@ -86,14 +83,14 @@ public class MonthFragment extends Fragment {
             txtBolsasCount.setText(Integer.toString(f.getInt(3)));
 
         }
-        Cursor f2 = db.rawQuery("select cantidad ,peso ,puntuacion,bolsa from Contador where tendenciaTipo = 'Year' and productoTipo = 'Vidrio' ", null);
+   /*     Cursor f2 = db.rawQuery("select cantidad ,peso ,puntuacion,bolsa from Contador where tendenciaTipo = 'Year' and productoTipo = 'Vidrio' ", null);
 
 
         if(f2.moveToFirst()) {
             txtVidrioCount.setText(Integer.toString(f2.getInt(0)));
             totalResiduo+=f2.getInt(0);
             txtBolsasCount.setText(Integer.toString(f.getInt(3)));
-        }
+        }*/
 
         Cursor f3 = db.rawQuery("select cantidad ,peso ,puntuacion,bolsa from Contador where tendenciaTipo = 'Year' and productoTipo = 'Papel' ", null);
         if(f3.moveToFirst()) {
@@ -102,13 +99,13 @@ public class MonthFragment extends Fragment {
             txtBolsasCount.setText(Integer.toString(f.getInt(3)));
         }
 
-        Cursor f4 = db.rawQuery("select cantidad ,peso ,puntuacion,bolsa from Contador where tendenciaTipo = 'Year' and productoTipo = 'Metal' ", null);
+     /*   Cursor f4 = db.rawQuery("select cantidad ,peso ,puntuacion,bolsa from Contador where tendenciaTipo = 'Year' and productoTipo = 'Metal' ", null);
 
         if(f4.moveToFirst()) {
             txtMetalesCount.setText(Integer.toString(f4.getInt(0)));
             totalResiduo+=f4.getInt(0);
             txtBolsasCount.setText(Integer.toString(f.getInt(3)));
-        }
+        }*/
     }
 
 

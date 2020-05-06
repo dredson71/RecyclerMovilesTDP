@@ -83,7 +83,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        app:layout_constraintEnd_toStartOf="@+id/cvVidrio"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/cvPlastico"
         app:layout_constraintTop_toBottomOf="@+id/etxtBuscar">
 
@@ -126,100 +126,6 @@
 
     </androidx.cardview.widget.CardView>
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cvVidrio"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        app:layout_constraintEnd_toStartOf="@+id/cvMetal"
-        app:layout_constraintStart_toEndOf="@+id/cvPapelCarton"
-        app:layout_constraintTop_toBottomOf="@+id/etxtBuscar">
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <ImageButton
-                android:id="@+id/imgbtnVidrio"
-                android:layout_width="80dp"
-                android:layout_height="60dp"
-                android:adjustViewBounds="false"
-                android:background="@color/colorVidrio"
-                android:paddingStart="5dp"
-                android:paddingTop="5dp"
-                android:paddingEnd="5dp"
-                android:scaleType="fitCenter"
-                android:src="@drawable/ic_vidrio"
-                android:tint="#FFFFFF"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:layout_editor_absoluteX="215dp"
-                tools:layout_editor_absoluteY="69dp" />
-
-            <TextView
-                android:id="@+id/txtvVidrio"
-                android:layout_width="0dp"
-                android:layout_height="20dp"
-                android:background="@color/colorVidrio"
-                android:text="Vidrio"
-                android:textAlignment="center"
-                android:textColor="@android:color/white"
-                android:textSize="12sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/imgbtnVidrio" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.cardview.widget.CardView>
-
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cvMetal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/cvVidrio"
-        app:layout_constraintTop_toBottomOf="@+id/etxtBuscar">
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:backgroundTintMode="src_atop">
-
-            <ImageButton
-                android:id="@+id/imgbtnMetales"
-                android:layout_width="80dp"
-                android:layout_height="60dp"
-                android:adjustViewBounds="false"
-                android:background="@color/colorMetal"
-                android:paddingStart="5dp"
-                android:paddingTop="5dp"
-                android:paddingEnd="5dp"
-                android:scaleType="fitCenter"
-                android:src="@drawable/ic_metal"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:layout_editor_absoluteX="313dp"
-                tools:layout_editor_absoluteY="69dp" />
-
-            <TextView
-                android:id="@+id/txtvMetales"
-                android:layout_width="0dp"
-                android:layout_height="20dp"
-                android:background="@color/colorMetal"
-                android:text="Metal"
-                android:textAlignment="center"
-                android:textColor="#000000"
-                android:textSize="12sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/imgbtnMetales" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-    </androidx.cardview.widget.CardView>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view"

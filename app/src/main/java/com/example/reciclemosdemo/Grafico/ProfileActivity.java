@@ -66,6 +66,13 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
         View headerView = navigationView.getHeaderView(0);
         TextView navUsername = (TextView) headerView.findViewById(R.id.txtUser);
         navUsername.setText(fila2.getString(1));
+        TextView navViewProfile = headerView.findViewById(R.id.txtMiPerfil);
+        navViewProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(), ProfileActivity.class));
+            }
+        });
 
         txtNombre.setText(fila2.getString(1));
         txtApellido.setText(fila2.getString(2));
@@ -86,16 +93,12 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
 
 
 
-
-
-
         navigationView.setNavigationItemSelectedListener(this);
         //INICIALIZA APP BAR
         BottomNavigationView bottomNavigationView = findViewById(R.id.botton_navigation);
 
         //SELECCIÓN
-        bottomNavigationView.setSelectedItemId(R.id.miaporte);
-
+        bottomNavigationView.setSelectedItemId(R.id.escaner);
 
         //CAMBIO DE SELECCIÓN
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {

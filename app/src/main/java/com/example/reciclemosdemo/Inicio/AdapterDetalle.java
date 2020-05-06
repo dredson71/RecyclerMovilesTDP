@@ -30,7 +30,7 @@ public class AdapterDetalle extends RecyclerView.Adapter<AdapterDetalle.ViewHold
 
     public void setOnItemClickListener(OnItemClickListener onItemClickListener) {this.onItemClickListener = onItemClickListener;}
 
-    public AdapterDetalle(ArrayList<Bolsalist> listDetalle,String tipo){
+    public AdapterDetalle(ArrayList<Bolsalist> listDetalle, String tipo){
         this.listDetalle = listDetalle;
         this.tipo = tipo;
     }
@@ -93,8 +93,6 @@ public class AdapterDetalle extends RecyclerView.Adapter<AdapterDetalle.ViewHold
                     break;
             }
 
-
-
             if(tipo.equals("view"))
                 imageButton.setVisibility(View.GONE);
 
@@ -127,7 +125,6 @@ public class AdapterDetalle extends RecyclerView.Adapter<AdapterDetalle.ViewHold
                     }
                 }
             });
-
         }
 
     }

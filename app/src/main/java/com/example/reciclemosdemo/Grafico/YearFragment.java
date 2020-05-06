@@ -18,8 +18,18 @@ import android.widget.TextView;
 
 import com.example.reciclemosdemo.Adicionales.dbHelper;
 import com.example.reciclemosdemo.R;
+import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.formatter.ValueFormatter;
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
+import com.github.mikephil.charting.utils.ColorTemplate;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import lecho.lib.hellocharts.model.Axis;
@@ -36,15 +46,16 @@ public class YearFragment extends Fragment {
     private com.example.reciclemosdemo.Grafico.RetrofitMain retrofit;
     private ArrayList<TextView> textList = new ArrayList<>();
     TextView txtPlasticoCount,txtPlasticoPuntos,txtPlasticoPeso;
-    TextView txtVidrioCount,txtVidrioPuntos,txtVidrioPeso;
-    TextView txtMetalesCount,txtMetalesPuntos,txtMetalesPeso;
+    /* TextView txtVidrioCount,txtVidrioPuntos,txtVidrioPeso;
+     TextView txtMetalesCount,txtMetalesPuntos,txtMetalesPeso;*/
     TextView txtPapelCartonCount,txtPapelCartonPuntos,txtPapelCartonPeso,txtResiduosCount,txtPesoResiduos,txtPuntajeResiduos;
-    LineChartView lineChartView,lineChartViewBolsa;
-    String[] axisDataMonth = {"Jan", "Feb", "Mar", "Apr", "May", "June", "July", "Aug", "Sept",
+    LineChart chartBolsas,chartResiduos,chartPuntos;
+    String[] axisDataMonth = {" " ,"Jan", "Feb", "Mar", "Apr", "May", "June", "July", "Aug", "Sept",
             "Oct", "Nov", "Dec"};
     int [] yAxisDataYear = {0,0,0,0,0,0,0,0,0,0,0,0};
     int [] yAxisDataYearBolsa = {0,0,0,0,0,0,0,0,0,0,0,0};
-
+    private int [] yAxisDataYearPunto= {0,0,0,0,0,0,0,0,0,0,0,0};
+    private int maximo = 0;
     private int totalResiduo,totalPeso,totalPuntos;
     @Nullable
     @Override
@@ -60,17 +71,18 @@ public class YearFragment extends Fragment {
         txtPlasticoCount =view.findViewById(R.id.txtPlasticoCantidad) ;
         txtPlasticoPuntos =view.findViewById(R.id.txtPlasticoPuntos) ;
         txtPlasticoPeso =view.findViewById(R.id.txtPlasticoPeso) ;
-        txtVidrioCount =view.findViewById(R.id.txtVidrioCantidad) ;
+    /*    txtVidrioCount =view.findViewById(R.id.txtVidrioCantidad) ;
         txtVidrioPuntos =view.findViewById(R.id.txtVidrioPuntos) ;
         txtVidrioPeso =view.findViewById(R.id.txtVidrioPeso) ;
         txtMetalesCount =view.findViewById(R.id.txtMetalesCantidad) ;
         txtMetalesPuntos =view.findViewById(R.id.txtMetalesPuntos) ;
-        txtMetalesPeso =view.findViewById(R.id.txtMetalesPeso);
+        txtMetalesPeso =view.findViewById(R.id.txtMetalesPeso);*/
         txtPapelCartonCount =view.findViewById(R.id.txtPapelCartonCantidad) ;
         txtPapelCartonPuntos =view.findViewById(R.id.txtPapelCartonPuntos) ;
         txtPapelCartonPeso =view.findViewById(R.id.txtPapelCartonPeso) ;
-        lineChartView = view.findViewById(R.id.chart2);
-        lineChartViewBolsa = view.findViewById(R.id.chart);
+        chartBolsas = getView().findViewById(R.id.chart);
+        chartResiduos = getView().findViewById(R.id.chart2);
+        chartPuntos = getView().findViewById(R.id.chart3);
         txtResiduosCount = getView().findViewById(R.id.txtCantBolsasHoy);
         txtPesoResiduos = getView().findViewById(R.id.txtPesoBolsasHoy);
         txtPuntajeResiduos = getView().findViewById(R.id.txtPtosBolsasHoy);
@@ -80,6 +92,7 @@ public class YearFragment extends Fragment {
         getDataWeek();
         graphicData();
         graphicData2();
+        graphicData3();
         txtResiduosCount.setText(Integer.toString(totalResiduo));
         txtPesoResiduos.setText(Integer.toString(totalPeso/1000));
         txtPuntajeResiduos.setText(Integer.toString(totalPuntos));
@@ -101,7 +114,7 @@ public class YearFragment extends Fragment {
             totalPeso+=f.getDouble(1);
 
         }
-        Cursor f2 = db.rawQuery("select cantidad ,peso ,puntuacion from Contador where tendenciaTipo = 'Year' and productoTipo = 'Vidrio' ", null);
+  /*      Cursor f2 = db.rawQuery("select cantidad ,peso ,puntuacion from Contador where tendenciaTipo = 'Year' and productoTipo = 'Vidrio' ", null);
 
 
         if(f2.moveToFirst()) {
@@ -111,7 +124,7 @@ public class YearFragment extends Fragment {
             totalResiduo+=f2.getInt(0);
             totalPuntos+=f2.getDouble(2);
             totalPeso+=f2.getDouble(1);
-        }
+        }*/
 
         Cursor f3 = db.rawQuery("select cantidad ,peso ,puntuacion from Contador where tendenciaTipo = 'Year' and productoTipo = 'Papel' ", null);
         if(f3.moveToFirst()) {
@@ -123,7 +136,7 @@ public class YearFragment extends Fragment {
             totalPeso+=f3.getDouble(1);
         }
 
-        Cursor f4 = db.rawQuery("select cantidad ,peso ,puntuacion from Contador where tendenciaTipo = 'Year' and productoTipo = 'Metal' ", null);
+   /*     Cursor f4 = db.rawQuery("select cantidad ,peso ,puntuacion from Contador where tendenciaTipo = 'Year' and productoTipo = 'Metal' ", null);
 
         if(f4.moveToFirst()) {
             txtMetalesCount.setText(Integer.toString(f4.getInt(0)));
@@ -132,104 +145,214 @@ public class YearFragment extends Fragment {
             totalResiduo+=f4.getInt(0);
             totalPuntos+=f4.getDouble(2);
             totalPeso+=f4.getDouble(1);
-        }
+        }*/
     }
 
     public void graphicData(){
-        dbHelper helper = new dbHelper(getActivity(),"Usuario.sqlite", null, 1);
-        SQLiteDatabase db = helper.getReadableDatabase();
+        LineDataSet lineDataSetBolsas = new LineDataSet(dataResiduosValue(),"Data Set 1");
+        lineDataSetBolsas.setColors(ColorTemplate.rgb("2e2a29"));
+        ArrayList<ILineDataSet> dataSets = new ArrayList<>();
+        dataSets.add(lineDataSetBolsas);
+        LineData data = new LineData(dataSets);
 
-        Cursor f = db.rawQuery("select enero,febrero,marzo,abril,mayo,junio,julio,agosto,setiembre,octubre,noviembre,diciembre from DatosAnuales where tipo = 'probolsa'", null);
+        YAxis rightAxis = chartResiduos.getAxisRight();
+        YAxis leftAxis = chartResiduos.getAxisLeft();
+        XAxis xAxis = chartResiduos.getXAxis();
 
-        if(f.moveToFirst()) {
-            for (int i = 0; i < 12; i++) {
-                yAxisDataYear[i] = f.getInt(i);
+
+        rightAxis.setEnabled(false);
+        rightAxis.disableAxisLineDashedLine();
+
+        leftAxis.setDrawGridLines(false);
+        leftAxis.setLabelCount(5, true);
+
+        if(maximo < 5)
+            leftAxis.setAxisMaximum(5);
+        else
+            leftAxis.setAxisMaximum(maximo);
+
+        leftAxis.setAxisMinimum(0);
+
+
+        xAxis.setSpaceMax(0.5f);
+        xAxis.setSpaceMin(0.5f);
+
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        xAxis.setDrawGridLines(false);
+
+        chartResiduos.setDrawGridBackground(false);
+        chartResiduos.setData(data);
+        chartResiduos.invalidate();
+        chartResiduos.getXAxis().setValueFormatter(new com.github.mikephil.charting.formatter.IndexAxisValueFormatter(axisDataMonth));
+        chartResiduos.getAxisLeft().setValueFormatter(new ValueFormatter() {
+            @Override
+            public String getFormattedValue(float value) {
+                return String.valueOf((int) Math.floor(value));
             }
-        }
-        List yAxisValues = new ArrayList();
-        List axisValues = new ArrayList();
+        });
+        chartResiduos.getData().setValueFormatter(new ValueFormatter() {
+            @Override
+            public String getFormattedValue(float value) {
+                return String.valueOf((int) Math.floor(value));
+            }
+        });
+        chartResiduos.getDescription().setEnabled(false);
+        chartResiduos.getLegend().setEnabled(false);
 
-        Line line = new Line(yAxisValues).setColor(Color.parseColor("#252525"));
-        for (int i = 0; i < axisDataMonth.length; i++) {
-            axisValues.add(i, new AxisValue(i).setLabel(axisDataMonth[i]));
-        }
 
-        for (int i = 0; i < yAxisDataYear.length; i++) {
-            yAxisValues.add(new PointValue(i, yAxisDataYear[i]));
-        }
-        List lines = new ArrayList();
-        lines.add(line);
-
-        LineChartData data = new LineChartData();
-        data.setLines(lines);
-
-        Axis axis = new Axis();
-        axis.setValues(axisValues);
-        axis.setTextSize(13);
-        axis.setTextColor(Color.parseColor("#03A9F4"));
-        data.setAxisXBottom(axis);
-
-        Axis yAxis = new Axis();
-        yAxis.setTextColor(Color.parseColor("#03A9F4"));
-        yAxis.setTextSize(13);
-        data.setAxisYLeft(yAxis);
-
-        lineChartView.setLineChartData(data);
-        Viewport viewport = new Viewport(lineChartView.getMaximumViewport());
-        viewport.top = 20;
-        lineChartView.animate().alpha(1f).setDuration(250);
-        lineChartView.setMaximumViewport(viewport);
-        lineChartView.setCurrentViewport(viewport);
 
     }
 
     public void graphicData2(){
+        LineDataSet lineDataSetBolsas = new LineDataSet(dataBolsasValue(),"Data Set 1");
+        lineDataSetBolsas.setColors(ColorTemplate.rgb("2e2a29"));
+        ArrayList<ILineDataSet> dataSets = new ArrayList<>();
+        dataSets.add(lineDataSetBolsas);
+        LineData data = new LineData(dataSets);
+
+        YAxis rightAxis = chartBolsas.getAxisRight();
+        YAxis leftAxis = chartBolsas.getAxisLeft();
+        XAxis xAxis = chartBolsas.getXAxis();
+
+
+        rightAxis.setEnabled(false);
+        rightAxis.disableAxisLineDashedLine();
+
+        leftAxis.setDrawGridLines(false);
+        leftAxis.setLabelCount(5, true);
+        if(maximo < 5)
+            leftAxis.setAxisMaximum(5);
+        else
+            leftAxis.setAxisMaximum(maximo);
+        leftAxis.setAxisMinimum(0);
+
+        xAxis.setSpaceMax(0.5f);
+        xAxis.setSpaceMin(0.5f);
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        xAxis.setDrawGridLines(false);
+
+        chartBolsas.setDrawGridBackground(false);
+        chartBolsas.setData(data);
+        chartBolsas.invalidate();
+        chartBolsas.getXAxis().setValueFormatter(new com.github.mikephil.charting.formatter.IndexAxisValueFormatter(axisDataMonth));
+        chartBolsas.getAxisLeft().setValueFormatter(new ValueFormatter() {
+            @Override
+            public String getFormattedValue(float value) {
+                return String.valueOf((int) Math.floor(value));
+            }
+        });
+        chartBolsas.getData().setValueFormatter(new ValueFormatter() {
+            @Override
+            public String getFormattedValue(float value) {
+                return String.valueOf((int) Math.floor(value));
+            }
+        });
+        chartBolsas.getDescription().setEnabled(false);
+        chartBolsas.getLegend().setEnabled(false);
+
+    }
+
+    public void graphicData3(){
+        LineDataSet lineDataSetBolsas = new LineDataSet(dataPuntosValue(),"Data Set 1");
+        lineDataSetBolsas.setColors(ColorTemplate.rgb("2e2a29"));
+        ArrayList<ILineDataSet> dataSets = new ArrayList<>();
+        dataSets.add(lineDataSetBolsas);
+        LineData data = new LineData(dataSets);
+
+        YAxis rightAxis = chartPuntos.getAxisRight();
+        YAxis leftAxis = chartPuntos.getAxisLeft();
+        XAxis xAxis = chartPuntos.getXAxis();
+
+
+        rightAxis.setEnabled(false);
+        rightAxis.disableAxisLineDashedLine();
+
+        leftAxis.setDrawGridLines(false);
+        leftAxis.setAxisMaximum(3000);
+        leftAxis.setGranularity(1000);
+        leftAxis.setGranularityEnabled(true);
+        leftAxis.setAxisMinimum(0f);
+
+        xAxis.setSpaceMax(0.5f);
+        xAxis.setSpaceMin(0.5f);
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        xAxis.setDrawGridLines(false);
+
+        chartPuntos.setDrawGridBackground(false);
+        chartPuntos.setData(data);
+        chartPuntos.invalidate();
+        chartPuntos.getXAxis().setValueFormatter(new com.github.mikephil.charting.formatter.IndexAxisValueFormatter(axisDataMonth));
+        chartPuntos.getAxisLeft().setValueFormatter(new ValueFormatter() {
+            @Override
+            public String getFormattedValue(float value) {
+                return String.valueOf((int) Math.floor(value));
+            }
+        });
+        chartPuntos.getData().setValueFormatter(new ValueFormatter() {
+            @Override
+            public String getFormattedValue(float value) {
+                return String.valueOf((int) Math.floor(value));
+            }
+        });
+        chartPuntos.getDescription().setEnabled(false);
+        chartPuntos.getLegend().setEnabled(false);
+
+
+    }
+
+
+    private ArrayList<Entry> dataBolsasValue()
+    {
+        ArrayList<Entry> dataValues = new ArrayList<>();
         dbHelper helper = new dbHelper(getActivity(),"Usuario.sqlite", null, 1);
         SQLiteDatabase db = helper.getReadableDatabase();
 
         Cursor f = db.rawQuery("select enero,febrero,marzo,abril,mayo,junio,julio,agosto,setiembre,octubre,noviembre,diciembre from DatosAnuales where tipo = 'bolsa'", null);
-
         if(f.moveToFirst()) {
-            for (int i = 0; i < 12; i++) {
-                yAxisDataYearBolsa[i] = f.getInt(i);
+
+            for (int i = 0; i < 11; i++) {
+                dataValues.add(new Entry(i+1,f.getInt(i)));
             }
         }
-        List yAxisValues = new ArrayList();
-        List axisValues = new ArrayList();
-
-        Line line = new Line(yAxisValues).setColor(Color.parseColor("#252525"));
-        for (int i = 0; i < axisDataMonth.length; i++) {
-            axisValues.add(i, new AxisValue(i).setLabel(axisDataMonth[i]));
-        }
-
-        for (int i = 0; i < yAxisDataYearBolsa.length; i++) {
-            yAxisValues.add(new PointValue(i, yAxisDataYearBolsa[i]));
-        }
-        List lines = new ArrayList();
-        lines.add(line);
-
-        LineChartData data = new LineChartData();
-        data.setLines(lines);
-
-        Axis axis = new Axis();
-        axis.setValues(axisValues);
-        axis.setTextSize(13);
-        axis.setTextColor(Color.parseColor("#03A9F4"));
-        data.setAxisXBottom(axis);
-
-        Axis yAxis = new Axis();
-        yAxis.setTextColor(Color.parseColor("#03A9F4"));
-        yAxis.setTextSize(13);
-        data.setAxisYLeft(yAxis);
-
-        lineChartViewBolsa.setLineChartData(data);
-        Viewport viewport = new Viewport(lineChartView.getMaximumViewport());
-        viewport.top = 20;
-        lineChartViewBolsa.animate().alpha(1f).setDuration(250);
-        lineChartViewBolsa.setMaximumViewport(viewport);
-        lineChartViewBolsa.setCurrentViewport(viewport);
-
+        return dataValues;
     }
+
+    private ArrayList<Entry> dataResiduosValue()
+    {
+        ArrayList<Entry> dataValues = new ArrayList<>();
+        dbHelper helper = new dbHelper(getActivity(),"Usuario.sqlite", null, 1);
+        SQLiteDatabase db = helper.getReadableDatabase();
+
+        Cursor f = db.rawQuery("select enero,febrero,marzo,abril,mayo,junio,julio,agosto,setiembre,octubre,noviembre,diciembre from DatosAnuales where tipo = 'probolsa'", null);
+        if(f.moveToFirst()) {
+
+            for (int i = 0; i < 11; i++) {
+                if(maximo< f.getInt(i))
+                    maximo = f.getInt(i);
+                dataValues.add(new Entry(i+1,f.getInt(i)));
+            }
+        }
+        return dataValues;
+    }
+
+    private ArrayList<Entry> dataPuntosValue()
+    {
+        ArrayList<Entry> dataValues = new ArrayList<>();
+        dbHelper helper = new dbHelper(getActivity(),"Usuario.sqlite", null, 1);
+        SQLiteDatabase db = helper.getReadableDatabase();
+
+        Cursor f = db.rawQuery("select enero,febrero,marzo,abril,mayo,junio,julio,agosto,setiembre,octubre,noviembre,diciembre from DatosAnuales where tipo = 'puntos'", null);
+        if(f.moveToFirst()) {
+
+            for (int i = 0; i < 11; i++) {
+                dataValues.add(new Entry(i+1,f.getInt(i)));
+            }
+        }
+        return dataValues;
+    }
+
+
+
 
 
 

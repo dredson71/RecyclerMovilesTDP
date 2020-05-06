@@ -15,10 +15,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.example.reciclemosdemo.Adicionales.dbHelper;
+import com.example.reciclemosdemo.Grafico.ListBolsas;
 import com.example.reciclemosdemo.Grafico.ProfileActivity;
 import com.example.reciclemosdemo.R;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 
 public class MeInformoActivity extends AppCompatActivity implements  NavigationView.OnNavigationItemSelectedListener{
@@ -28,11 +33,10 @@ public class MeInformoActivity extends AppCompatActivity implements  NavigationV
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_me_informo);
 
-
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         mDrawerLayout = findViewById(R.id.drawer);
-        NavigationView navigationView = (NavigationView) findViewById(R.id.navigationView);
+        NavigationView navigationView = findViewById(R.id.navigationView);
         navigationView.setNavigationItemSelectedListener(this);
         ActionBarDrawerToggle mToggle = new ActionBarDrawerToggle(this,mDrawerLayout,toolbar,R.string.open,R.string.close);
         mDrawerLayout.addDrawerListener(mToggle);
@@ -55,8 +59,87 @@ public class MeInformoActivity extends AppCompatActivity implements  NavigationV
                 startActivity(new Intent(getApplicationContext(), ProfileActivity.class));
             }
         });
+
+        FragmentTransaction transaction;
+        Fragment cardsFragment = new CardsFragment();
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        transaction = fragmentManager.beginTransaction();
+        transaction.replace(R.id.fragmentCard, cardsFragment);
+        transaction.commit();
+
+        //INICIALIZA APP BAR
+        BottomNavigationView bottomNavigationView = findViewById(R.id.botton_navigation);
+
+        //CAMBIO DE SELECCIÓN
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()){
+                    case R.id.miaporte:
+                        startActivity(new Intent(getApplicationContext(), ListBolsas.class));
+                        overridePendingTransition(0,0);
+                        return true;
+                    case R.id.escaner:
+                        startActivity(new Intent(getApplicationContext(), ScanBarCodeActivity.class));
+                        overridePendingTransition(0,0);
+                        return true;
+                    case R.id.mibolsa:
+                        startActivity(new Intent(getApplicationContext(), BolsaActivity.class));
+                        overridePendingTransition(0,0);
+                        return true;
+                    case R.id.catalogo:
+                        startActivity(new Intent(getApplicationContext(), CatalogoActivity.class));
+                        overridePendingTransition(0,0);
+                        return true;
+                }
+                return false;
+            }
+        });
     }
 
+    public void cambiarFragment(int n){
+        FragmentTransaction transaction;
+        Fragment otherFragment;
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        transaction = fragmentManager.beginTransaction();
+        switch(n){
+            case 1:
+                otherFragment = new CardsFragment();
+                transaction.replace(R.id.fragmentCard, otherFragment);
+                transaction.commit();
+                break;
+            case 2:
+                otherFragment = new PeruFragment();
+                transaction.replace(R.id.fragmentCard, otherFragment);
+                transaction.commit();
+                break;
+            case 3:
+                otherFragment = new DistritoFragment();
+                transaction.replace(R.id.fragmentCard, otherFragment);
+                transaction.commit();
+                break;
+            case 4:
+                otherFragment = new ResiduosFragment();
+                transaction.replace(R.id.fragmentCard, otherFragment);
+                transaction.commit();
+                break;
+            case 5:
+                otherFragment = new NoReciclablesFragment();
+                transaction.replace(R.id.fragmentCard, otherFragment);
+                transaction.commit();
+                break;
+            case 6:
+                otherFragment = new ProyectoFragment();
+                transaction.replace(R.id.fragmentCard, otherFragment);
+                transaction.commit();
+                break;
+            case 7:
+                otherFragment = new RecicladoresFragment();
+                transaction.replace(R.id.fragmentCard, otherFragment);
+                transaction.commit();
+                break;
+        }
+    }
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {

@@ -22,7 +22,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
-import java.util.TimeZone;
 
 import retrofit2.Call;
 import retrofit2.Response;
@@ -44,7 +43,11 @@ public class APIToSQLite {
     private int [] yAxisDataMonth= {0,0,0,0,0,0,0};
     private int [] yAxisDataYear= {0,0,0,0,0,0,0,0,0,0,0,0};
     private int [] yAxisDataYearBolsa= {0,0,0,0,0,0,0,0,0,0,0,0};
+    private int [] yAxisDataYearPunto= {0,0,0,0,0,0,0,0,0,0,0,0};
+    private int [] xAxisDataMonthPuntos =  {0,0,0,0,0,0,0};
+    private int [] yAxisDataMonthBoslsas = {0,0,0,0,0,0,0};
     private  Set<Integer> bolsasLast = new HashSet<>();
+    private  Set<Integer> bolsasWeek = new HashSet<>();
 
 
     public APIToSQLite(Context context,String tipo){
@@ -135,7 +138,7 @@ public class APIToSQLite {
         Reciclador p = response.body();
         String query = "insert into Reciclador (codigo,distrito ,asociacion ,zona , password ,salt ,apellido ,direccion ,dni ,email ,fecha_Nacimiento ,nombre ,codFormalizado ,celular ,imagen) " +
                 "values ("+p.getCodigo()+",'"+p.getDistrito()+"','"+p.getAsociacion().getNombre()+"','"+p.getZona()+"','"+p.getPassword()+"','"+p.getSalt()+"','"+p.getApellido()+"','"+p.getDireccion()+"',+'"+
-        p.getDni()+"','"+p.getEmail()+"','"+p.getFecha_Nacimiento()+"','"+p.getNombre()+"','"+p.getCodFormalizado()+"','"+p.getCelular()+"','"+p.getRecilador_Imagen()+"')";
+                p.getDni()+"','"+p.getEmail()+"','"+p.getFecha_Nacimiento()+"','"+p.getNombre()+"','"+p.getCodFormalizado()+"','"+p.getCelular()+"','"+p.getRecilador_Imagen()+"')";
         db.execSQL(query);
         System.out.println(query);
         db.close();
@@ -195,7 +198,7 @@ public class APIToSQLite {
                         plasticoCount += probolsas.getCantidad();
                         puntosPlastico += probolsas.getPuntuacion();
                         pesoPlastico += probolsas.getPeso();
-                    } else if (probolsas.getProducto().getCategoria().getNombre().equals("Vidrio")) {
+                    } /*else if (probolsas.getProducto().getCategoria().getNombre().equals("Vidrio")) {
                         vidrioCount += probolsas.getCantidad();
                         puntosVidrio += probolsas.getPuntuacion();
                         pesoVidrio += probolsas.getPeso();
@@ -203,7 +206,7 @@ public class APIToSQLite {
                         metalCount += probolsas.getCantidad();
                         puntosMetal += probolsas.getPuntuacion();
                         pesoMetal += probolsas.getPeso();
-                    } else {
+                    } */else {
                         papelCartonCount += probolsas.getCantidad();
                         puntosPapelCarton += probolsas.getPuntuacion();
                         pesoPapelCarton += probolsas.getPeso();
@@ -217,6 +220,7 @@ public class APIToSQLite {
                 generateQuery("LastBolsas", "Vidrio", vidrioCount, pesoVidrio, puntosVidrio, codigoBolsa);
                 generateQuery("LastBolsas", "Papel", papelCartonCount, pesoPapelCarton, puntosPapelCarton,codigoBolsa);
                 generateQuery("LastBolsas", "Metal", metalCount, pesoMetal, puntosMetal, codigoBolsa);
+                initialCounter();
 
             }while(f1.moveToNext()); }
     }
@@ -307,58 +311,113 @@ public class APIToSQLite {
         for(Probolsa bolsasbydate: response.body()){
             valor++;
             if (bolsasbydate.getBolsa().getRecojoFecha() != null) {
-
-                if(urlDate.equals("bolsasWeek/") || urlDate.equals("bolsasMonth/")) {
-                    Date dia = bolsasbydate.getBolsa().getRecojoFecha();
-                    SimpleDateFormat simpleDateformat = new SimpleDateFormat("EEEE",Locale.ENGLISH);
-
-
-                    if (simpleDateformat.format(dia).equals("Monday")) {
-                        yAxisDataMonth[0] += 1;
+                if (bolsasbydate.getProducto().getCategoria().getNombre().equals("Plastico") || bolsasbydate.getProducto().getCategoria().getNombre().equals("Papel/Carton")) {
+                    bolsasWeek.add(bolsasbydate.getBolsa().getCodigo());
+                    if (urlDate.equals("bolsasWeek/") || urlDate.equals("bolsasMonth/")) {
+                        Date dia = bolsasbydate.getBolsa().getRecojoFecha();
+                        SimpleDateFormat simpleDateformat = new SimpleDateFormat("EEEE", Locale.ENGLISH);
+                        if (simpleDateformat.format(dia).equals("Monday")) {
+                            yAxisDataMonth[0] += 1;
+                            xAxisDataMonthPuntos[0] += bolsasbydate.getPuntuacion();
+                        } else if (simpleDateformat.format(dia).equals("Tuesday")) {
+                            yAxisDataMonth[1] += 1;
+                            xAxisDataMonthPuntos[1] += bolsasbydate.getPuntuacion();
+                        } else if (simpleDateformat.format(dia).equals("Wednesday")) {
+                            yAxisDataMonth[2] += 1;
+                            xAxisDataMonthPuntos[2] += bolsasbydate.getPuntuacion();
+                        } else if (simpleDateformat.format(dia).equals("Thursday")) {
+                            yAxisDataMonth[3] += 1;
+                            xAxisDataMonthPuntos[3] += bolsasbydate.getPuntuacion();
+                        } else if (simpleDateformat.format(dia).equals("Friday")) {
+                            yAxisDataMonth[4] += 1;
+                            xAxisDataMonthPuntos[4] += bolsasbydate.getPuntuacion();
+                        } else if (simpleDateformat.format(dia).equals("Saturday")) {
+                            yAxisDataMonth[5] += 1;
+                            xAxisDataMonthPuntos[5] += bolsasbydate.getPuntuacion();
+                        } else {
+                            yAxisDataMonth[6] += 1;
+                            xAxisDataMonthPuntos[6] += bolsasbydate.getPuntuacion();
+                        }
+                        addingValuestoText(bolsasbydate);
                     }
-                    else if (simpleDateformat.format(dia).equals("Tuesday"))
-                        yAxisDataMonth[1] += 1;
-                    else if (simpleDateformat.format(dia).equals("Wednesday"))
-                        yAxisDataMonth[2] += 1;
-                    else if (simpleDateformat.format(dia).equals("Thursday")) {
-                        yAxisDataMonth[3] += 1;
-                    }
-                    else if (simpleDateformat.format(dia).equals("Friday"))
-                        yAxisDataMonth[4] += 1;
-                    else if (simpleDateformat.format(dia).equals("Saturday"))
-                        yAxisDataMonth[5] += 1;
-                    else
-                        yAxisDataMonth[6] += 1;
-
-                    addingValuestoText(bolsasbydate);
                 }
             }
         }
         if(valor>0) {
-            if (urlDate.equals("bolsasWeek/")) {
-                generateQuery("Semana", "Plastico", plasticoCount, pesoPlastico, puntosPlastico,0);
-                generateQuery("Semana", "Vidrio", vidrioCount, pesoVidrio, puntosVidrio,0);
-                generateQuery("Semana", "Papel", papelCartonCount, pesoPapelCarton, puntosPapelCarton,0);
-                generateQuery("Semana", "Metal", metalCount, pesoMetal, puntosMetal,0);
-                String query = "insert into DatosDiarios(tipo,lunes,martes,miercoles,jueves,viernes,sabado,domingo) " +
-                        "values ('Semana', " + yAxisDataMonth[0] + ", " + yAxisDataMonth[1] + ", "
-                        + yAxisDataMonth[2] + ", " + yAxisDataMonth[3] + ", " + yAxisDataMonth[4] + "," + yAxisDataMonth[5] + "," + yAxisDataMonth[6] + ")";
-                db.execSQL(query);
-                System.out.println(query);
-            } else {
-                generateQuery("Mes", "Plastico", plasticoCount, pesoPlastico, puntosPlastico,0);
-                generateQuery("Mes", "Vidrio", vidrioCount, pesoVidrio, puntosVidrio,0);
-                generateQuery("Mes", "Papel", papelCartonCount, pesoPapelCarton, puntosPapelCarton,0);
-                generateQuery("Mes", "Metal", metalCount, pesoMetal, puntosMetal,0);
-                String query = "insert into DatosDiarios(tipo,lunes,martes,miercoles,jueves,viernes,sabado,domingo) " +
-                        "values ('Mes', " + yAxisDataMonth[0] + ", " + yAxisDataMonth[1] + ", "
-                        + yAxisDataMonth[2] + ", " + yAxisDataMonth[3] + ", " + yAxisDataMonth[4] + "," + yAxisDataMonth[5] + "," + yAxisDataMonth[6] + ")";
-                db.execSQL(query);
-                System.out.println(query);
-            }
+            generateQuery("Semana", "Plastico", plasticoCount, pesoPlastico, puntosPlastico,0);
+            generateQuery("Semana", "Vidrio", vidrioCount, pesoVidrio, puntosVidrio,0);
+            generateQuery("Semana", "Papel", papelCartonCount, pesoPapelCarton, puntosPapelCarton,0);
+            generateQuery("Semana", "Metal", metalCount, pesoMetal, puntosMetal,0);
+            String query = "insert into DatosDiarios(tipo,lunes,martes,miercoles,jueves,viernes,sabado,domingo) " +
+                    "values ('Semana', " + yAxisDataMonth[0] + ", " + yAxisDataMonth[1] + ", "
+                    + yAxisDataMonth[2] + ", " + yAxisDataMonth[3] + ", " + yAxisDataMonth[4] + "," + yAxisDataMonth[5] + "," + yAxisDataMonth[6] + ")";
+            db.execSQL(query);
+            System.out.println(query);
+
+            String query2 = "insert into DatosDiarios(tipo,lunes,martes,miercoles,jueves,viernes,sabado,domingo) " +
+                    "values ('puntos', " + xAxisDataMonthPuntos[0] + ", " + xAxisDataMonthPuntos[1] + ", "
+                    + xAxisDataMonthPuntos[2] + ", " + xAxisDataMonthPuntos[3] + ", " + xAxisDataMonthPuntos[4] + "," + xAxisDataMonthPuntos[5] + "," + xAxisDataMonthPuntos[6] + ")";
+            db.execSQL(query2);
+            System.out.println(query2);
+
         }
 
         Log.e("TAG","onResponse:" + response.toString());
+
+        try {
+            obtenerNumberBolsasByWeek();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void obtenerNumberBolsasByWeek() throws IOException, InterruptedException, ParseException {
+        initialCounter();
+        dbHelper helper = new dbHelper(context, "Usuario.sqlite", null, 1);
+        SQLiteDatabase db = helper.getWritableDatabase();
+        int valor = 0;
+        for (Integer bolsasWeek : bolsasWeek) {
+            Cursor f1 = db.rawQuery("select recojoFecha from Bolsa where codigo = "+ bolsasWeek,null);
+            System.out.println(bolsasWeek);
+            if(f1.moveToFirst()) {
+                do {
+                    valor++;
+                    System.out.println("Entro");
+                    if(!f1.getString(0).equals("null") || !f1.getString(0).equals(null)) {
+                        String sDate1 = f1.getString(0);
+                        Date dia =new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.ENGLISH).parse(sDate1);
+                        System.out.println(dia.toString());
+                        SimpleDateFormat simpleDateformat = new SimpleDateFormat("EEEE", Locale.ENGLISH);
+
+                        if (simpleDateformat.format(dia).equals("Monday")) {
+                            yAxisDataMonthBoslsas[0] += 1;
+                        } else if (simpleDateformat.format(dia).equals("Tuesday"))
+                            yAxisDataMonthBoslsas[1] += 1;
+                        else if (simpleDateformat.format(dia).equals("Wednesday"))
+                            yAxisDataMonthBoslsas[2] += 1;
+                        else if (simpleDateformat.format(dia).equals("Thursday")) {
+                            yAxisDataMonthBoslsas[3] += 1;
+                        } else if (simpleDateformat.format(dia).equals("Friday"))
+                            yAxisDataMonthBoslsas[4] += 1;
+                        else if (simpleDateformat.format(dia).equals("Saturday"))
+                            yAxisDataMonthBoslsas[5] += 1;
+                        else
+                            yAxisDataMonthBoslsas[6] += 1;
+                    }
+
+                } while (f1.moveToNext()) ;
+            }
+        }
+
+        if(valor>0) {
+            String query = "insert into DatosDiarios(tipo,lunes,martes,miercoles,jueves,viernes,sabado,domingo) " +
+                    "values ('bolsas', " + yAxisDataMonthBoslsas[0] + ", " + yAxisDataMonthBoslsas[1] + ", "
+                    + yAxisDataMonthBoslsas[2] + ", " + yAxisDataMonthBoslsas[3] + ", " + yAxisDataMonthBoslsas[4] + "," + yAxisDataMonthBoslsas[5] + "," + yAxisDataMonthBoslsas[6] + ")";
+            db.execSQL(query);
+            System.out.println(query);
+
+        }
+
     }
 
     public void obtenerBolsasByDay()throws IOException, InterruptedException{
@@ -427,36 +486,52 @@ public class APIToSQLite {
         for (Probolsa bolsasbydate : response.body()) {
             valor++;
             if (bolsasbydate.getBolsa().getRecojoFecha() != null) {
-                bolsasLast.add(bolsasbydate.getBolsa().getCodigo());
-                Date dia = bolsasbydate.getBolsa().getRecojoFecha();
-                Calendar cal = Calendar.getInstance();
-                cal.setTime(dia);
-                if (cal.get(Calendar.MONTH) == 1)
-                    yAxisDataYear[0] += 1;
-                else if (cal.get(Calendar.MONTH) == 2)
-                    yAxisDataYear[1] += 1;
-                else if (cal.get(Calendar.MONTH) == 3)
-                    yAxisDataYear[2] += 1;
-                else if (cal.get(Calendar.MONTH) == 4)
-                    yAxisDataYear[3] += 1;
-                else if (cal.get(Calendar.MONTH) == 5)
-                    yAxisDataYear[4] += 1;
-                else if (cal.get(Calendar.MONTH) == 6)
-                    yAxisDataYear[5] += 1;
-                else if (cal.get(Calendar.MONTH) == 7)
-                    yAxisDataYear[6] += 1;
-                else if (cal.get(Calendar.MONTH) == 8)
-                    yAxisDataYear[7] += 1;
-                else if (cal.get(Calendar.MONTH) == 9)
-                    yAxisDataYear[8] += 1;
-                else if (cal.get(Calendar.MONTH) == 10)
-                    yAxisDataYear[9] += 1;
-                else if (cal.get(Calendar.MONTH) == 11)
-                    yAxisDataYear[10] += 1;
-                else if (cal.get(Calendar.MONTH) == 12)
-                    yAxisDataYear[11] += 1;
-                bolsas.add(bolsasbydate.getBolsa().getCodigo());
-                addingValuestoText(bolsasbydate);
+                if (bolsasbydate.getProducto().getCategoria().getNombre().equals("Plastico") || bolsasbydate.getProducto().getCategoria().getNombre().equals("Papel/Carton")) {
+                    System.out.println(bolsasbydate.getProducto().getCategoria().getNombre());
+                    bolsasLast.add(bolsasbydate.getBolsa().getCodigo());
+                    Date dia = bolsasbydate.getBolsa().getRecojoFecha();
+                    Calendar cal = Calendar.getInstance();
+                    cal.setTime(dia);
+                    if (cal.get(Calendar.MONTH) == 0) {
+                        yAxisDataYear[0] += 1;
+                        yAxisDataYearPunto[0] += bolsasbydate.getPuntuacion();
+                    } else if (cal.get(Calendar.MONTH) == 1) {
+                        yAxisDataYear[1] += 1;
+                        yAxisDataYearPunto[1] += bolsasbydate.getPuntuacion();
+                    } else if (cal.get(Calendar.MONTH) == 2) {
+                        yAxisDataYear[2] += 1;
+                        yAxisDataYearPunto[2] += bolsasbydate.getPuntuacion();
+                    } else if (cal.get(Calendar.MONTH) == 3) {
+                        yAxisDataYear[3] += 1;
+                        yAxisDataYearPunto[3] += bolsasbydate.getPuntuacion();
+                    } else if (cal.get(Calendar.MONTH) == 4) {
+                        yAxisDataYear[4] += 1;
+                        yAxisDataYearPunto[4] += bolsasbydate.getPuntuacion();
+                    } else if (cal.get(Calendar.MONTH) == 5) {
+                        yAxisDataYear[5] += 1;
+                        yAxisDataYearPunto[5] += bolsasbydate.getPuntuacion();
+                    } else if (cal.get(Calendar.MONTH) == 6) {
+                        yAxisDataYear[6] += 1;
+                        yAxisDataYearPunto[6] += bolsasbydate.getPuntuacion();
+                    } else if (cal.get(Calendar.MONTH) == 7) {
+                        yAxisDataYear[7] += 1;
+                        yAxisDataYearPunto[7] += bolsasbydate.getPuntuacion();
+                    } else if (cal.get(Calendar.MONTH) == 8) {
+                        yAxisDataYear[8] += 1;
+                        yAxisDataYearPunto[8] += bolsasbydate.getPuntuacion();
+                    } else if (cal.get(Calendar.MONTH) == 9) {
+                        yAxisDataYear[9] += 1;
+                        yAxisDataYearPunto[9] += bolsasbydate.getPuntuacion();
+                    } else if (cal.get(Calendar.MONTH) == 10) {
+                        yAxisDataYear[10] += 1;
+                        yAxisDataYearPunto[10] += bolsasbydate.getPuntuacion();
+                    } else if (cal.get(Calendar.MONTH) == 11) {
+                        yAxisDataYear[11] += 1;
+                        yAxisDataYearPunto[11] += bolsasbydate.getPuntuacion();
+                    }
+                    bolsas.add(bolsasbydate.getBolsa().getCodigo());
+                    addingValuestoText(bolsasbydate);
+                }
             }
 
         }
@@ -471,6 +546,13 @@ public class APIToSQLite {
                     + yAxisDataYear[6] + ", " + yAxisDataYear[7] + ","+ + yAxisDataYear[8] + ","+yAxisDataYear[9] + ", " + yAxisDataYear[10] +","+ yAxisDataYear[11] +  ",'probolsa')";
             db.execSQL(query);
             System.out.println(query);
+
+            String query2 = "insert into DatosAnuales(enero,febrero,marzo,abril,mayo,junio,julio,agosto,setiembre,octubre,noviembre,diciembre,tipo) " +
+                    "values ( " + yAxisDataYearPunto[0] + ", " + yAxisDataYearPunto[1] + ", "
+                    + yAxisDataYearPunto[2] + ", " + yAxisDataYearPunto[3] + ", " + yAxisDataYearPunto[4] + "," + yAxisDataYearPunto[5]  + ", "
+                    + yAxisDataYearPunto[6] + ", " + yAxisDataYearPunto[7] + ","+ + yAxisDataYearPunto[8] + ","+yAxisDataYearPunto[9] + ", " + yAxisDataYearPunto[10] +","+ yAxisDataYearPunto[11] +  ",'puntos')";
+            db.execSQL(query2);
+            System.out.println(query2);
 
         }
 
@@ -498,29 +580,29 @@ public class APIToSQLite {
                         Date dia=new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.ENGLISH).parse(sDate1);
                         Calendar cal = Calendar.getInstance();
                         cal.setTime(dia);
-                        if (cal.get(Calendar.MONTH) == 1)
+                        if (cal.get(Calendar.MONTH) == 0)
                             yAxisDataYearBolsa[0] += 1;
-                        else if (cal.get(Calendar.MONTH) == 2)
+                        else if (cal.get(Calendar.MONTH) == 1)
                             yAxisDataYearBolsa[1] += 1;
-                        else if (cal.get(Calendar.MONTH) == 3)
+                        else if (cal.get(Calendar.MONTH) == 2)
                             yAxisDataYearBolsa[2] += 1;
-                        else if (cal.get(Calendar.MONTH) == 4)
+                        else if (cal.get(Calendar.MONTH) == 3)
                             yAxisDataYearBolsa[3] += 1;
-                        else if (cal.get(Calendar.MONTH) == 5)
+                        else if (cal.get(Calendar.MONTH) == 4)
                             yAxisDataYearBolsa[4] += 1;
-                        else if (cal.get(Calendar.MONTH) == 6)
+                        else if (cal.get(Calendar.MONTH) == 5)
                             yAxisDataYearBolsa[5] += 1;
-                        else if (cal.get(Calendar.MONTH) == 7)
+                        else if (cal.get(Calendar.MONTH) == 6)
                             yAxisDataYearBolsa[6] += 1;
-                        else if (cal.get(Calendar.MONTH) == 8)
+                        else if (cal.get(Calendar.MONTH) == 7)
                             yAxisDataYearBolsa[7] += 1;
-                        else if (cal.get(Calendar.MONTH) == 9)
+                        else if (cal.get(Calendar.MONTH) == 8)
                             yAxisDataYearBolsa[8] += 1;
-                        else if (cal.get(Calendar.MONTH) == 10)
+                        else if (cal.get(Calendar.MONTH) == 9)
                             yAxisDataYearBolsa[9] += 1;
-                        else if (cal.get(Calendar.MONTH) == 11)
+                        else if (cal.get(Calendar.MONTH) == 10)
                             yAxisDataYearBolsa[10] += 1;
-                        else if (cal.get(Calendar.MONTH) == 12)
+                        else if (cal.get(Calendar.MONTH) == 11)
                             yAxisDataYearBolsa[11] += 1;
                     }
 
@@ -560,7 +642,7 @@ public class APIToSQLite {
             pesoPlastico += bolsasbydate.getProducto().getPeso();
             puntosPlastico += bolsasbydate.getPuntuacion();
             plasticoCount++;
-        } else if (bolsasbydate.getProducto().getCategoria().getNombre().equals("Vidrio")) {
+        }else if (bolsasbydate.getProducto().getCategoria().getNombre().equals("Vidrio")) {
             pesoVidrio += bolsasbydate.getProducto().getPeso();
             puntosVidrio += bolsasbydate.getPuntuacion();
             vidrioCount++;

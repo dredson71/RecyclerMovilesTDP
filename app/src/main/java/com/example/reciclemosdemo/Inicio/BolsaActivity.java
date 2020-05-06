@@ -144,7 +144,6 @@ public class BolsaActivity extends AppCompatActivity implements NavigationView.O
             case R.id.nav_logout:
                 startActivity(new Intent(getApplicationContext(), LoginActivity.class));
                 break;
-
         }
         mDrawerLayout.closeDrawer(GravityCompat.START);
         return true;

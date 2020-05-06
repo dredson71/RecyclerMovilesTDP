@@ -114,6 +114,7 @@ public class ProductoFragment extends Fragment {
         numberPicker.setOnValueChangedListener(onValueChangeListener);
 
         btnAgregar.setOnClickListener(mOnClickListener);
+        btnMeinformo.setOnClickListener(mOnClickListener);
 
         progressDialog = new ProgressDialog(getActivity());
         progressDialog.setMessage("Añadiendo Producto...");
@@ -176,6 +177,10 @@ public class ProductoFragment extends Fragment {
                     progressDialog.setCancelable(false);
                     new Buscar(numberPicker.getValue(), txtNombre.getText().toString()).execute();
                     break;
+                case R.id.btnMeinformo:
+                    Intent registeractivity = new Intent(getContext(), MeInformoActivity.class);
+                    startActivity(registeractivity);
+                    break;
             }
         }
     };
@@ -233,7 +238,7 @@ public class ProductoFragment extends Fragment {
 
         Cursor f = db.rawQuery("select categoria, contenido, nombre, peso, tipo_contenido, codigo, urlimagen from Producto where barcode = '"+ barCode+ "'", null);
 
-        if(f.moveToFirst()) {
+        if(f.moveToFirst() && f.getInt(0) != 2 && f.getInt(0) != 4) {
             visible();
             Cursor f2 = db.rawQuery("select codigo from Probolsa where bolsa = "+ bolsa + " and producto = " + f.getInt(5), null);
 

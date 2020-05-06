@@ -38,13 +38,10 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class BolsasUserFragment extends Fragment  implements ListaBolsaAdapter.OnNoteListener{
     View view;
-    private static final String TAG ="BOLSAS";
-    private ArrayList<Bolsa> dataset = new ArrayList<>();
     private Retrofit retrofit;
     private RecyclerView recyclerView;
     private ListaBolsaAdapter listBolsasAdapter;
     private ArrayList<TextView> textList = new ArrayList<>();
-    private int bolsasCount,puntosCount,pesoCount;
     private TextView txtBolsasCount,txtPesoCount,txtPuntuacionCount;
 
 
@@ -76,7 +73,7 @@ public class BolsasUserFragment extends Fragment  implements ListaBolsaAdapter.O
         } catch (ParseException e) {
             e.printStackTrace();
         }
-     //   obtenerBolsasByDay("bolsasDay/",usuarioID,textList);
+        // obtenerBolsasByDay("bolsasDay/",usuarioID,textList);
         return view;
 
     }
@@ -87,7 +84,7 @@ public class BolsasUserFragment extends Fragment  implements ListaBolsaAdapter.O
         SQLiteDatabase db = helper.getReadableDatabase();
         ArrayList<Bolsa> listaprodbolsas = new ArrayList<>();
         Cursor f1 = db.rawQuery("select codigo from LastBolsas ",null);
-        int codigoBolsa=0;
+        int codigoBolsa;
         if(f1.moveToFirst()){
             do{
                 Bolsa bolsa = new Bolsa();
@@ -101,7 +98,7 @@ public class BolsasUserFragment extends Fragment  implements ListaBolsaAdapter.O
                 System.out.println(bolsa.getCodigo());
                 bolsa.setActiva(false);
                 String sDate1 = f.getString(1);
-                SimpleDateFormat  smpDate = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy",Locale.ENGLISH);
+                SimpleDateFormat  smpDate = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.ENGLISH);
                 Date date1 = smpDate.parse(sDate1);
                 bolsa.setCreadoFecha(date1);
                 bolsa.setObservaciones(f.getString(4));
@@ -116,11 +113,12 @@ public class BolsasUserFragment extends Fragment  implements ListaBolsaAdapter.O
                 }
                 listaprodbolsas.add(0,bolsa);
 
-            }while(f1.moveToNext());        }
+            }while(f1.moveToNext());
+        }
         listBolsasAdapter.adicionarListaCancion(listaprodbolsas);
     }
-/*
-    public void obtenerBolsasByDay(String urlDate,String usuarioID,ArrayList<TextView> textViewsList){
+
+    /*public void obtenerBolsasByDay(String urlDate,String usuarioID,ArrayList<TextView> textViewsList){
         dbHelper helper = new dbHelper(getActivity(),"Usuario.sqlite", null, 1);
         SQLiteDatabase db = helper.getReadableDatabase();
 
@@ -130,8 +128,8 @@ public class BolsasUserFragment extends Fragment  implements ListaBolsaAdapter.O
             textViewsList.get(2).setText(Integer.toString(f.getInt(2)));
             textViewsList.get(1).setText(Integer.toString(f.getInt(1)/1000));
         }
-    }
-*/
+    }*/
+
     @Override
     public void oneNoteClick(int position) {
 

@@ -122,23 +122,25 @@ public class ProductoDetalleFragment extends Fragment {
             Cursor fila3 = db.rawQuery("select codigo, nombre from Categoria where codigo = " + fila2.getInt(3), null);
             fila3.moveToFirst();
 
-            Bolsalist ayuda = new Bolsalist();
+            if(fila3.getInt(0) != 2 && fila3.getInt(0) != 4) {
+                Bolsalist ayuda = new Bolsalist();
 
-            ayuda.setNombre(fila2.getString(0));
-            ayuda.setCodigo(fila.getInt(2));
-            ayuda.setPeso(fila.getDouble(3));
-            ayuda.setCantidad(fila.getInt(1));
-            ayuda.setPuntos(fila.getInt(5));
-            ayuda.setContenido(fila2.getDouble(2));
-            ayuda.setUrlImage(fila2.getString(4));
-            ayuda.setAbreviatura(fila2.getString(1));
-            ayuda.setCategoria(fila3.getString(1));
-            ayuda.setCodcontenido(fila3.getInt(0));
+                ayuda.setNombre(fila2.getString(0));
+                ayuda.setCodigo(fila.getInt(2));
+                ayuda.setPeso(fila.getDouble(3));
+                ayuda.setCantidad(fila.getInt(1));
+                ayuda.setPuntos(fila.getInt(5));
+                ayuda.setContenido(fila2.getDouble(2));
+                ayuda.setUrlImage(fila2.getString(4));
+                ayuda.setAbreviatura(fila2.getString(1));
+                ayuda.setCategoria(fila3.getString(1));
+                ayuda.setCodcontenido(fila3.getInt(0));
 
-            listDetalle.add(ayuda);
+                listDetalle.add(ayuda);
+            }
         } while (fila.moveToNext());
 
-        adapter = new AdapterDetalle(listDetalle,"");
+        adapter = new AdapterDetalle(listDetalle, "");
         rclDetalle.setAdapter(adapter);
 
         adapter.setOnItemClickListener(new AdapterDetalle.OnItemClickListener(){

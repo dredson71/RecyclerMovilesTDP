@@ -147,19 +147,4 @@ public class Usuario {
         this.telefono = telefono;
     }
 
-    public String toString(){
-        return "{ \"condominio\": { \"codigo\": " + condominio.getCodigo().toString()
-                + " }, \"sexo\": { \"codigo\": " + sexo.getCodigo().toString()
-                + " }, \"tipo_Usuario\": { \"codigo\": " + tipo_Usuario.getCodigo().toString()
-                + " }, \"email\": \"" + email + "\", "
-                + "\"password\": \"" + password + "\", "
-                + "\"nombre\": \"" + nombre + "\", "
-                + "\"apellido\": \"" + apellido + "\", "
-                + "\"dni\": \"" + dni + "\", "
-                + "\"salt\": \"" + salt + "\", "
-                + "\"telefono\": \"" + telefono + "\", "
-                + "\"fecha_Nacimiento\": \"" + fechanacimiento + "\", "
-                + "\"direccion\": \"" + direccion + "\" }";
-    }
-
 }

@@ -46,10 +46,6 @@ public interface JsonPlaceHolderApi {
     @GET
     Call<List<Probolsa>> getBolsasByDate(@Url String url);
 
-
-    @GET
-    Call<List<Bolsa>> getLastRecordBolsasYear(@Url String url);
-
     @GET
     Call<List<Producto>> getProductos(@Url String url);
 
@@ -91,5 +87,4 @@ public interface JsonPlaceHolderApi {
 
     @GET
     Call<Reciclador> getReciclador(@Url String url);
-
 }

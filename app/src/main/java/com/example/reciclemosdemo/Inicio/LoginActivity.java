@@ -46,7 +46,7 @@ public class LoginActivity extends AppCompatActivity {
     private TextView textView, textView2, txtForget;
     private ImageView imageView;
     private EditText txtEmail, txtPassword;
-    private Button btnIngresar, btnFacebook, btnGmail, btnRegistrar;
+    private Button btnIngresar, btnRegistrar;
     private Retrofit retrofit;
     private String[] arrpassword = null;
     private APIToSQLite sqlitedb;
@@ -64,7 +64,7 @@ public class LoginActivity extends AppCompatActivity {
                 case 2:
                     progressDialog2.cancel();
                     Toast.makeText(getApplicationContext(), "Información cargada", Toast.LENGTH_LONG).show();
-                    Intent lectoractivity = new Intent(getApplicationContext(), BolsaActivity.class);
+                    Intent lectoractivity = new Intent(getApplicationContext(), ScanBarCodeActivity.class);
                     startActivity(lectoractivity);
                     break;
                 case 3:
@@ -122,7 +122,7 @@ public class LoginActivity extends AppCompatActivity {
         progressDialog2 = new ProgressDialog(this);
         progressDialog2.setMessage("Cargando información, por favor espere...");
 
-        sqlitedb = new APIToSQLite(this,"");
+        sqlitedb = new APIToSQLite(this, "");
     }
 
     //INTERFACE ENTITY

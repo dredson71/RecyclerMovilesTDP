@@ -56,6 +56,7 @@ public class QrFragment extends Fragment {
     public static QrFragment newInstance() {
         return new QrFragment();
     }
+
     public void pauseScan(){
         decoratedBarcodeView.pause();
     }
@@ -183,7 +184,6 @@ public class QrFragment extends Fragment {
                 fila.moveToFirst();
 
                 db.execSQL("update Bolsa set activa = 'false' where codigo = " + fila.getInt(0));
-
 
                 Call<Bolsa> call2=jsonPlaceHolderApi.putQrBolsa("bolsa/" + fila.getInt(0) + "/qrCode/" + qr);
                 Response<Bolsa> response2 = call2.execute();

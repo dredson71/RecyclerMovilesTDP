@@ -5,9 +5,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -61,19 +60,23 @@ public class DetalleFragment extends Fragment {
 
         fila2.moveToFirst();
 
-        Cursor fila = db.rawQuery("select cantidad, puntuacion from Probolsa where bolsa = " + fila2.getInt(0), null);
+        Cursor fila = db.rawQuery("select cantidad, puntuacion, producto from Probolsa where bolsa = " + fila2.getInt(0), null);
 
         if(fila.moveToFirst()){
-            do {
-                TotalPuntos += fila.getInt(1);
-                TotalCantidad += fila.getInt(0);
-            } while (fila.moveToNext());
-            System.out.println(TotalPuntos);
-            System.out.println(TotalCantidad);
-            db.close();
+                do {
+                    Cursor fila3 = db.rawQuery("select categoria from Producto where codigo = " + fila.getInt(2), null);
+                    fila3.moveToFirst();
+                    if(fila3.getInt(0) != 2 && fila3.getInt(0) != 4) {
+                        TotalPuntos += fila.getInt(1);
+                        TotalCantidad += fila.getInt(0);
+                    }
+                } while (fila.moveToNext());
+                System.out.println(TotalPuntos);
+                System.out.println(TotalCantidad);
+                db.close();
 
-            txtTotalPuntos.setText(TotalPuntos+ "");
-            txtTotalCantidad.setText(TotalCantidad + "");
+                txtTotalPuntos.setText(TotalPuntos + "");
+                txtTotalCantidad.setText(TotalCantidad + "");
         }else{
             ((BolsaActivity) getActivity()).setEscaneaAlgoFragment();
         }

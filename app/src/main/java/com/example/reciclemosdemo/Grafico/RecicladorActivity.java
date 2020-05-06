@@ -6,7 +6,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.media.Image;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -14,6 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -25,6 +25,8 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import com.example.reciclemosdemo.Adicionales.dbHelper;
 import com.example.reciclemosdemo.Inicio.BolsaActivity;
 import com.example.reciclemosdemo.Inicio.CatalogoActivity;
+import com.example.reciclemosdemo.Inicio.LoginActivity;
+import com.example.reciclemosdemo.Inicio.MeInformoActivity;
 import com.example.reciclemosdemo.Inicio.ScanBarCodeActivity;
 import com.example.reciclemosdemo.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -82,6 +84,13 @@ public class RecicladorActivity extends AppCompatActivity  implements Navigation
         View headerView = navigationView.getHeaderView(0);
         TextView navUsername = (TextView) headerView.findViewById(R.id.txtUser);
         navUsername.setText(fila2.getString(1));
+        TextView navViewProfile = headerView.findViewById(R.id.txtMiPerfil);
+        navViewProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(), ProfileActivity.class));
+            }
+        });
 
         Cursor recicladorF = db.rawQuery("select nombre, apellido,dni ,asociacion ,fecha_Nacimiento,imagen from Reciclador", null);
         recicladorF.moveToFirst();
@@ -149,10 +158,14 @@ public class RecicladorActivity extends AppCompatActivity  implements Navigation
         });
 
         btn.setOnClickListener(v -> {
-            txtValor.setText("");
-            String mensaje = "Acabas de mandarle un mensaje a: "+txtNombre.getText() +" " + txtApellido.getText() ;
-            txtObservacionesDialog.setText(mensaje + "\r\n \r\nContinuemos apoyando su trabajo");
-            myObservacionDialog.show();
+            if(editTextMensaje.getText().toString().trim().isEmpty()){
+                editTextMensaje.setError("Por favor ingrese un mensaje");
+            }else{
+                txtValor.setText("");
+                String mensaje = "Acabas de mandarle un mensaje a: "+txtNombre.getText() +" " + txtApellido.getText() ;
+                txtObservacionesDialog.setText(mensaje + "\r\n \r\nContinuemos apoyando su trabajo");
+                myObservacionDialog.show();
+            }
         });
     }
 
@@ -170,8 +183,14 @@ public class RecicladorActivity extends AppCompatActivity  implements Navigation
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
-            case R.id.txtMiPerfil:
-                startActivity(new Intent(getApplicationContext(), ProfileActivity.class));
+            case R.id.nav_info:
+                startActivity(new Intent(getApplicationContext(), MeInformoActivity.class));
+                break;
+            case R.id.nav_message:
+                Toast.makeText(this, "Proximamente 2", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.nav_logout:
+                startActivity(new Intent(getApplicationContext(), LoginActivity.class));
                 break;
         }
         mDrawerLayout.closeDrawer(GravityCompat.START);

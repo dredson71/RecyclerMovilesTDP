@@ -13,22 +13,6 @@ public class dbHelper extends SQLiteOpenHelper {
         super(context, name, factory, version);
     }
 
-    public void DropCreate(SQLiteDatabase db){
-        db.execSQL("drop table Bolsa");
-        db.execSQL("drop table Categoria");
-        db.execSQL("drop table Probolsa");
-        db.execSQL("drop table Producto");
-        db.execSQL("drop table Sexo");
-        db.execSQL("drop table Usuario");
-        db.execSQL("drop table Contador");
-        db.execSQL("drop table DatosDiarios");
-        db.execSQL("drop table DatosAnuales");
-        db.execSQL("drop table LastBolsas");
-        db.execSQL("drop table LastProbolsas");
-        db.execSQL("drop table Reciclador");
-        onCreate(db);
-    }
-
     public void UpdateTable(SQLiteDatabase db){
         db.execSQL("drop table Bolsa");
         db.execSQL("drop table Probolsa");
@@ -44,6 +28,22 @@ public class dbHelper extends SQLiteOpenHelper {
         db.execSQL("create table DatosAnuales(codigo integer primary key autoincrement,enero integer,febrero integer,marzo integer,abril integer,mayo integer,junio integer,julio integer,agosto integer,setiembre integer,octubre integer,noviembre integer,diciembre integer,tipo string)  ");
         db.execSQL("create table LastBolsas(codigo integer primary key,string tipo)");
         db.execSQL("create  table LastProbolsas(codigo integer primary key,string tipo,bolsa integer)");
+    }
+
+    public void DropCreate(SQLiteDatabase db){
+        db.execSQL("drop table Bolsa");
+        db.execSQL("drop table Categoria");
+        db.execSQL("drop table Probolsa");
+        db.execSQL("drop table Producto");
+        db.execSQL("drop table Sexo");
+        db.execSQL("drop table Usuario");
+        db.execSQL("drop table Contador");
+        db.execSQL("drop table DatosDiarios");
+        db.execSQL("drop table DatosAnuales");
+        db.execSQL("drop table LastBolsas");
+        db.execSQL("drop table LastProbolsas");
+        db.execSQL("drop table Reciclador");
+        onCreate(db);
     }
 
     @Override

@@ -65,6 +65,7 @@ public class ProductByBolsa extends AppCompatActivity implements com.example.rec
     private TextView txt_Reciclador;
     private TextView txt_Observaciones;
     private Dialog myObservacionDialog;
+    private SpannableString content = new SpannableString("SI");
     com.example.reciclemosdemo.Entities.CategoriaDivided plasticoDivided = new com.example.reciclemosdemo.Entities.CategoriaDivided();
     com.example.reciclemosdemo.Entities.CategoriaDivided vidrioDivided = new com.example.reciclemosdemo.Entities.CategoriaDivided();
     com.example.reciclemosdemo.Entities.CategoriaDivided metalDivided = new com.example.reciclemosdemo.Entities.CategoriaDivided();
@@ -152,18 +153,18 @@ public class ProductByBolsa extends AppCompatActivity implements com.example.rec
             }
         });
 
-        if(txt_Observaciones.getText().equals("SI"))
-        txt_Observaciones.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                myObservacionDialog.show();
-            }
-        });
+        if(txt_Observaciones.getText().equals(content))
+            txt_Observaciones.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    myObservacionDialog.show();
+                }
+            });
         //INICIALIZA APP BAR
         BottomNavigationView bottomNavigationView = findViewById(R.id.botton_navigation);
 
         //SELECCIÓN
-        bottomNavigationView.setSelectedItemId(R.id.escaner);
+        bottomNavigationView.setSelectedItemId(R.id.miaporte);
 
         //CAMBIO DE SELECCIÓN
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -199,7 +200,7 @@ public class ProductByBolsa extends AppCompatActivity implements com.example.rec
         System.out.println(query);
         Cursor f = db.rawQuery(query,null);
         f.moveToFirst();
-        DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss",Locale.ENGLISH);
+        DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.ENGLISH);
         if(f.getString(3).equals("null") || f.getString(3).equals(null)) {
             textViewsList.get(1).setText("Recojo : Pendiente");
         }else {
@@ -217,7 +218,7 @@ public class ProductByBolsa extends AppCompatActivity implements com.example.rec
         String recicladorQuery = "select nombre , apellido  from Reciclador";
         System.out.println(query);
         Cursor reciclerF = db.rawQuery(recicladorQuery,null);
-    reciclerF.moveToFirst();
+        reciclerF.moveToFirst();
         SpannableString reciclador = new SpannableString(reciclerF.getString(0) +" "+ reciclerF.getString(1));
         reciclador.setSpan(new UnderlineSpan(), 0, reciclador.length(), 0);
         textViewsList.get(4).setText(reciclador);
@@ -227,7 +228,6 @@ public class ProductByBolsa extends AppCompatActivity implements com.example.rec
         }
 
         else {
-            SpannableString content = new SpannableString("SI");
             content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
             textViewsList.get(5).setText(content);
             textViewsList.get(6).setText(f.getString(4));
@@ -244,7 +244,7 @@ public class ProductByBolsa extends AppCompatActivity implements com.example.rec
                 plasticoDivided.setTipo("Plastico");
                 categoriaDivideds.add(plasticoDivided);
             }
-            if ( f1.getString(1).equals("Vidrio")  && f1.getInt(2) > 0) {
+        /*    if ( f1.getString(1).equals("Vidrio")  && f1.getInt(2) > 0) {
                 vidrioDivided.setCantidad( f1.getInt(2));
                 vidrioDivided.setPeso( f1.getInt(3));
                 vidrioDivided.setPuntos( f1.getInt(4));
@@ -257,7 +257,7 @@ public class ProductByBolsa extends AppCompatActivity implements com.example.rec
                 metalDivided.setPuntos( f1.getInt(4));
                 metalDivided.setTipo("Metal");
                 categoriaDivideds.add(metalDivided);
-            }
+            }*/
             if ( f1.getString(1).equals("Papel")  && f1.getInt(2) > 0) {
                 papelDivided.setCantidad( f1.getInt(2));
                 papelDivided.setPeso( f1.getInt(3));
@@ -268,7 +268,7 @@ public class ProductByBolsa extends AppCompatActivity implements com.example.rec
         }while(f1.moveToNext());
         listBolsasAdapter.adicionarProductoBolsas(categoriaDivideds, ProductByBolsa.this);
 
-        textViewsList.get(2).setText(Integer.toString(papelDivided.getPeso()+metalDivided.getPeso()+plasticoDivided.getPeso()+vidrioDivided.getPeso()));
+        textViewsList.get(2).setText(Integer.toString((papelDivided.getPeso()+metalDivided.getPeso()+plasticoDivided.getPeso()+vidrioDivided.getPeso())) +" g");
         textViewsList.get(3).setText(Integer.toString(papelDivided.getPuntos()+metalDivided.getPuntos()+plasticoDivided.getPuntos()+vidrioDivided.getPuntos()));
     }
 
@@ -296,20 +296,22 @@ public class ProductByBolsa extends AppCompatActivity implements com.example.rec
             Cursor fila3 = db.rawQuery("select codigo, nombre from Categoria where codigo = " + fila2.getInt(3), null);
             fila3.moveToFirst();
 
-            Bolsalist ayuda = new Bolsalist();
+            if(fila3.getString(1).equals("Plástico") || fila3.getString(1).equals("Papel/Carton") ) {
+                Bolsalist ayuda = new Bolsalist();
 
-            ayuda.setNombre(fila2.getString(0));
-            ayuda.setCodigo(fila.getInt(2));
-            ayuda.setPeso(fila.getDouble(3));
-            ayuda.setCantidad(fila.getInt(1));
-            ayuda.setPuntos(fila.getInt(5));
-            ayuda.setContenido(fila2.getDouble(2));
-            ayuda.setUrlImage(fila2.getString(4));
-            ayuda.setAbreviatura(fila2.getString(1));
-            ayuda.setCategoria(fila3.getString(1));
-            ayuda.setCodcontenido(fila3.getInt(0));
+                ayuda.setNombre(fila2.getString(0));
+                ayuda.setCodigo(fila.getInt(2));
+                ayuda.setPeso(fila.getDouble(3));
+                ayuda.setCantidad(fila.getInt(1));
+                ayuda.setPuntos(fila.getInt(5));
+                ayuda.setContenido(fila2.getDouble(2));
+                ayuda.setUrlImage(fila2.getString(4));
+                ayuda.setAbreviatura(fila2.getString(1));
+                ayuda.setCategoria(fila3.getString(1));
+                ayuda.setCodcontenido(fila3.getInt(0));
 
-            listDetalle.add(ayuda);
+                listDetalle.add(ayuda);
+            }
         } while (fila.moveToNext());
 
         adapter = new AdapterDetalle(listDetalle,"view");

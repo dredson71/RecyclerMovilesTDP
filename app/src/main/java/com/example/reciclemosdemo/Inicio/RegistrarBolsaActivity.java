@@ -8,7 +8,6 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -17,8 +16,6 @@ import android.os.Message;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import com.example.reciclemosdemo.Adicionales.dbHelper;
-import com.example.reciclemosdemo.Grafico.ExitosoTest;
 import com.example.reciclemosdemo.Grafico.ListBolsas;
 import com.example.reciclemosdemo.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -33,7 +30,7 @@ public class RegistrarBolsaActivity extends AppCompatActivity {
     Fragment qrFragment = QrFragment.newInstance();
     Fragment exitosoFragment = new ExitosoFragment();
 
-    private ProgressDialog progressDialog, progressDialog2;
+    private ProgressDialog progressDialog;
 
 
     Handler mHandler = new Handler(Looper.getMainLooper()) {
@@ -41,7 +38,7 @@ public class RegistrarBolsaActivity extends AppCompatActivity {
         public void handleMessage(Message message) {
             switch (message.what){
                 case 2:
-                    progressDialog2.cancel();
+                    progressDialog.cancel();
                     Toast.makeText(getApplicationContext(), "Información cargada", Toast.LENGTH_LONG).show();
                     break;
 
@@ -96,21 +93,18 @@ public class RegistrarBolsaActivity extends AppCompatActivity {
 
     }
 
-
-
     public void creatingUpdate()
     {
-        progressDialog2 = new ProgressDialog(this);
-        progressDialog2.setMessage("Cargando información...");
-        progressDialog2.show();
-        progressDialog2.setCancelable(false);
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Cargando información...");
+        progressDialog.show();
+        progressDialog.setCancelable(false);
 
 
         sqlitedb = new APIToSQLite(this,"actualizar");
 
         new BackgroundJob().execute();
     }
-
 
     private class BackgroundJob extends AsyncTask<Void,Void,Void> {
 
@@ -139,6 +133,7 @@ public class RegistrarBolsaActivity extends AppCompatActivity {
             mHandler.sendMessage(msg);
         }
     }
+
     public void registroExitoso(){
         fragmentManager = getSupportFragmentManager();
         transaction2 = fragmentManager.beginTransaction();

@@ -77,6 +77,13 @@ public class SolicitudActivity extends AppCompatActivity   implements Navigation
         View headerView = navigationView.getHeaderView(0);
         TextView navUsername = (TextView) headerView.findViewById(R.id.txtUser);
         navUsername.setText(fila2.getString(0));
+        TextView navViewProfile = headerView.findViewById(R.id.txtMiPerfil);
+        navViewProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(), ProfileActivity.class));
+            }
+        });
 
         //INICIALIZA APP BAR
         BottomNavigationView bottomNavigationView = findViewById(R.id.botton_navigation);
@@ -116,50 +123,55 @@ public class SolicitudActivity extends AppCompatActivity   implements Navigation
 
 
     public void RegistrarSolicitud(View view) throws InvalidKeySpecException, NoSuchAlgorithmException, ParseException {
-        dbHelper helper = new dbHelper(this,"Usuario.sqlite", null, 1);
-        SQLiteDatabase db = helper.getReadableDatabase();
-        Cursor fila2 = db.rawQuery("select codigo from Usuario", null);
-        fila2.moveToFirst();
+        if(editTextDatos.getText().toString().trim().isEmpty()){
+            editTextDatos.setError("Por favor ingrese los datos que desea actualizar");
+        }else if(editTextSustento.getText().toString().trim().isEmpty()){
+            editTextSustento.setError("Por favor ingrese el sustento o razón por la cual cambiará los datos");
+        }else{
+            dbHelper helper = new dbHelper(this,"Usuario.sqlite", null, 1);
+            SQLiteDatabase db = helper.getReadableDatabase();
+            Cursor fila2 = db.rawQuery("select codigo from Usuario", null);
+            fila2.moveToFirst();
 
-        int codigoUsuario = fila2.getInt(0);
-        Usuario userTemp = new Usuario();
-        userTemp.setCodigo(codigoUsuario);
+            int codigoUsuario = fila2.getInt(0);
+            Usuario userTemp = new Usuario();
+            userTemp.setCodigo(codigoUsuario);
 
-        String valor_sustento = editTextSustento.getText().toString();
-        String valor_datosActualizar = editTextDatos.getText().toString();
+            String valor_sustento = editTextSustento.getText().toString();
+            String valor_datosActualizar = editTextDatos.getText().toString();
 
-        Solicitud solicitud = new Solicitud();
-        solicitud.setActiva(true);
-        solicitud.setSustento(valor_sustento);
-        solicitud.setDatosActualizar(valor_datosActualizar);
-        solicitud.setUsuario(userTemp);
+            Solicitud solicitud = new Solicitud();
+            solicitud.setActiva(true);
+            solicitud.setSustento(valor_sustento);
+            solicitud.setDatosActualizar(valor_datosActualizar);
+            solicitud.setUsuario(userTemp);
 
 
-        JsonPlaceHolderApi jsonPlaceHolderApi = retrofit.create(JsonPlaceHolderApi.class);
-        Call<Solicitud> call = jsonPlaceHolderApi.createSolicitud(solicitud);
-        System.out.println(solicitud.toString());
-        call.enqueue(new Callback<Solicitud>() {
-            @Override
-            public void onResponse(Call<Solicitud> call, Response<Solicitud> response) {
-                if (response.isSuccessful()) {
-                    Toast.makeText(getApplicationContext(), "Registro Exitoso", Toast.LENGTH_LONG).show();
-                    Intent profileActi = new Intent(getApplicationContext(), ProfileActivity.class);
-                    startActivity(profileActi);
-                    Log.e("TAG", "post submitted to API.:" + response.toString());
-                } else {
-                    Log.e("TAG", "onResponse:" + response.toString());
-                    Intent profileActi = new Intent(getApplicationContext(), ProfileActivity.class);
-                    startActivity(profileActi);
+            JsonPlaceHolderApi jsonPlaceHolderApi = retrofit.create(JsonPlaceHolderApi.class);
+            Call<Solicitud> call = jsonPlaceHolderApi.createSolicitud(solicitud);
+            System.out.println(solicitud.toString());
+            call.enqueue(new Callback<Solicitud>() {
+                @Override
+                public void onResponse(Call<Solicitud> call, Response<Solicitud> response) {
+                    if (response.isSuccessful()) {
+                        Toast.makeText(getApplicationContext(), "Registro Exitoso", Toast.LENGTH_LONG).show();
+                        Intent profileActi = new Intent(getApplicationContext(), ProfileActivity.class);
+                        startActivity(profileActi);
+                        Log.e("TAG", "post submitted to API.:" + response.toString());
+                    } else {
+                        Log.e("TAG", "onResponse:" + response.toString());
+                        Intent profileActi = new Intent(getApplicationContext(), ProfileActivity.class);
+                        startActivity(profileActi);
+                    }
                 }
-            }
 
-            @Override
-            public void onFailure(Call<Solicitud> call, Throwable t) {
-                Log.e("TAG", "onFailure:" + t.getMessage());
-            }
-        });
-
-}
+                @Override
+                public void onFailure(Call<Solicitud> call, Throwable t) {
+                    Log.e("TAG", "onFailure:" + t.getMessage());
+                }
+            });
+        }
+    }
 
     @Override
     public void onBackPressed() {
@@ -189,3 +201,4 @@ public class SolicitudActivity extends AppCompatActivity   implements Navigation
         return true;
     }
 }
+

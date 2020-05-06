@@ -41,6 +41,7 @@ import com.example.reciclemosdemo.Entities.Bolsalist;
 import com.example.reciclemosdemo.Entities.Producto;
 import com.example.reciclemosdemo.Entities.Productolist;
 import com.example.reciclemosdemo.Grafico.ListBolsas;
+import com.example.reciclemosdemo.Grafico.ProfileActivity;
 import com.example.reciclemosdemo.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
@@ -55,12 +56,12 @@ public class CatalogoActivity extends AppCompatActivity implements NavigationVie
     private FragmentManager fragmentManager;
     private FrameLayout fragment;
     private View view;
-    private CardView cvPlastico, cvPapelCarton, cvVidrio, cvMetal;
+    private CardView cvPlastico, cvPapelCarton;
     private ArrayList<Productolist> productolistssecondary;
     private AdapterProducto mAdapter;
-    private ImageButton imgbtnPlastico, imgbtnVidrio, imgbtnPapelCarton, imgbtnMetales;
+    private ImageButton imgbtnPlastico, imgbtnPapelCarton;
     private EditText etxtBuscar;
-    private TextView txtvPlastico, txtvPapelCarton, txtvVidrio, txtvMetal;
+    private TextView txtvPlastico, txtvPapelCarton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,26 +78,16 @@ public class CatalogoActivity extends AppCompatActivity implements NavigationVie
 
         cvPlastico = findViewById(R.id.cvPlastico);
         cvPapelCarton = findViewById(R.id.cvPapelCarton);
-        cvVidrio = findViewById(R.id.cvVidrio);
-        cvMetal = findViewById(R.id.cvMetal);
         txtvPlastico = findViewById(R.id.txtvPlastico);
         txtvPapelCarton = findViewById(R.id.txtvPapelCarton);
-        txtvMetal = findViewById(R.id.txtvMetales);
-        txtvVidrio = findViewById(R.id.txtvVidrio);
         cvPlastico.setCardElevation(10);
         cvPapelCarton.setCardElevation(10);
-        cvMetal.setCardElevation(10);
-        cvVidrio.setCardElevation(10);
 
         imgbtnPlastico = findViewById(R.id.imgbtnPlastico);
-        imgbtnVidrio = findViewById(R.id.imgbtnVidrio);
         imgbtnPapelCarton = findViewById(R.id.imgbtnPapelCarton);
-        imgbtnMetales = findViewById(R.id.imgbtnMetales);
 
         imgbtnPlastico.setOnClickListener(onClickListener);
-        imgbtnVidrio.setOnClickListener(onClickListener);
         imgbtnPapelCarton.setOnClickListener(onClickListener);
-        imgbtnMetales.setOnClickListener(onClickListener);
 
         recyclerView = findViewById(R.id.recycler_view);
         productolists = new ArrayList<>();
@@ -119,6 +110,24 @@ public class CatalogoActivity extends AppCompatActivity implements NavigationVie
             @Override
             public void afterTextChanged(Editable s) {
                 filterS(s.toString());
+            }
+        });
+
+        dbHelper helper = new dbHelper(this, "Usuario.sqlite", null, 1);
+        SQLiteDatabase db = helper.getReadableDatabase();
+
+        Cursor filaUsuario = db.rawQuery("select codigo, nombre from Usuario", null);
+
+        filaUsuario.moveToFirst();
+
+        View headerView = navigationView.getHeaderView(0);
+        TextView navUsername = (TextView) headerView.findViewById(R.id.txtUser);
+        navUsername.setText(filaUsuario.getString(1));
+        TextView navViewProfile = headerView.findViewById(R.id.txtMiPerfil);
+        navViewProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(), ProfileActivity.class));
             }
         });
 
@@ -161,9 +170,6 @@ public class CatalogoActivity extends AppCompatActivity implements NavigationVie
 
         asignarDatos();
 
-        dbHelper helper = new dbHelper(this,"Usuario.sqlite", null, 1);
-        SQLiteDatabase db = helper.getReadableDatabase();
-
         mAdapter.setOnItemClickListener(new AdapterProducto.OnItemClickListener(){
             @Override
             public void onAdd(int codigo) {
@@ -202,53 +208,19 @@ public class CatalogoActivity extends AppCompatActivity implements NavigationVie
                 case R.id.imgbtnPlastico:
                     filterP("Plástico");
                     imgbtnPlastico.setOnClickListener(offClickListener);
-                    imgbtnPapelCarton.setClickable(false);
-                    imgbtnMetales.setClickable(false);
-                    imgbtnVidrio.setClickable(false);
+                    imgbtnPapelCarton.setOnClickListener(onClickListener);
+                    imgbtnPlastico.setBackground(getResources().getDrawable(R.color.colorPlastico));
+                    txtvPlastico.setBackground(getResources().getDrawable(R.color.colorPlastico));
                     imgbtnPapelCarton.setBackground(getResources().getDrawable(R.color.colorPrimary));
-                    imgbtnMetales.setBackground(getResources().getDrawable(R.color.colorPrimary));
-                    imgbtnVidrio.setBackground(getResources().getDrawable(R.color.colorPrimary));
                     txtvPapelCarton.setBackground(getResources().getDrawable(R.color.colorPrimary));
-                    txtvMetal.setBackground(getResources().getDrawable(R.color.colorPrimary));
-                    txtvVidrio.setBackground(getResources().getDrawable(R.color.colorPrimary));
                     break;
                 case R.id.imgbtnPapelCarton:
                     filterP("Papel/Carton");
                     imgbtnPapelCarton.setOnClickListener(offClickListener);
-                    imgbtnPlastico.setClickable(false);
-                    imgbtnMetales.setClickable(false);
-                    imgbtnVidrio.setClickable(false);
+                    imgbtnPlastico.setOnClickListener(onClickListener);
+                    imgbtnPapelCarton.setBackground(getResources().getDrawable(R.color.colorPapelCarton));
+                    txtvPapelCarton.setBackground(getResources().getDrawable(R.color.colorPapelCarton));
                     imgbtnPlastico.setBackground(getResources().getDrawable(R.color.colorPrimary));
-                    imgbtnMetales.setBackground(getResources().getDrawable(R.color.colorPrimary));
-                    imgbtnVidrio.setBackground(getResources().getDrawable(R.color.colorPrimary));
-                    txtvPlastico.setBackground(getResources().getDrawable(R.color.colorPrimary));
-                    txtvMetal.setBackground(getResources().getDrawable(R.color.colorPrimary));
-                    txtvVidrio.setBackground(getResources().getDrawable(R.color.colorPrimary));
-                    break;
-                case R.id.imgbtnMetales:
-                    filterP("Metal");
-                    imgbtnMetales.setOnClickListener(offClickListener);
-                    imgbtnPlastico.setClickable(false);
-                    imgbtnPapelCarton.setClickable(false);
-                    imgbtnVidrio.setClickable(false);
-                    imgbtnPapelCarton.setBackground(getResources().getDrawable(R.color.colorPrimary));
-                    imgbtnPlastico.setBackground(getResources().getDrawable(R.color.colorPrimary));
-                    imgbtnVidrio.setBackground(getResources().getDrawable(R.color.colorPrimary));
-                    txtvPapelCarton.setBackground(getResources().getDrawable(R.color.colorPrimary));
-                    txtvPlastico.setBackground(getResources().getDrawable(R.color.colorPrimary));
-                    txtvVidrio.setBackground(getResources().getDrawable(R.color.colorPrimary));
-                    break;
-                case R.id.imgbtnVidrio:
-                    filterP("Vidrio");
-                    imgbtnVidrio.setOnClickListener(offClickListener);
-                    imgbtnPlastico.setClickable(false);
-                    imgbtnPapelCarton.setClickable(false);
-                    imgbtnMetales.setClickable(false);
-                    imgbtnPapelCarton.setBackground(getResources().getDrawable(R.color.colorPrimary));
-                    imgbtnMetales.setBackground(getResources().getDrawable(R.color.colorPrimary));
-                    imgbtnPlastico.setBackground(getResources().getDrawable(R.color.colorPrimary));
-                    txtvPapelCarton.setBackground(getResources().getDrawable(R.color.colorPrimary));
-                    txtvMetal.setBackground(getResources().getDrawable(R.color.colorPrimary));
                     txtvPlastico.setBackground(getResources().getDrawable(R.color.colorPrimary));
                     break;
             }
@@ -259,21 +231,11 @@ public class CatalogoActivity extends AppCompatActivity implements NavigationVie
         @Override
         public void onClick(View v) {
             filterP("");
-            imgbtnPlastico.setClickable(true);
-            imgbtnPapelCarton.setClickable(true);
-            imgbtnMetales.setClickable(true);
-            imgbtnVidrio.setClickable(true);
             imgbtnPlastico.setOnClickListener(onClickListener);
-            imgbtnVidrio.setOnClickListener(onClickListener);
             imgbtnPapelCarton.setOnClickListener(onClickListener);
-            imgbtnMetales.setOnClickListener(onClickListener);
             imgbtnPapelCarton.setBackground(getResources().getDrawable(R.color.colorPapelCarton));
-            imgbtnMetales.setBackground(getResources().getDrawable(R.color.colorMetal));
-            imgbtnVidrio.setBackground(getResources().getDrawable(R.color.colorVidrio));
             imgbtnPlastico.setBackground(getResources().getDrawable(R.color.colorPlastico));
             txtvPapelCarton.setBackground(getResources().getDrawable(R.color.colorPapelCarton));
-            txtvVidrio.setBackground(getResources().getDrawable(R.color.colorVidrio));
-            txtvMetal.setBackground(getResources().getDrawable(R.color.colorMetal));
             txtvPlastico.setBackground(getResources().getDrawable(R.color.colorPlastico));
         }
     };
@@ -310,22 +272,25 @@ public class CatalogoActivity extends AppCompatActivity implements NavigationVie
         Cursor fila2 = db.rawQuery("select nombre, tipo_contenido, contenido, categoria, urlimagen, peso, codigo from Producto", null);
         fila2.moveToFirst();
         do {
-            Cursor fila3 = db.rawQuery("select codigo, nombre from Categoria where codigo = " + fila2.getInt(3), null);
-            fila3.moveToFirst();
+            if(fila2.getInt(3) != 2 && fila2.getInt(3) != 4) {
+                Cursor fila3 = db.rawQuery("select codigo, nombre from Categoria where codigo = " + fila2.getInt(3), null);
+                fila3.moveToFirst();
 
-            Productolist ayuda = new Productolist();
+                Productolist ayuda = new Productolist();
 
-            ayuda.setNombre(fila2.getString(0));
-            ayuda.setCodigo(fila2.getInt(6));
-            ayuda.setPeso(fila2.getDouble(5));
-            ayuda.setContenido(fila2.getDouble(2));
-            ayuda.setUrlImage(fila2.getString(4));
-            ayuda.setAbreviatura(fila2.getString(1));
-            ayuda.setCategoria(fila3.getString(1));
-            ayuda.setCodcontenido(fila3.getInt(0));
+                ayuda.setNombre(fila2.getString(0));
+                ayuda.setCodigo(fila2.getInt(6));
+                ayuda.setPeso(fila2.getDouble(5));
+                ayuda.setContenido(fila2.getDouble(2));
+                ayuda.setUrlImage(fila2.getString(4));
+                ayuda.setAbreviatura(fila2.getString(1));
+                ayuda.setCategoria(fila3.getString(1));
+                ayuda.setCodcontenido(fila3.getInt(0));
 
-            productolists.add(ayuda);
+                productolists.add(ayuda);
+            }
         } while (fila2.moveToNext());
+
 
         mAdapter = new AdapterProducto(productolists);
         recyclerView.setAdapter(mAdapter);
@@ -345,7 +310,6 @@ public class CatalogoActivity extends AppCompatActivity implements NavigationVie
             case R.id.nav_logout:
                 startActivity(new Intent(getApplicationContext(), LoginActivity.class));
                 break;
-
         }
         mDrawerLayout.closeDrawer(GravityCompat.START);
         return true;

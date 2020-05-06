@@ -13,55 +13,115 @@
 
         <TextView
             android:id="@+id/txtTitleChartBolsas"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:text="Grafico de Bolsas"
             android:layout_marginStart="24dp"
+            android:layout_marginTop="30dp"
             android:layout_marginEnd="24dp"
+            android:text="CANTIDAD DE BOLSAS DE RESIDUOS ENTREGADOS POR MES"
+            android:textAlignment="center"
+            android:textColor="#000000"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-        <lecho.lib.hellocharts.view.LineChartView
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:rotation="-90"
+            android:text="Cantidad de bolsas"
+            android:layout_marginTop="160dp"
+            android:textSize="8dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/chart"
+            app:layout_constraintTop_toBottomOf="@+id/txtTitleChartBolsas" />
+
+        <com.github.mikephil.charting.charts.LineChart
             android:id="@+id/chart"
             android:layout_width="match_parent"
             android:layout_height="300dp"
-            android:layout_marginStart="32dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="32dp"
-            android:layout_marginBottom="16dp"
-            android:alpha="0"
-            app:layout_constraintBottom_toTopOf="@+id/txtTitleChartResiduos"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="8dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/txtTitleChartBolsas" />
-
+            app:layout_constraintTop_toBottomOf="@id/txtTitleChartBolsas"
+            tools:ignore="MissingConstraints" />
 
 
         <TextView
             android:id="@+id/txtTitleChartResiduos"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:text="Grafico de Residuos"
             android:layout_marginStart="24dp"
+            android:layout_marginTop="30dp"
             android:layout_marginEnd="24dp"
+            android:text="CANTIDAD DE RESIDUOS SÓLIDOS ENTREGADOS POR MES"
+            android:textAlignment="center"
+            android:textColor="#000000"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/chart" />
-        <lecho.lib.hellocharts.view.LineChartView
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:rotation="-90"
+            android:text="Cantidad de residuos"
+            android:layout_marginTop="160dp"
+            android:textSize="8dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/chart2"
+            app:layout_constraintTop_toBottomOf="@+id/txtTitleChartResiduos" />
+
+
+        <com.github.mikephil.charting.charts.LineChart
             android:id="@+id/chart2"
             android:layout_width="match_parent"
             android:layout_height="300dp"
-            android:layout_marginStart="32dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="32dp"
-            android:layout_marginBottom="16dp"
-            android:alpha="0"
-            app:layout_constraintBottom_toTopOf="@+id/relativeTendenciasHoy"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintBottom_toTopOf="@+id/txtTitleChartPuntos"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/txtTitleChartResiduos" />
+
+        <TextView
+            android:id="@+id/txtTitleChartPuntos"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginEnd="24dp"
+            android:text="CANTIDAD DE PUNTOS OBTENIDOS POR MES"
+            android:textAlignment="center"
+            android:textColor="#000000"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/chart2" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:rotation="-90"
+            android:text="Cantidad de puntos"
+            android:layout_marginTop="160dp"
+            android:textSize="8dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/chart3"
+            app:layout_constraintTop_toBottomOf="@+id/txtTitleChartPuntos" />
+
+        <com.github.mikephil.charting.charts.LineChart
+            android:id="@+id/chart3"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="24dp"
+            android:layout_marginBottom="20dp"
+            app:layout_constraintBottom_toTopOf="@+id/relativeTendenciasHoy"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txtTitleChartPuntos" />
 
         <RelativeLayout
             android:id="@+id/relativeTendenciasHoy"
@@ -245,7 +305,7 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/relativeVidrio"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/relativePlastico"
                 app:layout_constraintTop_toTopOf="parent">
 
@@ -270,13 +330,13 @@
                     android:layout_width="80dp"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/imagePaper"
-                    android:layout_marginBottom="30dp"
                     android:layout_centerHorizontal="true"
-                    android:textAlignment="center"
-                    android:text="Papel/Carton"
+                    android:layout_marginBottom="30dp"
                     android:background="@color/colorPapelCarton"
+                    android:text="Papel/Carton"
+                    android:textAlignment="center"
                     android:textColor="@android:color/white"
-                    android:textSize="10dp"/>
+                    android:textSize="10dp" />
 
                 <TextView
                     android:id="@+id/txtPapelCartonCantidad"
@@ -306,134 +366,7 @@
                     android:text="0  ptos" />
             </RelativeLayout>
 
-            <RelativeLayout
-                android:id="@+id/relativeVidrio"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/relativeMetales"
-                app:layout_constraintStart_toEndOf="@+id/relativePapelCarton"
-                app:layout_constraintTop_toTopOf="parent">
 
-                <ImageView
-                    android:id="@+id/imageVidrio"
-                    android:layout_width="80dp"
-                    android:layout_height="60dp"
-                    android:layout_centerHorizontal="true"
-                    android:background="@color/colorVidrio"
-                    android:src="@drawable/ic_vidrio"
-                    android:tint="#FFFFFF"
-                    android:paddingStart="5dp"
-                    android:paddingTop="5dp"
-                    android:paddingEnd="5dp"
-                    />
-
-                <TextView
-                    android:id="@+id/txtVidrio"
-                    android:layout_width="80dp"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/imageVidrio"
-                    android:layout_centerHorizontal="true"
-                    android:background="@color/colorVidrio"
-                    android:textAlignment="center"
-                    android:layout_marginBottom="30dp"
-                    android:textSize="10dp"
-
-                    android:textColor="@android:color/white"
-                    android:text="Vidrio" />
-
-                <TextView
-                    android:id="@+id/txtVidrioCantidad"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/txtVidrio"
-                    android:layout_centerInParent="true"
-                    android:layout_marginTop="-10dp"
-                    android:text="0" />
-
-                <TextView
-                    android:id="@+id/txtVidrioPeso"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/txtVidrioCantidad"
-                    android:layout_centerInParent="true"
-                    android:layout_marginTop="10dp"
-                    android:text="0 kg" />
-
-                <TextView
-                    android:id="@+id/txtVidrioPuntos"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/txtVidrioPeso"
-                    android:layout_centerInParent="true"
-                    android:layout_marginTop="10dp"
-                    android:text="0  ptos" />
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:id="@+id/relativeMetales"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_marginEnd="16dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintStart_toEndOf="@+id/relativeVidrio"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.0">
-
-                <ImageView
-                    android:id="@+id/imageMetal"
-                    android:layout_width="80dp"
-                    android:layout_height="60dp"
-                    android:layout_centerHorizontal="true"
-                    android:paddingStart="5dp"
-                    android:paddingTop="5dp"
-                    android:paddingEnd="5dp"
-                    android:background="@color/colorMetal"
-                    android:src="@drawable/ic_metal"
-                    />
-
-                <TextView
-                    android:id="@+id/txtMetales"
-                    android:layout_width="80dp"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/imageMetal"
-                    android:background="@color/colorMetal"
-                    android:textColor="#000000"
-                    android:textAlignment="center"
-                    android:textSize="10dp"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginBottom="30dp"
-                    android:text="Metales" />
-
-                <TextView
-                    android:id="@+id/txtMetalesCantidad"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/txtMetales"
-                    android:layout_centerInParent="true"
-                    android:layout_marginTop="-10dp"
-                    android:text="0" />
-
-                <TextView
-                    android:id="@+id/txtMetalesPeso"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/txtMetalesCantidad"
-                    android:layout_centerInParent="true"
-                    android:layout_marginTop="10dp"
-                    android:text="0 kg" />
-
-                <TextView
-                    android:id="@+id/txtMetalesPuntos"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/txtMetalesPeso"
-                    android:layout_centerInParent="true"
-                    android:layout_marginTop="10dp"
-                    android:text="0  ptos" />
-            </RelativeLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
